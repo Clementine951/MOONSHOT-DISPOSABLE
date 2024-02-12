@@ -24,7 +24,7 @@ Once the decisions are made, this template can be customised accordingly.
 - [ ] 1. 2.
 - [ ] 1- 2-
 - [ ] 1) 2)
-- [ ] Nothing before the title
+- [x] Nothing before the title
 
 4. **Big title syntax:**
 
