@@ -1,6 +1,6 @@
 # Project Charter
 
-
+https://github.com/AlexisLasselin/2023-2024-project-1-rubiks-art-team-3/blob/main/documents/projectCharter.md
 # GENERAL PROJECT INFORMATION
 
 <br>
