@@ -197,7 +197,6 @@ No guest book feature:
 No insights or analytics:
 - Insights or analytics on participant contributions and interactions with event photos are not available.
 
-
 # Project Organisation
 
 # Project Plan
@@ -205,6 +204,84 @@ No insights or analytics:
 # Functional Requirements 
 
 ## Features Overview
+
+1. **Download the app:**
+   - Allow users to download the app from their respective app stores.
+
+2. **Account creation:**
+   - Admin users can create accounts within the app.
+   
+3. **User registration:**
+   - Collect user information such as name, email, and password for account registration.
+
+4. **Password recreation:**
+   - Provide functionality for users to recreate their password.
+
+5. **Forgot password:**
+   - Offer users the option to reset their password if forgotten.
+
+6. **Event creation:**
+   - Admin users can create new events within the app.
+   
+7. **Event parameter definition:**
+   - Define event parameters such as duration, maximum photo limits, and other settings.
+
+8. **QR code generation:**
+   - Admin users can generate unique QR codes for each event.
+   
+9. **QR code sharing:**
+   - Admin users can share the QR code via various channels (e.g., email, messaging) to invite participants.
+
+10. **General gallery access:**
+    - Users can access the general gallery to view shared photos.
+
+11. **General gallery deletion:**
+    - Users can delete photos from the general gallery.
+
+12. **General gallery saving:**
+    - Users can save photos from the general gallery to their devices.
+
+13. **Personal gallery access:**
+    - Users can access their gallery to view their own shared photos.
+
+14. **Personal gallery deletion:**
+    - Users can delete photos from their gallery.
+
+15. **Personal gallery saving:**
+    - Users can save photos from their gallery to their devices.
+
+16. **Photo capture:**
+    - Users can capture photos using the app's camera interface.
+
+17. **Photo sharing:**
+    - Participants and admin users can share event photos within the app.
+
+18. **Photo downloading:**
+    - Users can download event photos shared by others.
+
+19. **App access without download:**
+    - Participants can access event features without downloading the app.
+  
+20. **Security measures:**
+    - Implement robust security measures to ensure user data and interactions are secure.
+
+21. **Internet connectivity requirement:**
+    - Require an active internet connection for users to access app features.
+
+22. **Real-time updates:**
+    - Provide real-time updates and automatic refreshments for the latest event information.
+
+23. **Customer support access:**
+    - Offer access to customer support resources within the app.
+
+24. **Permission prompting:**
+    - Prompt users for permission before accessing sensitive device features or personal data.
+
+25. **Push notifications:**
+    - Send push notifications to provide updates on event activities and announcements.
+
+26. **User data management:**
+    - Enable users to access and manage their personal data stored within the app.
 
 ## Features Breakdown
 
