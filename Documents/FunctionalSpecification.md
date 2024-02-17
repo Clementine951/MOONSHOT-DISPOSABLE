@@ -22,7 +22,7 @@
     - [Ubiquitous Requirements](#ubiquitous-requirements)
     - [State-driven Requirements](#state-driven-requirements)
     - [Event-driven Requirements](#event-driven-requirements)
-    - [Unwanted Behavior Requirements](#unwanted-behavior-requirements)
+    - [Unwanted Behaviour Requirements](#unwanted-behaviour-requirements)
     - [Complex Requirements](#complex-requirements)
   - [User Interface and Design](#user-interface-and-design)
 - [Target Audience](#target-audience)
@@ -309,7 +309,7 @@ Template:   WHEN the shall .
 
 Example:     When continuous ignition is commanded by the aircraft, the control system shall switch on continuous ignition.
 
-### Unwanted Behavior Requirements
+### Unwanted Behaviour Requirements
 
 Unwanted behavior functional requirements cover all undesirable situations. Good systems engineering (SE) practice anticipates undesirable situations and imposes requirements to mitigate them.
 
@@ -317,7 +317,7 @@ Unwanted behavior requirements are often imposed when the system must respond to
 
 Template:   IF , THEN the shall .
 
-Example:     If the computed airspeed is unavailable, then the control system shall use modeled airspeed.
+Example:     If the computed airspeed is unavailable, then the control system shall use the modeled airspeed.
 
 ### Complex Requirements
 
