@@ -487,20 +487,12 @@ weeding, party, vacation, baptism, anniversary
 
 ## Personas
 
-an elder at a baptism  70s
--> the grandma 70s
+<img src="./Images/1.png">
+<img src="./Images/2.png">
+<img src="./Images/3.png">
+<img src="./Images/4.png">
+<img src="./Images/5.png">
 
-a family for christmas Alls
--> the mom 50s
-
-a couple for their weeding 30s 
--> the husband 30s
-
-a child for an anniversary  12s
--> child's anniversary 11 to 12s 
-
-group of friends for a party 20s
--> the one that always organise everything 21s
 
 ## User Cases
 
@@ -518,31 +510,21 @@ Anniversary
 
 Party 
 
+an elder at a baptism  70s
+-> the grandma 70s
 
-User Story 1: Capturing Memories
+a family for christmas Alls
+-> the mom 50s
 
-As a user attending a wedding, I want to use the app to capture candid moments and memorable scenes throughout the event, so I can cherish and share them with friends and family later.
-User Story 2: Sharing Photos
+a couple for their weeding 30s 
+-> the husband 30s
 
-As a user at a birthday party, I want to easily share photos I've taken with other attendees through the app, so everyone can enjoy and reminisce about the special moments from the celebration.
-User Story 3: Joining an Event
+a child for an anniversary  12s
+-> child's anniversary 11 to 12s 
 
-As a user invited to a corporate event, I want to quickly join the event by scanning the provided QR code with the app, so I can start taking photos and participating in the shared experience.
-User Story 4: Managing Photos
+group of friends for a party 20s
+-> the one that always organise everything 21s
 
-As a user organising a family reunion, I want to manage the photos shared within the app's gallery, including deleting any unwanted photos and saving my favourites for future reference.
-User Story 5: Exploring Event Galleries
-
-As a user browsing through the app, I want to explore the galleries of past and upcoming events, so I can see what moments were captured and decide which events I want to join or revisit.
-User Story 6: Customising Event Settings
-
-As an event organiser, I want to customise the settings for my event within the app, such as setting the maximum number of photos each participant can take or adjusting the event duration, to tailor the experience to my preferences.
-User Story 7: Providing Feedback
-
-As a user who attended a concert, I want to provide feedback on the app's performance and usability, so the developers can make improvements and enhancements for future events.
-User Story 8: Accessing Help and Support
-
-As a user experiencing difficulty with the app, I want to access help resources and contact customer support directly from within the app, so I can quickly resolve any issues and continue enjoying the event.
 
 ## User Journey Map
 
