@@ -6,6 +6,11 @@ labels: documentation
 assignees: Clementine951
 
 ---
+Thanks for opening a new issue!
+
+If you are trying to reference a problem with one of our docs, please include a link to the doc.
+
+**Link to the document**
 
 **Describe the errors**
 A clear and concise description of what the error is.
