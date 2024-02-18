@@ -15,7 +15,16 @@
     - [Participant Users](#participant-users)
   - [Out of Scope](#out-of-scope)
 - [Project Organisation](#project-organisation)
-- [Project Plan](#project-plan)
+  - [Stakeholders](#stakeholders)
+  - [Timeline](#timeline)
+  - [Milestones](#milestones)
+  - [Risks and Assumptions](#risks-and-assumptions)
+    - [Risks](#risks)
+    - [Assumptions](#assumptions)
+  - [Constraints](#constraints)
+    - [Resource Constraints:](#resource-constraints)
+    - [Time Constraints:](#time-constraints)
+    - [Legal and Regulatory Constraints:](#legal-and-regulatory-constraints)
 - [Functional Requirements](#functional-requirements)
   - [Features Overview](#features-overview)
   - [Features Breakdown](#features-breakdown)
@@ -28,10 +37,9 @@
 - [Target Audience](#target-audience)
   - [Personas](#personas)
   - [User Cases](#user-cases)
-  - [User Journey](#user-journey)
+  - [User Journey Map](#user-journey-map)
   - [Functional Analysis](#functional-analysis)
 - [Non-Functional Requirements](#non-functional-requirements)
-  - [Costs](#costs)
   - [Reliability](#reliability)
   - [Operability](#operability)
   - [Recovery](#recovery)
@@ -90,7 +98,7 @@ Constant refresh:
 
 Customer support:
 - Provide access to customer support resources within the app, such as FAQs, help guides, and contact information, to assist users with any issues or inquiries.
-- 
+
 Asking for permission from users:
 - Prompt users for permission before accessing sensitive device features or personal data, such as camera access, location information, and contact details.
 
@@ -208,7 +216,137 @@ No insights or analytics:
 
 # Project Organisation
 
-# Project Plan
+task allocation -> use of jira 
+
+## Stakeholders
+
+| Stakeholders     | Role                                            |
+|------------------|-------------------------------------------------|
+| Clémentine CUREL | Lead and manage the project                     |
+| ALGOSUP          | Provides academic guidance and requirements     |
+| Reviewers        | Evaluate the project for grading                |
+
+## Timeline
+
+## Milestones 
+
+| Milestone      | Description                                              |
+|----------------|----------------------------------------------------------|
+| Functional     | Completion of functional requirements and feature set    |
+| Technical      | Implementation of technical architecture and framework   |
+| Roadmap        | Development plan for future iterations and enhancements  |
+| V1             | Release of the first version of the application          |
+| Jury 1         | Presentation and evaluation by the first jury panel      |
+| User Testing   | Conducting user testing and gathering feedback           |
+| V2             | Release of the second version of the application         |
+| Jury 2         | Presentation and evaluation by the final jury panel      |
+
+## Risks and Assumptions
+
+### Risks 
+
+|| Technical issues                                                                                                                                                        |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Potential technical challenges or bugs in the app development process may delay project progress or affect the functionality of the final product.                 |
+| **Solution**    | Conduct thorough testing at each stage of development, employ experienced developers, and have contingency plans in place to address technical issues promptly. |
+
+|| Scope creep                                                                                                                                                             |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | There's a risk of the project scope expanding beyond initial expectations, leading to increased workload and potential delays in project completion.                 |
+| **Solution**    | Define clear project objectives and scope boundaries from the outset, regularly review and prioritise project requirements, and communicate any scope changes effectively. |
+
+|| Resource constraints                                                                                                                                                   |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Limited availability of resources such as time, budget, or expertise may impact the project's ability to meet deadlines or deliver desired outcomes.                     |
+| **Solution**    | Allocate resources efficiently, consider outsourcing non-critical tasks, and explore alternative solutions or technologies to mitigate resource limitations.          |
+
+|| Compatibility issues                                                                                                                                                  |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Ensuring cross-platform compatibility may present challenges, particularly in integrating app features across different operating systems and devices.                     |
+| **Solution**    | Use platform-agnostic development frameworks, conduct thorough compatibility testing, and collaborate closely with platform providers to address compatibility issues. |
+
+|| User adoption                                                                                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | There's a risk that users may not fully adopt or engage with the app as intended, impacting its effectiveness and success in meeting project objectives.                 |
+| **Solution**    | Prioritise user feedback, conduct usability testing, and implement user-friendly design principles to enhance user experience and encourage adoption of the app.        |
+
+|| Data security breaches                                                                                                                                                 |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Potential vulnerabilities in data security measures could lead to unauthorised access or breaches, compromising user data and damaging trust in the app.               |
+| **Solution**    | Implement robust encryption protocols, adhere to industry best practices for data security, and regularly audit and update security measures to protect user data.   |
+
+|| Regulatory compliance                                                                                                                                                  |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Failure to comply with relevant laws and regulations, such as data protection or privacy requirements, could result in legal issues or fines for the project.           |
+| **Solution**    | Conduct thorough research on applicable regulations, seek legal guidance when necessary, and implement compliance measures throughout the development process.         |
+
+|| External dependencies                                                                                                                                                 |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Reliance on external factors or third-party services may introduce risks related to their availability, reliability, or compatibility with the project.                   |
+| **Solution**    | Identify and assess potential dependencies early, establish communication channels with third-party providers, and have contingency plans in place to mitigate dependency risks. |
+
+|| Change in project requirements                                                                                                                                         |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Changes in project requirements or stakeholder expectations could disrupt project plans and require adjustments in resource allocation or development efforts.            |
+| **Solution**    | Maintain open communication with stakeholders, document project requirements comprehensively, and regularly review and update project plans to accommodate changes as needed. |
+
+|| Technology obsolescence                                                                                                                                               |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Rapid advancements in technology may render certain tools or frameworks obsolete during the project lifecycle, requiring adaptation or redevelopment efforts.            |
+| **Solution**    | Stay informed about emerging technologies, plan for future scalability and adaptability, and incorporate modular design principles to facilitate technology updates as needed. |
+
+|| Intellectual property infringement                                                                                                                                     |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | There's a risk of unintentional infringement of intellectual property rights, such as copyright or patent violations, which could result in legal consequences.         |
+| **Solution**    | Conduct thorough research on existing patents and copyrights, obtain necessary permissions or licenses, and ensure that all development work complies with applicable intellectual property laws. |
+
+|| Scalability and performance issues                                                                                                                                     |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Inadequate scalability or performance of the app under high user loads or increased data volume may lead to slowdowns, crashes, or degraded user experience.           |
+| **Solution**    | Implement scalable architecture and performance optimisation techniques, conduct load testing and performance tuning, and regularly monitor system performance to address scalability and performance concerns proactively. |
+
+|| Project management challenges                                                                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Challenges in project management, such as inadequate planning, lack of clarity in roles and responsibilities, or ineffective decision-making, could hinder progress.       |
+| **Solution**    | Establish clear project objectives and timelines, define roles and responsibilities, and use project management tools and methodologies to streamline workflows and improve decision-making processes. |
+
+|| Dependencies on key personnel                                                                                                                                          |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Reliance on specific individuals for critical tasks or expertise may pose risks if they become unavailable due to illness, departure, or other unforeseen circumstances. |
+| **Solution**    | Cross-train team members, document critical processes and knowledge, and establish backup plans or contingencies to mitigate the impact of key personnel unavailability. |
+
+|| Reputation damage                                                                                                                                                      |
+|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Description** | Negative publicity, poor user reviews, or public perception issues related to the app's functionality, security, or ethical concerns could damage the project's reputation. |
+| **Solution**    | Prioritise quality assurance and user experience, address user feedback and concerns promptly, and maintain transparent communication to build and preserve trust in the project. |
+
+### Assumptions
+
+| **Assumption**                                             | **Description**                                                                                               |
+|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Users' availability                                       | Users will have access to smartphones or mobile devices with compatible operating systems (iOS or Android).   |
+| Internet connectivity                                    | Users will have access to a stable internet connection to download the app and share photos during events.    |
+| User familiarity with mobile applications                   | Users will possess basic familiarity with mobile applications and digital photo-sharing platforms.             |
+| Event participation                                      | Users will actively participate in events where the app is utilised, engaging in photo capture and sharing.  |
+| User privacy and consent                                 | Users will provide consent for their photos to be shared within the app's galleries.                           |
+| App performance and stability                           | The app will perform reliably on users' devices, with minimal crashes or technical issues.                    |
+| Administrator engagement                                 | Administrators will actively manage events within the app, including event creation and gallery management.   |
+| Event attendance and duration                            | Events facilitated through the app will have sufficient attendance and duration to justify its use.          |
+| User feedback and iterative improvement                 | Users will provide feedback for iterative improvements and updates to enhance the user experience.           |
+| Compliance with data protection regulations              | The app will comply with relevant data protection regulations and privacy laws.                               |
+
+## Constraints
+
+### Resource Constraints:
+- Limited budget allocated for the project, affecting procurement of software licences and hardware resources.
+- Availability of skilled personnel for development and testing may be limited.
+  
+### Time Constraints:
+- Strict project deadlines imposed by the academic institution, requiring timely completion of deliverables.
+  
+### Legal and Regulatory Constraints:
+- Compliance with data protection regulations (e.g., GDPR) impacting data handling and storage practices.
+- Intellectual property rights and licensing agreements affecting the use of third-party software or libraries.
 
 # Functional Requirements 
 
@@ -304,7 +442,7 @@ Example:     The control system shall prevent engine over speed.
 
 ### State-driven Requirements
 
-State-driven functional requirements are active throughout the time a defined state remains true. In Mavin’s EARS method, state-driven requirements are identified with the keyword WHILE.
+State-driven functional requirements are active throughout the time a defined state remains true. In Mavis EARS method, state-driven requirements are identified with the keyword WHILE.
 
 Template:   WHILE the shall .
 
@@ -342,37 +480,146 @@ Example:     While the aircraft is on the ground, when reverse thrust is command
 
 ## User Interface and Design
 
+mock-ups
+
 # Target Audience
 
-weeding, event, party, vacation, 
+weeding, party, vacation, baptism, anniversary
+
 
 ## Personas
 
+an elder at a baptism  70s
+-> the grandma 70s
+
+a family for christmas Alls
+-> the mom 50s
+
+a couple for their weeding 30s 
+-> the husband 30s
+
+a child for an anniversary  12s
+-> child's anniversary 11 to 12s 
+
+group of friends for a party 20s
+-> the one that always organise everything 21s
+
 ## User Cases
 
-## User Journey
+weeding, party, vacation, baptism, anniversary
+
+Baptism: grandma / grandchild -> the mom put the disposable in place 
+-> the grandma don't really know how to take good photos, don't have the money for a photograph 
+allow the participant to 
+
+Christmas
+
+Weeding -> enhance the engagement of the invitees
+
+Anniversary
+
+Party 
+
+
+User Story 1: Capturing Memories
+
+As a user attending a wedding, I want to use the app to capture candid moments and memorable scenes throughout the event, so I can cherish and share them with friends and family later.
+User Story 2: Sharing Photos
+
+As a user at a birthday party, I want to easily share photos I've taken with other attendees through the app, so everyone can enjoy and reminisce about the special moments from the celebration.
+User Story 3: Joining an Event
+
+As a user invited to a corporate event, I want to quickly join the event by scanning the provided QR code with the app, so I can start taking photos and participating in the shared experience.
+User Story 4: Managing Photos
+
+As a user organising a family reunion, I want to manage the photos shared within the app's gallery, including deleting any unwanted photos and saving my favourites for future reference.
+User Story 5: Exploring Event Galleries
+
+As a user browsing through the app, I want to explore the galleries of past and upcoming events, so I can see what moments were captured and decide which events I want to join or revisit.
+User Story 6: Customising Event Settings
+
+As an event organiser, I want to customise the settings for my event within the app, such as setting the maximum number of photos each participant can take or adjusting the event duration, to tailor the experience to my preferences.
+User Story 7: Providing Feedback
+
+As a user who attended a concert, I want to provide feedback on the app's performance and usability, so the developers can make improvements and enhancements for future events.
+User Story 8: Accessing Help and Support
+
+As a user experiencing difficulty with the app, I want to access help resources and contact customer support directly from within the app, so I can quickly resolve any issues and continue enjoying the event.
+
+## User Journey Map
+
+Discovery:
+
+User receives an invitation to a friend's wedding, which mentions the use of a disposable camera app for capturing and sharing moments.
+User searches for the app in the app store based on the provided information.
+Onboarding:
+
+User downloads and installs the app on their smartphone.
+Upon opening the app, the user is prompted to create an account or log in as a guest.
+Event Entry:
+
+On the day of the wedding, user arrives at the venue and sees a QR code displayed at the entrance.
+User opens the app and scans the QR code to gain entry to the event.
+Capturing Moments:
+
+Throughout the wedding ceremony and reception, user uses the app's camera interface to capture candid moments, such as the bride walking down the aisle, guests mingling, and speeches.
+User appreciates the simplicity of the camera settings, making it easy to adjust focus and exposure.
+Sharing Photos:
+
+After taking photos, user selects the ones they want to share and adds them to the event gallery within the app.
+User enjoys seeing photos shared by other attendees and leaves comments on their favourites.
+Managing Gallery:
+
+User reviews the photos shared in the event gallery and deletes any duplicates or unwanted shots.
+User saves their favourite photos to their device for safekeeping and future reminiscing.
+Feedback and Support:
+
+Upon returning home, user reflects on their experience with the app and appreciates its role in capturing special moments at the wedding.
+User considers providing feedback to the app developers to suggest improvements or share their positive experience.
 
 ## Functional Analysis
 
-# Non-Functional Requirements
+diagrams + graph to explain the user journey on the app
 
-## Costs 
+what happen, when , how ...
+
+# Non-Functional Requirements
 
 ## Reliability
 
+should not crash 
+
+...
+
 ## Operability
+
+cross platform ios android
 
 ## Recovery
 
+in case of crash 
+
+not closing the event 
+
+not losing data and photos
+
 ## Delivery
+
+As a free software with no commercial purpose, available to download from app store and play store
 
 ## Maintainability
 
+Commented and documented code
+
 ## Security
 
-# Glossary
+GDPR
 
+privacy
+
+# Glossary
 
 disposable camera
 qr code
 cross-platform
+personal data
