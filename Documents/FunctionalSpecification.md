@@ -5,6 +5,7 @@
 
 - [Functional specification](#functional-specification)
 - [Project Overview](#project-overview)
+  - [Report Issues](#report-issues)
 - [Project Definition](#project-definition)
   - [Vision](#vision)
   - [Objectives](#objectives)
@@ -47,7 +48,9 @@
 
 The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. With features like customisable camera settings, event galleries, and cross-platform compatibility, the app aims to enhance the event experience and promote engagement among attendees.
 
+## Report Issues
 
+If you notice errors in this document, or would like to give feedback, please file a Doc Issue in the MOONSHOT-DISPOSABLE GitHub repository: https://github.com/Clementine951/MOONSHOT-DISPOSABLE/issues
 
 # Project Definition
 
