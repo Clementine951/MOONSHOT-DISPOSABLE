@@ -22,9 +22,6 @@
     - [Risks](#risks)
     - [Assumptions](#assumptions)
   - [Constraints](#constraints)
-    - [Resource Constraints:](#resource-constraints)
-    - [Time Constraints:](#time-constraints)
-    - [Legal and Regulatory Constraints:](#legal-and-regulatory-constraints)
 - [Functional Requirements](#functional-requirements)
   - [Features Overview](#features-overview)
   - [Features Breakdown](#features-breakdown)
@@ -216,8 +213,6 @@ No insights or analytics:
 
 # Project Organisation
 
-task allocation -> use of jira 
-
 ## Stakeholders
 
 | Stakeholders     | Role                                            |
@@ -227,6 +222,8 @@ task allocation -> use of jira
 | Reviewers        | Evaluate the project for grading                |
 
 ## Timeline
+
+Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary). For detailed information on tasks and deadlines, please refer to our JIRA board.
 
 ## Milestones 
 
@@ -337,14 +334,14 @@ task allocation -> use of jira
 
 ## Constraints
 
-### Resource Constraints:
+**Resource Constraints:**
 - Limited budget allocated for the project, affecting procurement of software licences and hardware resources.
 - Availability of skilled personnel for development and testing may be limited.
   
-### Time Constraints:
+**Time Constraints:**
 - Strict project deadlines imposed by the academic institution, requiring timely completion of deliverables.
   
-### Legal and Regulatory Constraints:
+**Legal and Regulatory Constraints:**
 - Compliance with data protection regulations (e.g., GDPR) impacting data handling and storage practices.
 - Intellectual property rights and licensing agreements affecting the use of third-party software or libraries.
 
@@ -432,6 +429,7 @@ task allocation -> use of jira
 
 ## Features Breakdown
 
+// todo till the end 
 ### Ubiquitous Requirements
 
 Ubiquitous functional requirements are always active. They are not invoked by an event or input, nor are they limited to a subset of the system’s operating states.
@@ -619,7 +617,19 @@ privacy
 
 # Glossary
 
-disposable camera
-qr code
-cross-platform
-personal data
+Academic Institution
+Cross-Platform
+Data Security
+Disposable Camera
+GDPR
+Intellectual Property
+Milestones
+Non-Functional Requirements
+Personal Data
+Regulatory Compliance
+Reviewers
+Risks and Assumptions
+Scope
+Stakeholders
+Timeline
+User Interface
