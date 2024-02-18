@@ -8,7 +8,6 @@
 - [Project Definition](#project-definition)
   - [Vision](#vision)
   - [Objectives](#objectives)
-  - [Deliverables](#deliverables)
   - [Scope](#scope)
     - [All Users (Both Admin and Participant)](#all-users-both-admin-and-participant)
     - [Admin Users](#admin-users)
@@ -48,6 +47,8 @@
 
 The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. With features like customisable camera settings, event galleries, and cross-platform compatibility, the app aims to enhance the event experience and promote engagement among attendees.
 
+
+
 # Project Definition
 
 ## Vision
@@ -61,13 +62,6 @@ The vision for the Disposable Camera application project is to develop a user-fr
 - User-friendly interface
 - Cross-platform compatibility
 - Enhanced engagement
-
-## Deliverables
-
-|Name|Description|Type|Deadline|Link|
-|-|-|-|-|-|
-|Functional specification|...|Markdown|||
-||||||
 
 ## Scope
 The scope of the project encompasses a set of features designed to facilitate the seamless creation, management, and participation in events through the Disposable Camera App. It's important to note that the scope features outlined below may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences, as detailed in the functional requirements section.
