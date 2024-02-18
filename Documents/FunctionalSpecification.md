@@ -46,11 +46,21 @@
 
 # Project Overview
 
+The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. With features like customisable camera settings, event galleries, and cross-platform compatibility, the app aims to enhance the event experience and promote engagement among attendees.
+
 # Project Definition
 
 ## Vision
 
+The vision for the Disposable Camera application project is to develop a user-friendly mobile application that facilitates effortless capturing and sharing of memorable moments during events, with a particular focus on enhancing accessibility for older individuals. By prioritising simplicity, intuitiveness, and inclusivity, the app aims to bridge generational gaps and foster meaningful connections among attendees, ensuring that everyone can participate fully in capturing and reliving event experiences.
+
 ## Objectives
+
+- Capture and share moments
+- Nostalgic experience
+- User-friendly interface
+- Cross-platform compatibility
+- Enhanced engagement
 
 ## Deliverables
 
@@ -129,7 +139,7 @@ No application download requirement:
 The out-of-scope features listed below represent functionalities that are not included in the current version of the Disposable Camera App. However, it's important to note that these features may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences.
 
 Duration of event uneditable:
-- The duration of the event cannot be edited once it is created.
+- The duration of events cannot be edited once they are created.
 
 Non-customisable number of photos per user:
 - The number of photos per user, decided by the admin, cannot be customised or edited after the creation of the event.
@@ -196,6 +206,8 @@ No guest book feature:
 
 No insights or analytics:
 - Insights or analytics on participant contributions and interactions with event photos are not available.
+
+<br>
 
 # Project Organisation
 
@@ -291,7 +303,7 @@ Ubiquitous functional requirements are always active. They are not invoked by an
 
 Template:   The shall .
 
-Example:     The control system shall prevent engine overspeed.
+Example:     The control system shall prevent engine over speed.
 
 ### State-driven Requirements
 
@@ -311,29 +323,31 @@ Example:     When continuous ignition is commanded by the aircraft, the control 
 
 ### Unwanted Behaviour Requirements
 
-Unwanted behavior functional requirements cover all undesirable situations. Good systems engineering (SE) practice anticipates undesirable situations and imposes requirements to mitigate them.
+Unwanted behaviour functional requirements cover all undesirable situations. Good systems engineering (SE) practice anticipates undesirable situations and imposes requirements to mitigate them.
 
-Unwanted behavior requirements are often imposed when the system must respond to a trigger under less than optimum conditions. The EARS method uses the keyword combination IF/THEN to identify requirements aimed at mitigating unwanted behavior.
+Unwanted behaviour requirements are often imposed when the system must respond to a trigger under less than optimum conditions. The EARS method uses the keyword combination IF/THEN to identify requirements aimed at mitigating unwanted behaviour.
 
-Template:   IF , THEN the shall .
+Template:   IF, THEN the shall.
 
-Example:     If the computed airspeed is unavailable, then the control system shall use the modeled airspeed.
+Example:     If the computed airspeed is unavailable, then the control system shall use the modelled airspeed.
 
 ### Complex Requirements
 
 Often, a specific set of one or more preconditions (states or optional features) must be present before the occurrence a specific event for that event to trigger a required system response. In such cases, the EARS templates may be combined, using a combination of the keywords.
 
-Complex requirements can be composed for desired behavior or for unwanted behavior. The EARS method provides a template for each.
+Complex requirements can be composed for desired behaviour or for unwanted behaviour. The EARS method provides a template for each.
 
-Template:   (Desired behavior) Where, while , when the shall .
+Template:   (Desired behaviour) Where, while , when the shall .
 
-Template:   (Unwanted behavior) Where, while , if then the shall .
+Template:   (Unwanted behaviour) Where, while , if then the shall .
 
 Example:     While the aircraft is on the ground, when reverse thrust is commanded, the control system shall enable deployment of the thrust reverser.
 
 ## User Interface and Design
 
 # Target Audience
+
+weeding, event, party, vacation, 
 
 ## Personas
 
@@ -362,3 +376,6 @@ Example:     While the aircraft is on the ground, when reverse thrust is command
 # Glossary
 
 
+disposable camera
+qr code
+cross-platform
