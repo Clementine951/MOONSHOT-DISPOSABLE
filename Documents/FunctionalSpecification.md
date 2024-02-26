@@ -209,6 +209,17 @@ No guest book feature:
 No insights or analytics:
 - Insights or analytics on participant contributions and interactions with event photos are not available.
 
+// todo
+No deep settings
+- block a user
+- change number of photos
+- change release time
+- accessibility
+  - font size
+  - screen readers
+  - high contrast
+- who can access to what
+
 <br>
 
 # Project Organisation
@@ -563,6 +574,17 @@ diagrams + graph to explain the user journey on the app
 
 what happen, when , how ...
 
+<img src="./Images/Legend.png">
+<img src="./Images/Home.png">
+<img src="./Images/Home.png">
+<img src="./Images/Camera.png">
+<img src="./Images/Personnal.png">
+<img src="./Images/SettingsPerso.png">
+<img src="./Images/General.png">
+<img src="./Images/Create.png">
+<img src="./Images/SettingsEvent.png">
+
+
 # Non-Functional Requirements
 
 ## Reliability
@@ -584,6 +606,7 @@ not closing the event
 not losing data and photos
 
 ## Delivery
+
 
 As a free software with no commercial purpose, available to download from app store and play store
 
