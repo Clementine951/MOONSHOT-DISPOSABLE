@@ -33,7 +33,12 @@
   - [User Interface and Design](#user-interface-and-design)
 - [Target Audience](#target-audience)
   - [Personas](#personas)
-  - [User Cases](#user-cases)
+  - [Use Cases](#use-cases)
+    - [Use Case 1: Margaret's Baptism Photos](#use-case-1-margarets-baptism-photos)
+    - [Use Case 2: Sarah's Christmas Celebration](#use-case-2-sarahs-christmas-celebration)
+    - [Use Case 3: James's Wedding Engagement](#use-case-3-jamess-wedding-engagement)
+    - [Use Case 4: Emily's Anniversary Party](#use-case-4-emilys-anniversary-party)
+    - [Use Case 5: Alex's Party Planning](#use-case-5-alexs-party-planning)
   - [User Journey Map](#user-journey-map)
   - [Functional Analysis](#functional-analysis)
 - [Non-Functional Requirements](#non-functional-requirements)
@@ -493,9 +498,6 @@ mock-ups
 
 # Target Audience
 
-weeding, party, vacation, baptism, anniversary
-
-
 ## Personas
 
 <img src="./Images/1.png">
@@ -505,36 +507,71 @@ weeding, party, vacation, baptism, anniversary
 <img src="./Images/5.png">
 
 
-## User Cases
+## Use Cases
 
-weeding, party, vacation, baptism, anniversary
 
-Baptism: grandma / grandchild -> the mom put the disposable in place 
--> the grandma don't really know how to take good photos, don't have the money for a photograph 
-allow the participant to 
+### Use Case 1: Margaret's Baptism Photos
 
-Christmas
+**Actor**: Margaret
 
-Weeding -> enhance the engagement of the invitees
+- **Description**: Margaret desires to receive photos of all participants at her grandson's baptism, as she lacks photography skills and financial resources to hire a professional. She aims to ensure comprehensive coverage of the event by obtaining photos taken by others.
+- **Preconditions**: Margaret has access to a disposable camera.
+- **Postconditions**: Margaret successfully collects photos from other participants, enhancing the coverage of her grandson's baptism.
 
-Anniversary
+- **Flow:** 
+  - Margaret attends her grandson's baptism, equipped with the Disposable Camera app
+  - Aware of her limitations in capturing photos, Margaret interacts with other attendees and encourages them to take photos with the app during the event
+  - Throughout the ceremony, Margaret communicates her desire to receive copies of photos taken by other participants
+  - As a result, Margaret receives a variety of photos taken by different individuals, enriching the coverage of her grandson's baptism and ensuring she has memories captured from various perspectives
 
-Party 
+### Use Case 2: Sarah's Christmas Celebration
+- **Actor**: Sarah
+- **Description**: Sarah aims to capture candid moments during her family's Christmas celebration using the Disposable Camera app.
+- **Preconditions**: Sarah has shared the QR code of the Disposable Camera app with family members.
+- **Postconditions**: Sarah collects digital photos taken during the celebration via the Disposable Camera app and will compiles them for a family album.
+- **Flow**:
+  1. Before the Christmas celebration, Sarah shares the QR code of the Disposable Camera app with family members, warning them that they don't have to download the app
+  2. Throughout the event, family members use the Disposable Camera app to capture candid moments, such as opening presents, sharing meals, and playing games
+  3. After the celebration, Sarah collects the digital photos taken by family members using the Disposable Camera app
+  4. Sarah compiles the digital photos into a digital or printed family album, preserving the memories of the Christmas celebration captured through the app
 
-an elder at a baptism  70s
--> the grandma 70s
+### Use Case 3: James's Wedding Engagement
+- **Actor**: James
+- **Description**: James aims to enhance guest engagement at his wedding by providing a virtual disposable camera experience through the Disposable Camera app.
+- **Preconditions**: James has created an event on the Disposable Camera app and shared the event QR code with wedding guests.
+- **Postconditions**: James collects digital photos taken during the wedding celebration via the Disposable Camera app and compiles them for a keepsake album.
+- **Flow**:
+  1. Before the wedding ceremony, James creates an event on the Disposable Camera app and shares the event QR code with wedding guests via email, text message, or printed cards.
+  2. Guests attend the wedding reception and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+  3. Throughout the wedding festivities, guests use the Disposable Camera app to capture candid photos of themselves, the bride and groom, and other guests.
+  4. After the wedding, James collects the digital photos taken by guests using the Disposable Camera app.
+  5. James compiles the digital photos into a keepsake album, preserving the memories of his special day captured through the app.
 
-a family for christmas Alls
--> the mom 50s
+### Use Case 4: Emily's Anniversary Party
+- **Actor**: Emily
+- **Description**: Emily wants to capture fun moments during her anniversary party using the Disposable Camera app and share them on Instagram.
+- **Preconditions**: Emily has created an event on the Disposable Camera app and shared the event QR code with party attendees. Emily has an Instagram account.
+- **Postconditions**: Emily posts digital photos taken during the anniversary party via the Disposable Camera app on her Instagram profile.
+- **Flow**:
+  1. Before the anniversary party, Emily creates an event on the Disposable Camera app and shares the event QR code with party attendees.
+  2. Guests attend the anniversary party and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+  3. Throughout the party, Emily and her friends use the Disposable Camera app to capture photos of themselves, their activities, and the decorations.
+  4. After the party, Emily collects the digital photos taken by guests using the Disposable Camera app.
+  5. Emily selects the best photos from the event and edits them if necessary(on an other app).
+  6. Emily posts the edited photos on her Instagram profile, adding captions and hashtags to share the memories of her anniversary celebration with her followers.
 
-a couple for their weeding 30s 
--> the husband 30s
-
-a child for an anniversary  12s
--> child's anniversary 11 to 12s 
-
-group of friends for a party 20s
--> the one that always organise everything 21s
+### Use Case 5: Alex's Party Planning
+- **Actor**: Alex
+- **Description**: Alex wants to ensure a successful party by coordinating various aspects of planning and execution using the Disposable Camera app.
+- **Preconditions**: Alex has access to resources for party planning and coordination.
+- **Postconditions**: The party is executed smoothly, and attendees have an enjoyable experience.
+- **Flow**:
+  1. Alex begins by setting a date and theme for the party and creates an event on the Disposable Camera app.
+  2. Alex shares the event QR code with invited guests, allowing them to access the Disposable Camera app without downloading it.
+  3. Alex organises logistics such as decorations, food and drinks, and entertainment, updating the event details on the Disposable Camera app.
+  4. On the day of the party, Alex uses the Disposable Camera app to capture photos of the setup, guests, and activities, contributing to the event's digital album.
+  5. Throughout the party, Alex encourages guests to use the Disposable Camera app to capture their own photos and share them within the event album.
+  6. After the party, Alex reviews the photos collected through the Disposable Camera app, sharing highlights with attendees and preserving memories of the event digitally.
 
 
 ## User Journey Map
@@ -570,20 +607,39 @@ User considers providing feedback to the app developers to suggest improvements 
 
 ## Functional Analysis
 
-diagrams + graph to explain the user journey on the app
-
-what happen, when , how ...
+**Legend:**
 
 <img src="./Images/Legend.png">
+
+**Home screen:**
+
 <img src="./Images/Home.png">
-<img src="./Images/Home.png">
+
+**Camera:**
+
 <img src="./Images/Camera.png">
-<img src="./Images/Personnal.png">
+
+**Personal gallery:**
+
+<img src="./Images/Personal.png">
+
+**Personal settings:**
+
 <img src="./Images/SettingsPerso.png">
+
+**General gallery:**
+
 <img src="./Images/General.png">
+
+**Create event:**
+
 <img src="./Images/Create.png">
+
+**Event Settings:**
+
 <img src="./Images/SettingsEvent.png">
 
+<br>
 
 # Non-Functional Requirements
 
