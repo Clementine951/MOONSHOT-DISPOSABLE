@@ -39,7 +39,6 @@
     - [Use Case 3: James's Wedding Engagement](#use-case-3-jamess-wedding-engagement)
     - [Use Case 4: Emily's Anniversary Party](#use-case-4-emilys-anniversary-party)
     - [Use Case 5: Alex's Party Planning](#use-case-5-alexs-party-planning)
-  - [User Journey Map](#user-journey-map)
   - [Functional Analysis](#functional-analysis)
 - [Non-Functional Requirements](#non-functional-requirements)
   - [Reliability](#reliability)
@@ -572,38 +571,6 @@ mock-ups
   4. On the day of the party, Alex uses the Disposable Camera app to capture photos of the setup, guests, and activities, contributing to the event's digital album.
   5. Throughout the party, Alex encourages guests to use the Disposable Camera app to capture their own photos and share them within the event album.
   6. After the party, Alex reviews the photos collected through the Disposable Camera app, sharing highlights with attendees and preserving memories of the event digitally.
-
-
-## User Journey Map
-
-Discovery:
-
-User receives an invitation to a friend's wedding, which mentions the use of a disposable camera app for capturing and sharing moments.
-User searches for the app in the app store based on the provided information.
-Onboarding:
-
-User downloads and installs the app on their smartphone.
-Upon opening the app, the user is prompted to create an account or log in as a guest.
-Event Entry:
-
-On the day of the wedding, user arrives at the venue and sees a QR code displayed at the entrance.
-User opens the app and scans the QR code to gain entry to the event.
-Capturing Moments:
-
-Throughout the wedding ceremony and reception, user uses the app's camera interface to capture candid moments, such as the bride walking down the aisle, guests mingling, and speeches.
-User appreciates the simplicity of the camera settings, making it easy to adjust focus and exposure.
-Sharing Photos:
-
-After taking photos, user selects the ones they want to share and adds them to the event gallery within the app.
-User enjoys seeing photos shared by other attendees and leaves comments on their favourites.
-Managing Gallery:
-
-User reviews the photos shared in the event gallery and deletes any duplicates or unwanted shots.
-User saves their favourite photos to their device for safekeeping and future reminiscing.
-Feedback and Support:
-
-Upon returning home, user reflects on their experience with the app and appreciates its role in capturing special moments at the wedding.
-User considers providing feedback to the app developers to suggest improvements or share their positive experience.
 
 ## Functional Analysis
 
