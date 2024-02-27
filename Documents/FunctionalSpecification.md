@@ -144,85 +144,78 @@ No application download requirement:
 
 The out-of-scope features listed below represent functionalities that are not included in the current version of the Disposable Camera App. However, it's important to note that these features may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences.
 
-Duration of event uneditable:
-- The duration of events cannot be edited once they are created.
+1. **Duration of Event Uneditable**:
+   - The duration of events cannot be edited once they are created.
 
-Non-customisable number of photos per user:
-- The number of photos per user, decided by the admin, cannot be customised or edited after the creation of the event.
+2. **Non-customizable Number of Photos per User**:
+   - The number of photos per user, decided by the admin, cannot be customized or edited after the creation of the event.
 
-Fixed release of photos:
-- The release of photos for users cannot be modified after the creation of the event.
+3. **Fixed Release of Photos**:
+   - The release of photos for users cannot be modified after the creation of the event.
 
-No link with all photos:
-- There is no direct link provided for accessing all event photos.
+4. **No Link with All Photos**:
+   - There is no direct link provided for accessing all event photos.
 
-No video capture:
-- Users cannot capture videos within the app.
+5. **No Video Capture**:
+   - Users cannot capture videos within the app.
 
-No photo filters:
-- The app does not support applying filters to photos.
+6. **No Photo Filters**:
+   - The app does not support applying filters to photos.
 
-No live filters:
-- Live filters cannot be applied during photo capture.
+7. **No Live Filters**:
+   - Live filters cannot be applied during photo capture.
 
-No cover screen application:
-- Cover screens cannot be applied to photos.
+8. **No Cover Screen Application**:
+   - Cover screens cannot be applied to photos.
 
-No location tracking:
-- The app does not collect or display location information.
+9. **No Location Tracking**:
+   - The app does not collect or display location information.
 
-No user account requirement:
-- Participants do not need to create an account to use the app.
+10. **No User Account Requirement**:
+    - Participants do not need to create an account to use the app.
 
-No Instagram photo integration:
-- Photos cannot be sourced directly from Instagram.
+11. **No Instagram Photo Integration**:
+    - Photos cannot be sourced directly from Instagram.
 
-Internet connection requirement:
-- The app requires an internet connection to function.
+12. **Internet Connection Requirement**:
+    - The app requires an internet connection to function.
 
-No event templates:
-- There are no pre-defined event templates available.
+13. **No Event Templates**:
+    - There are no pre-defined event templates available.
 
-No event history tracking:
-- The app does not provide a history of past events.
+14. **No Event History Tracking**:
+    - The app does not provide a history of past events.
 
-Single admin role:
-- Each event has a single admin; multiple admin roles are not supported.
+15. **Single Admin Role**:
+    - Each event has a single admin; multiple admin roles are not supported.
 
-No pre-scheduled events:
-- Events cannot be scheduled in advance.
+16. **No Pre-scheduled Events**:
+    - Events cannot be scheduled in advance.
 
-No event choice options:
-- Users cannot choose specific events to participate in.
+17. **No Event Choice Options**:
+    - Users cannot choose specific events to participate in.
 
-No simultaneous multiple events:
-- Users cannot create or participate in multiple events simultaneously.
+18. **No Simultaneous Multiple Events**:
+    - Users cannot create or participate in multiple events simultaneously.
 
-No live streaming functionality:
-- Live streaming of events is not supported.
+19. **No Live Streaming Functionality**:
+    - Live streaming of events is not supported.
 
-No virtual reality integration:
-- The app does not integrate with virtual reality technology.
+20. **No Virtual Reality Integration**:
+    - The app does not integrate with virtual reality technology.
 
-No reward or badge system:
-- There are no rewards or badges awarded to users.
+21. **No Reward or Badge System**:
+    - There are no rewards or badges awarded to users.
 
-No guest book feature:
-- The app does not include a guest book feature for event interactions.
+22. **No Guest Book Feature**:
+    - The app does not include a guest book feature for event interactions.
 
-No insights or analytics:
-- Insights or analytics on participant contributions and interactions with event photos are not available.
+23. **No Insights or Analytics**:
+    - Insights or analytics on participant contributions and interactions with event photos are not available.
 
-// todo
-No deep settings
-- block a user
-- change number of photos
-- change release time
-- accessibility
-  - font size
-  - screen readers
-  - high contrast
-- who can access to what
+24. **No Deep Settings**:
+    - Features such as blocking a user, changing the number of photos, changing release time, and accessibility options like font size, screen readers, and high contrast are not available.
+    - Permissions management regarding who can access what features is not included.
 
 <br>
 
@@ -444,7 +437,7 @@ Project management, task allocation, and progress tracking are coordinated using
 
 ## Features Breakdown
 
-// todo till the end 
+// todo
 ### Ubiquitous Requirements
 
 Ubiquitous functional requirements are always active. They are not invoked by an event or input, nor are they limited to a subset of the system’s operating states.
@@ -609,7 +602,7 @@ mock-ups
 <br>
 
 # Non-Functional Requirements
-
+// todo till the end
 ## Reliability
 
 should not crash 
