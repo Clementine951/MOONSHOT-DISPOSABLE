@@ -573,36 +573,43 @@ Graphic charter:
 
 ## Functional Analysis
 
-**Legend:**
+**Legend:** 
 
 <img src="./Images/Legend.png">
 
-**Home screen:**
+<br>
 
+**Home screen:**
 <img src="./Images/Home.png">
 
-**Camera:**
+<br>
 
+**Camera:**
 <img src="./Images/Camera.png">
 
-**Personal gallery:**
+<br>
 
+**Personal gallery:**
 <img src="./Images/Personal.png">
 
-**Personal settings:**
+<br>
 
+**Personal settings:**
 <img src="./Images/SettingsPerso.png">
 
-**General gallery:**
+<br>
 
+**General gallery:**
 <img src="./Images/General.png">
 
-**Create event:**
+<br>
 
+**Create event:**
 <img src="./Images/Create.png">
 
-**Event Settings:**
+<br>
 
+**Event Settings:**
 <img src="./Images/SettingsEvent.png">
 
 <br>
