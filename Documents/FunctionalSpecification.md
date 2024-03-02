@@ -488,6 +488,10 @@ Example:     While the aircraft is on the ground, when reverse thrust is command
 
 To explore the mock-up of the Disposable Camera App on figma, you can click on this [figma link](https://www.figma.com/file/Y0JWQtRMokJs5hnwLF1sDu/Untitled?type=design&node-id=0%3A1&mode=design&t=ZZyTovJGYghNWaxW-1).
 
+Graphic charter:
+
+<img src="./Images/GraphCharter.png">
+
 // todo each page
 
 # Target Audience
