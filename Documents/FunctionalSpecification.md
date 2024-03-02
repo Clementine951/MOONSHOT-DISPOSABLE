@@ -234,6 +234,7 @@ The out-of-scope features listed below represent functionalities that are not in
 Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary). For detailed information on tasks and deadlines, please refer to our JIRA board.
 
 ## Milestones 
+// todo review
 
 | Milestone      | Description                                              |
 |----------------|----------------------------------------------------------|
@@ -580,36 +581,43 @@ Graphic charter:
 <br>
 
 **Home screen:**
+
 <img src="./Images/Home.png">
 
 <br>
 
 **Camera:**
+
 <img src="./Images/Camera.png">
 
 <br>
 
 **Personal gallery:**
+
 <img src="./Images/Personal.png">
 
 <br>
 
 **Personal settings:**
+
 <img src="./Images/SettingsPerso.png">
 
 <br>
 
 **General gallery:**
+
 <img src="./Images/General.png">
 
 <br>
 
 **Create event:**
+
 <img src="./Images/Create.png">
 
 <br>
 
 **Event Settings:**
+
 <img src="./Images/SettingsEvent.png">
 
 <br>
