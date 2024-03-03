@@ -582,6 +582,12 @@ Graphic charter:
 
 <br>
 
+**Authentication:**
+
+<img src="./Images/Authentication.png">
+
+<br>
+
 **Home screen:**
 
 <img src="./Images/Home.png">
