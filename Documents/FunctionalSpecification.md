@@ -33,8 +33,12 @@
   - [User Interface and Design](#user-interface-and-design)
 - [Target Audience](#target-audience)
   - [Personas](#personas)
-  - [User Cases](#user-cases)
-  - [User Journey Map](#user-journey-map)
+  - [Use Cases](#use-cases)
+    - [Use Case 1: Margaret's Baptism Photos](#use-case-1-margarets-baptism-photos)
+    - [Use Case 2: Sarah's Christmas Celebration](#use-case-2-sarahs-christmas-celebration)
+    - [Use Case 3: James's Wedding Engagement](#use-case-3-jamess-wedding-engagement)
+    - [Use Case 4: Emily's Anniversary Party](#use-case-4-emilys-anniversary-party)
+    - [Use Case 5: Alex's Party Planning](#use-case-5-alexs-party-planning)
   - [Functional Analysis](#functional-analysis)
 - [Non-Functional Requirements](#non-functional-requirements)
   - [Reliability](#reliability)
@@ -140,74 +144,78 @@ No application download requirement:
 
 The out-of-scope features listed below represent functionalities that are not included in the current version of the Disposable Camera App. However, it's important to note that these features may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences.
 
-Duration of event uneditable:
-- The duration of events cannot be edited once they are created.
+1. **Duration of Event Uneditable**:
+   - The duration of events cannot be edited once they are created.
 
-Non-customisable number of photos per user:
-- The number of photos per user, decided by the admin, cannot be customised or edited after the creation of the event.
+2. **Non-customizable Number of Photos per User**:
+   - The number of photos per user, decided by the admin, cannot be customized or edited after the creation of the event.
 
-Fixed release of photos:
-- The release of photos for users cannot be modified after the creation of the event.
+3. **Fixed Release of Photos**:
+   - The release of photos for users cannot be modified after the creation of the event.
 
-No link with all photos:
-- There is no direct link provided for accessing all event photos.
+4. **No Link with All Photos**:
+   - There is no direct link provided for accessing all event photos.
 
-No video capture:
-- Users cannot capture videos within the app.
+5. **No Video Capture**:
+   - Users cannot capture videos within the app.
 
-No photo filters:
-- The app does not support applying filters to photos.
+6. **No Photo Filters**:
+   - The app does not support applying filters to photos.
 
-No live filters:
-- Live filters cannot be applied during photo capture.
+7. **No Live Filters**:
+   - Live filters cannot be applied during photo capture.
 
-No cover screen application:
-- Cover screens cannot be applied to photos.
+8. **No Cover Screen Application**:
+   - Cover screens cannot be applied to photos.
 
-No location tracking:
-- The app does not collect or display location information.
+9. **No Location Tracking**:
+   - The app does not collect or display location information.
 
-No user account requirement:
-- Participants do not need to create an account to use the app.
+10. **No User Account Requirement**:
+    - Participants do not need to create an account to use the app.
 
-No Instagram photo integration:
-- Photos cannot be sourced directly from Instagram.
+11. **No Instagram Photo Integration**:
+    - Photos cannot be sourced directly from Instagram.
 
-Internet connection requirement:
-- The app requires an internet connection to function.
+12. **Internet Connection Requirement**:
+    - The app requires an internet connection to function.
 
-No event templates:
-- There are no pre-defined event templates available.
+13. **No Event Templates**:
+    - There are no pre-defined event templates available.
 
-No event history tracking:
-- The app does not provide a history of past events.
+14. **No Event History Tracking**:
+    - The app does not provide a history of past events.
 
-Single admin role:
-- Each event has a single admin; multiple admin roles are not supported.
+15. **Single Admin Role**:
+    - Each event has a single admin; multiple admin roles are not supported.
 
-No pre-scheduled events:
-- Events cannot be scheduled in advance.
+16. **No Pre-scheduled Events**:
+    - Events cannot be scheduled in advance.
 
-No event choice options:
-- Users cannot choose specific events to participate in.
+17. **No Event Choice Options**:
+    - Users cannot choose specific events to participate in.
 
-No simultaneous multiple events:
-- Users cannot create or participate in multiple events simultaneously.
+18. **No Simultaneous Multiple Events**:
+    - Users cannot create or participate in multiple events simultaneously.
 
-No live streaming functionality:
-- Live streaming of events is not supported.
+19. **No Live Streaming Functionality**:
+    - Live streaming of events is not supported.
 
-No virtual reality integration:
-- The app does not integrate with virtual reality technology.
+20. **No Virtual Reality Integration**:
+    - The app does not integrate with virtual reality technology.
 
-No reward or badge system:
-- There are no rewards or badges awarded to users.
+21. **No Reward or Badge System**:
+    - There are no rewards or badges awarded to users.
 
-No guest book feature:
-- The app does not include a guest book feature for event interactions.
+22. **No Guest Book Feature**:
+    - The app does not include a guest book feature for event interactions.
 
-No insights or analytics:
-- Insights or analytics on participant contributions and interactions with event photos are not available.
+23. **No Insights or Analytics**:
+    - Insights or analytics on participant contributions and interactions with event photos are not available.
+
+24. **No Deep Settings**:
+    - Features such as blocking a user, changing the number of photos, changing release time, and accessibility options like font size, screen readers, and high contrast are not available.
+    - Permissions management regarding who can access what features is not included.
 
 <br>
 
@@ -226,6 +234,7 @@ No insights or analytics:
 Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary). For detailed information on tasks and deadlines, please refer to our JIRA board.
 
 ## Milestones 
+// todo review
 
 | Milestone      | Description                                              |
 |----------------|----------------------------------------------------------|
@@ -429,7 +438,7 @@ Project management, task allocation, and progress tracking are coordinated using
 
 ## Features Breakdown
 
-// todo till the end 
+// todo
 ### Ubiquitous Requirements
 
 Ubiquitous functional requirements are always active. They are not invoked by an event or input, nor are they limited to a subset of the system’s operating states.
@@ -478,12 +487,15 @@ Example:     While the aircraft is on the ground, when reverse thrust is command
 
 ## User Interface and Design
 
-mock-ups
+To explore the mock-up of the Disposable Camera App on figma, you can click on this [figma link](https://www.figma.com/file/Y0JWQtRMokJs5hnwLF1sDu/Untitled?type=design&node-id=0%3A1&mode=design&t=ZZyTovJGYghNWaxW-1).
+
+Graphic charter:
+
+<img src="./Images/GraphCharter.png">
+
+// todo each page
 
 # Target Audience
-
-weeding, party, vacation, baptism, anniversary
-
 
 ## Personas
 
@@ -494,77 +506,132 @@ weeding, party, vacation, baptism, anniversary
 <img src="./Images/5.png">
 
 
-## User Cases
-
-weeding, party, vacation, baptism, anniversary
-
-Baptism: grandma / grandchild -> the mom put the disposable in place 
--> the grandma don't really know how to take good photos, don't have the money for a photograph 
-allow the participant to 
-
-Christmas
-
-Weeding -> enhance the engagement of the invitees
-
-Anniversary
-
-Party 
-
-an elder at a baptism  70s
--> the grandma 70s
-
-a family for christmas Alls
--> the mom 50s
-
-a couple for their weeding 30s 
--> the husband 30s
-
-a child for an anniversary  12s
--> child's anniversary 11 to 12s 
-
-group of friends for a party 20s
--> the one that always organise everything 21s
+## Use Cases
 
 
-## User Journey Map
+### Use Case 1: Margaret's Baptism Photos
 
-Discovery:
+**Actor**: Margaret
 
-User receives an invitation to a friend's wedding, which mentions the use of a disposable camera app for capturing and sharing moments.
-User searches for the app in the app store based on the provided information.
-Onboarding:
+- **Description**: Margaret desires to receive photos of all participants at her grandson's baptism, as she lacks photography skills and financial resources to hire a professional. She aims to ensure comprehensive coverage of the event by obtaining photos taken by others.
+- **Preconditions**: Margaret has access to a disposable camera.
+- **Postconditions**: Margaret successfully collects photos from other participants, enhancing the coverage of her grandson's baptism.
 
-User downloads and installs the app on their smartphone.
-Upon opening the app, the user is prompted to create an account or log in as a guest.
-Event Entry:
+- **Flow:** 
+  - Margaret attends her grandson's baptism, equipped with the Disposable Camera app
+  - Aware of her limitations in capturing photos, Margaret interacts with other attendees and encourages them to take photos with the app during the event
+  - Throughout the ceremony, Margaret communicates her desire to receive copies of photos taken by other participants
+  - As a result, Margaret receives a variety of photos taken by different individuals, enriching the coverage of her grandson's baptism and ensuring she has memories captured from various perspectives
 
-On the day of the wedding, user arrives at the venue and sees a QR code displayed at the entrance.
-User opens the app and scans the QR code to gain entry to the event.
-Capturing Moments:
+### Use Case 2: Sarah's Christmas Celebration
+- **Actor**: Sarah
+- **Description**: Sarah aims to capture candid moments during her family's Christmas celebration using the Disposable Camera app.
+- **Preconditions**: Sarah has shared the QR code of the Disposable Camera app with family members.
+- **Postconditions**: Sarah collects digital photos taken during the celebration via the Disposable Camera app and will compiles them for a family album.
+- **Flow**:
+  1. Before the Christmas celebration, Sarah shares the QR code of the Disposable Camera app with family members, warning them that they don't have to download the app
+  2. Throughout the event, family members use the Disposable Camera app to capture candid moments, such as opening presents, sharing meals, and playing games
+  3. After the celebration, Sarah collects the digital photos taken by family members using the Disposable Camera app
+  4. Sarah compiles the digital photos into a digital or printed family album, preserving the memories of the Christmas celebration captured through the app
 
-Throughout the wedding ceremony and reception, user uses the app's camera interface to capture candid moments, such as the bride walking down the aisle, guests mingling, and speeches.
-User appreciates the simplicity of the camera settings, making it easy to adjust focus and exposure.
-Sharing Photos:
+### Use Case 3: James's Wedding Engagement
+- **Actor**: James
+- **Description**: James aims to enhance guest engagement at his wedding by providing a virtual disposable camera experience through the Disposable Camera app.
+- **Preconditions**: James has created an event on the Disposable Camera app and shared the event QR code with wedding guests.
+- **Postconditions**: James collects digital photos taken during the wedding celebration via the Disposable Camera app and compiles them for a keepsake album.
+- **Flow**:
+  1. Before the wedding ceremony, James creates an event on the Disposable Camera app and shares the event QR code with wedding guests via email, text message, or printed cards.
+  2. Guests attend the wedding reception and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+  3. Throughout the wedding festivities, guests use the Disposable Camera app to capture candid photos of themselves, the bride and groom, and other guests.
+  4. After the wedding, James collects the digital photos taken by guests using the Disposable Camera app.
+  5. James compiles the digital photos into a keepsake album, preserving the memories of his special day captured through the app.
 
-After taking photos, user selects the ones they want to share and adds them to the event gallery within the app.
-User enjoys seeing photos shared by other attendees and leaves comments on their favourites.
-Managing Gallery:
+### Use Case 4: Emily's Anniversary Party
+- **Actor**: Emily
+- **Description**: Emily wants to capture fun moments during her anniversary party using the Disposable Camera app and share them on Instagram.
+- **Preconditions**: Emily has created an event on the Disposable Camera app and shared the event QR code with party attendees. Emily has an Instagram account.
+- **Postconditions**: Emily posts digital photos taken during the anniversary party via the Disposable Camera app on her Instagram profile.
+- **Flow**:
+  1. Before the anniversary party, Emily creates an event on the Disposable Camera app and shares the event QR code with party attendees.
+  2. Guests attend the anniversary party and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+  3. Throughout the party, Emily and her friends use the Disposable Camera app to capture photos of themselves, their activities, and the decorations.
+  4. After the party, Emily collects the digital photos taken by guests using the Disposable Camera app.
+  5. Emily selects the best photos from the event and edits them if necessary(on an other app).
+  6. Emily posts the edited photos on her Instagram profile, adding captions and hashtags to share the memories of her anniversary celebration with her followers.
 
-User reviews the photos shared in the event gallery and deletes any duplicates or unwanted shots.
-User saves their favourite photos to their device for safekeeping and future reminiscing.
-Feedback and Support:
-
-Upon returning home, user reflects on their experience with the app and appreciates its role in capturing special moments at the wedding.
-User considers providing feedback to the app developers to suggest improvements or share their positive experience.
+### Use Case 5: Alex's Party Planning
+- **Actor**: Alex
+- **Description**: Alex wants to ensure a successful party by coordinating various aspects of planning and execution using the Disposable Camera app.
+- **Preconditions**: Alex has access to resources for party planning and coordination.
+- **Postconditions**: The party is executed smoothly, and attendees have an enjoyable experience.
+- **Flow**:
+  1. Alex begins by setting a date and theme for the party and creates an event on the Disposable Camera app.
+  2. Alex shares the event QR code with invited guests, allowing them to access the Disposable Camera app without downloading it.
+  3. Alex organises logistics such as decorations, food and drinks, and entertainment, updating the event details on the Disposable Camera app.
+  4. On the day of the party, Alex uses the Disposable Camera app to capture photos of the setup, guests, and activities, contributing to the event's digital album.
+  5. Throughout the party, Alex encourages guests to use the Disposable Camera app to capture their own photos and share them within the event album.
+  6. After the party, Alex reviews the photos collected through the Disposable Camera app, sharing highlights with attendees and preserving memories of the event digitally.
 
 ## Functional Analysis
 
-diagrams + graph to explain the user journey on the app
+// todo resize images
 
-what happen, when , how ...
+**Legend:** 
+
+<img src="./Images/Legend.png">
+
+<br>
+
+**Authentication:**
+
+<img src="./Images/Authentication.png">
+
+<br>
+
+**Home screen:**
+
+<img src="./Images/Home.png">
+
+<br>
+
+**Camera:**
+
+<img src="./Images/Camera.png">
+
+<br>
+
+**Personal gallery:**
+
+<img src="./Images/Personal.png">
+
+<br>
+
+**Personal settings:**
+
+<img src="./Images/SettingsPerso.png">
+
+<br>
+
+**General gallery:**
+
+<img src="./Images/General.png">
+
+<br>
+
+**Create event:**
+
+<img src="./Images/Create.png">
+
+<br>
+
+**Event Settings:**
+
+<img src="./Images/SettingsEvent.png">
+
+<br>
 
 # Non-Functional Requirements
-
+// todo till the end
 ## Reliability
 
 should not crash 
@@ -584,6 +651,7 @@ not closing the event
 not losing data and photos
 
 ## Delivery
+
 
 As a free software with no commercial purpose, available to download from app store and play store
 
