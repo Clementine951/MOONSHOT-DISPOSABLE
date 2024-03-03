@@ -574,6 +574,8 @@ Graphic charter:
 
 ## Functional Analysis
 
+// todo resize images
+
 **Legend:** 
 
 <img src="./Images/Legend.png">
