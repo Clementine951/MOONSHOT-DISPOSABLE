@@ -1,6 +1,9 @@
 
-.vscode/settings.json
-.cspell/custom-dictionary-workspace.txt
-Documents/Images/.DS_Store
-Documents/.DS_Store
+.vscode
+.cspell
+# Documents/Images/.DS_Store
+# Documents/.DS_Store
 .DS_Store
+# */.DS_Store
+node_modules
+.expo
