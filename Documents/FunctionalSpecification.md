@@ -57,6 +57,14 @@
 
 The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. With features like customisable camera settings, event galleries, and cross-platform compatibility, the app aims to enhance the event experience and promote engagement among attendees.
 
+// todo 
+// talk about app clips and instant app
+// participants don't need to download the app
+// remove customisable camera settings
+// automatically shared with the other participants
+// promote engagement among attendees by reducing the time they will spent on their phone 
+// due to a specific number of photos allowed 
+
 ## Report Issues
 
 If you notice errors in this document, or would like to give feedback, please file a Doc Issue in the MOONSHOT-DISPOSABLE GitHub repository: https://github.com/Clementine951/MOONSHOT-DISPOSABLE/issues
@@ -67,6 +75,12 @@ If you notice errors in this document, or would like to give feedback, please fi
 
 The vision for the Disposable Camera application project is to develop a user-friendly mobile application that facilitates effortless capturing and sharing of memorable moments during events, with a particular focus on enhancing accessibility for older individuals. By prioritising simplicity, intuitiveness, and inclusivity, the app aims to bridge generational gaps and foster meaningful connections among attendees, ensuring that everyone can participate fully in capturing and reliving event experiences.
 
+// todo
+// to narrow the use of the phone 
+// everyone can participate!
+// keep the older people?
+// without download
+
 ## Objectives
 
 - Capture and share moments
@@ -74,6 +88,8 @@ The vision for the Disposable Camera application project is to develop a user-fr
 - User-friendly interface
 - Cross-platform compatibility
 - Enhanced engagement
+
+// 
 
 ## Scope
 The scope of the project encompasses a set of features designed to facilitate the seamless creation, management, and participation in events through the Disposable Camera App. It's important to note that the scope features outlined below may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences, as detailed in the functional requirements section.
