@@ -1,5 +1,20 @@
 # Functional specification
 
+Questions
+- authentification for the V2
+- add if wrong QR code
+- when clicked on the button validate for create -> a go back?
+- Footer or header
+- if start to create an event but leave or close -> no save 
+- gallery -> start at personal
+- settings -> auto save or button
+- explain more the not downloadable thing
+- can join after the end of an event?
+- cross platform? 
+- settings -> general and event at the same place?
+- go back -> according to the stack or a dedicated place
+- qr code generation not sure what to do 
+
 <details>
 <summary>Table of contents</summary>
 
