@@ -23,4 +23,15 @@ React organisation:
   - settings
   - gallery
 
+- npx expo start -c 
+- press i 
+- -> open on simulator ios
+
+npx expo prebuild
+enter
+npx expo prebuild --platform ios
+
 /Users/clementine/Desktop/MoonShot/MOONSHOT-DISPOSABLE
+
+
+https://www.youtube.com/watch?v=LE4Mgkrf7Sk

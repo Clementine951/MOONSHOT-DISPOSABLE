@@ -1,7 +1,7 @@
 # Functional specification
 
 Questions
-- authentification for the V2
+- authentication for the V2
 - add if wrong QR code
 - when clicked on the button validate for create -> a go back?
 - Footer or header
@@ -14,6 +14,17 @@ Questions
 - settings -> general and event at the same place?
 - go back -> according to the stack or a dedicated place
 - qr code generation not sure what to do 
+- differentiate the original app from the clip one
+- qr code / nfc tags
+
+Technical
+- app clips are a light version of your app that allows users to try features of your app without downloading and installing
+- 50 MB size limit  
+- Ios 16 is less
+- ios 15 or earlier -> 10mb
+- app clip -> the main feature
+- website needed
+- from ios 16.4 -> app clip links 
 
 <details>
 <summary>Table of contents</summary>
