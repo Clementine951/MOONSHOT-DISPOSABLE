@@ -1,11 +1,6 @@
 
 
-- React
-
-- npx create-react-app [name]
-- cd [name]
-- npm start
-
+- React Expo
 - npx create-expo-app [name]
 - cd [name]
 open the simulator
@@ -35,3 +30,12 @@ npx expo prebuild --platform ios
 
 
 https://www.youtube.com/watch?v=LE4Mgkrf7Sk
+
+
+
+Techno:
+- react expo
+- app clip
+- instant app
+- c#?
+- firebase
