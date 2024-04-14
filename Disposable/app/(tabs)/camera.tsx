@@ -1,227 +1,143 @@
-import {StatusBar} from 'expo-status-bar'
-import React, {useState, useEffect} from 'react'
-import {StyleSheet, Text, View, TouchableOpacity, ImageBackground} from 'react-native'
-import {Camera} from 'expo-camera'
-const tag = '[CAMERA]'
-export default function TabCamera() {
-  const [hasPermission, setHasPermission] = useState<any>(null)
-  const [previewVisible, setPreviewVisible] = useState(false)
-  const [capturedImage, setCapturedImage] = useState<any>(null)
-  const [startOver, setStartOver] = useState(true)
-  const [type, setType] = useState(Camera.Constants.Type.back)
-  let camera: Camera
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import { Camera } from 'expo-camera';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
+
+const TabCamera = () => {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [startOver, setStartOver] = useState(false);
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  let cameraRef = null;
+
   useEffect(() => {
-    ;(async () => {
-      const {status} = await Camera.requestCameraPermissionsAsync()
-      setHasPermission(status === 'granted')
-    })()
-  }, [])
-  const __closeCamera = () => {
-    setStartOver(true)
-  }
-  const __takePicture = async () => {
-    if (!camera) return
-    const photo = await camera.takePictureAsync()
-    console.log(photo)
-    setPreviewVisible(true)
-    setCapturedImage(photo)
-  }
-  const __savePhoto = async () => {}
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const takePicture = async () => {
+    if (!cameraRef) return;
+
+    const photo = await cameraRef.takePictureAsync();
+    setPreviewVisible(true);
+    setCapturedImage(photo);
+  };
+
+  const savePhoto = async () => {
+    if (!capturedImage) {
+      console.log('No image to save');
+      return;
+    }
+
+    const filename = FileSystem.documentDirectory + new Date().getTime() + '.jpg';
+    await FileSystem.writeAsStringAsync(filename, capturedImage.base64, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+
+    console.log('Image saved to', filename);
+  };
+
+  const toggleCameraType = () => {
+    setType((prevType) =>
+      prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
+    );
+  };
+
   return (
-    <View
-      style={{
-        flex: 1
-      }}
-    >
+    <View style={styles.container}>
       {startOver ? (
-        <View
-          style={{
-            flex: 1,
-            backgroundColor: '#fff',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          <TouchableOpacity
-            onPress={() => setStartOver(false)}
-            style={{
-              width: 130,
-              borderRadius: 4,
-              backgroundColor: '#14274e',
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              height: 40
-            }}
-          >
-            <Text
-              style={{
-                color: '#fff',
-                fontWeight: 'bold',
-                textAlign: 'center'
-              }}
-            >
-              X photos remaining
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <View style={styles.innerContainer} />
       ) : (
-        <View
-          style={{
-            flex: 1
-          }}
-        >
+        <View style={styles.innerContainer}>
           {previewVisible ? (
-            <ImageBackground
-              source={{uri: capturedImage && capturedImage.uri}}
-              style={{
-                flex: 1
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  padding: 15,
-                  justifyContent: 'flex-end'
-                }}
-              >
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <TouchableOpacity
-                    onPress={() => setPreviewVisible(false)}
-                    style={{
-                      width: 130,
-                      height: 40,
-
-                      alignItems: 'center',
-                      borderRadius: 4
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: '#fff',
-                        fontSize: 20
-                      }}
-                    >
-                      Re-take
-                    </Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    onPress={__savePhoto}
-                    style={{
-                      width: 130,
-                      height: 40,
-
-                      alignItems: 'center',
-                      borderRadius: 4
-                    }}
-                  >
-                    <Text
-                      style={{
-                        color: '#fff',
-                        fontSize: 20
-                      }}
-                    >
-                      save photo
-                    </Text>
-                  </TouchableOpacity>
-                </View>
+            <ImageBackground source={{ uri: capturedImage && capturedImage.uri }} style={styles.imageBackground}>
+              <View style={styles.imageControls}>
+                <TouchableOpacity onPress={() => setPreviewVisible(false)} style={styles.controlButton}>
+                  <Text style={styles.controlButtonText}>Re-take</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={savePhoto} style={styles.controlButton}>
+                  <Text style={styles.controlButtonText}>Save Photo</Text>
+                </TouchableOpacity>
               </View>
             </ImageBackground>
           ) : (
-            <Camera
-              style={{flex: 1}}
-              type={type}
-              ref={(r) => {
-                camera = r
-              }}
-            >
-              <View
-                style={{
-                  flex: 1,
-                  backgroundColor: 'transparent',
-                  flexDirection: 'row'
-                }}
-              >
-                <View
-                  style={{
-                    position: 'absolute',
-                    top: '5%',
-                    right: '5%'
-                  }}
-                >
-                  {/* <TouchableOpacity onPress={__closeCamera}>
-                    <Text
-                      style={{
-                        color: '#fff',
-                        fontSize: 20
-                      }}
-                    >
-                      X
-                    </Text>
-                  </TouchableOpacity> */}
-                </View>
-                <TouchableOpacity
-                  style={{
-                    position: 'absolute',
-                    top: '5%',
-                    left: '5%'
-                  }}
-                  onPress={() => {
-                    setType(type === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back)
-                  }}
-                >
-                  <Text style={{fontSize: 18, marginBottom: 10, color: 'white'}}> Flip </Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    position: 'absolute',
-                    bottom: 0,
-                    flexDirection: 'row',
-                    flex: 1,
-                    width: '100%',
-                    padding: 20,
-                    justifyContent: 'space-between'
-                  }}
-                >
-                  <View
-                    style={{
-                      alignSelf: 'center',
-                      flex: 1,
-                      alignItems: 'center'
-                    }}
-                  >
-                    <TouchableOpacity
-                      onPress={__takePicture}
-                      style={{
-                        width: 70,
-                        height: 70,
-                        bottom: 0,
-                        borderRadius: 50,
-                        backgroundColor: '#fff'
-                      }}
-                    />
-                  </View>
-                </View>
+            <Camera style={styles.camera} type={type} ref={(ref) => (cameraRef = ref)}>
+              <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
+                <Text style={styles.flipButtonText}>Flip</Text>
+              </TouchableOpacity>
+              <View style={styles.captureButtonContainer}>
+                <TouchableOpacity onPress={takePicture} style={styles.captureButton} />
               </View>
             </Camera>
           )}
         </View>
       )}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+  },
+  innerContainer: {
+    flex: 1,
+  },
+  imageBackground: {
+    flex: 1,
+    padding: 15,
+    justifyContent: 'flex-end',
+  },
+  imageControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  controlButton: {
+    width: 130,
+    height: 40,
     alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
+    borderRadius: 4,
+    backgroundColor: '#000',
+    opacity: 0.7,
+    justifyContent: 'center',
+  },
+  controlButtonText: {
+    color: '#fff',
+    fontSize: 20,
+  },
+  camera: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  flipButton: {
+    position: 'absolute',
+    top: '5%',
+    left: '5%',
+  },
+  flipButtonText: {
+    fontSize: 18,
+    marginBottom: 10,
+    color: 'white',
+  },
+  captureButtonContainer: {
+    position: 'absolute',
+    bottom: 0,
+    flexDirection: 'row',
+    flex: 1,
+    width: '100%',
+    padding: 20,
+    justifyContent: 'center',
+  },
+  captureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 50,
+    backgroundColor: '#fff',
+  },
+});
+
+export default TabCamera;
