@@ -28,17 +28,25 @@ const TabCamera = () => {
   };
 
   const savePhoto = async () => {
-    if (!capturedImage) {
+    if (!capturedImage || !capturedImage.base64) {
       console.log('No image to save');
       return;
     }
-
+  
     const filename = FileSystem.documentDirectory + new Date().getTime() + '.jpg';
     await FileSystem.writeAsStringAsync(filename, capturedImage.base64, {
       encoding: FileSystem.EncodingType.Base64,
     });
-
-    console.log('Image saved to', filename);
+  
+    // Save to gallery
+    const asset = await MediaLibrary.createAssetAsync(filename);
+    await MediaLibrary.createAlbumAsync('Expo', asset, false);
+  
+    console.log('Image saved to gallery');
+  
+    // Reset states
+    setPreviewVisible(false);
+    setCapturedImage(null);
   };
 
   const toggleCameraType = () => {
