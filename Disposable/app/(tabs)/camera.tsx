@@ -8,7 +8,7 @@ const TabCamera = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [startOver, setStartOver] = useState(false);
+  const [startOver, setStartOver] = useState(false);  // true to display the button before opening the camera
   const [type, setType] = useState(Camera.Constants.Type.back);
   let cameraRef = null;
 
