@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
-import * as FileSystem from 'expo-file-system';
-import * as MediaLibrary from 'expo-media-library';
+// import * as FileSystem from 'expo-file-system';
+// import * as MediaLibrary from 'expo-media-library';
+
+import { storage } from '../../firebaseConfig';
+import {ref, uploadBytes} from 'firebase/storage';
+// import { getStorage } from "firebase/storage";
 
 const TabCamera = () => {
-  const [hasPermission, setHasPermission] = useState(null);
+  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [capturedImage, setCapturedImage] = useState(null);
+  const [capturedImage, setCapturedImage] = useState<{ uri?: string } | null>(null);
   const [startOver, setStartOver] = useState(false);  // true to display the button before opening the camera
   const [type, setType] = useState(Camera.Constants.Type.back);
-  let cameraRef = null;
+  let cameraRef: Camera | null = null;
 
   useEffect(() => {
     (async () => {
@@ -28,21 +32,24 @@ const TabCamera = () => {
   };
 
   const savePhoto = async () => {
-    if (!capturedImage || !capturedImage.base64) {
+    if (!capturedImage || !capturedImage.uri) {
       console.log('No image to save');
       return;
     }
+    const response = await fetch(capturedImage.uri);
+    const blob = await response.blob();
   
-    const filename = FileSystem.documentDirectory + new Date().getTime() + '.jpg';
-    await FileSystem.writeAsStringAsync(filename, capturedImage.base64, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
+    const imageName = `images/${Date.now()}.jpg`; // Set a unique name for the image
   
-    // Save to gallery
-    const asset = await MediaLibrary.createAssetAsync(filename);
-    await MediaLibrary.createAlbumAsync('Expo', asset, false);
-  
-    console.log('Image saved to gallery');
+    try {
+      const storageRef = ref(storage, imageName);
+      await uploadBytes(storageRef, blob);
+      console.log('Image uploaded successfully!');
+    } catch (error) {
+      console.error('Error uploading image:', error);
+      // Handle error appropriately
+      return;
+    }
   
     // Reset states
     setPreviewVisible(false);
@@ -50,7 +57,7 @@ const TabCamera = () => {
   };
 
   const toggleCameraType = () => {
-    setType((prevType) =>
+    setType((prevType: typeof Camera.Constants.Type.back | typeof Camera.Constants.Type.front) =>
       prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
     );
   };
@@ -62,7 +69,7 @@ const TabCamera = () => {
       ) : (
         <View style={styles.innerContainer}>
           {previewVisible ? (
-            <ImageBackground source={{ uri: capturedImage && capturedImage.uri }} style={styles.imageBackground}>
+            <ImageBackground source={{ uri: capturedImage?.uri }} style={styles.imageBackground}>
               <View style={styles.imageControls}>
                 <TouchableOpacity onPress={() => setPreviewVisible(false)} style={styles.controlButton}>
                   <Text style={styles.controlButtonText}>Re-take</Text>
@@ -73,7 +80,7 @@ const TabCamera = () => {
               </View>
             </ImageBackground>
           ) : (
-            <Camera style={styles.camera} type={type} ref={(ref) => (cameraRef = ref)}>
+            <Camera style={styles.camera} type={type} ref={(ref: Camera | null) => (cameraRef = ref)}>
               <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
                 <Text style={styles.flipButtonText}>Flip</Text>
               </TouchableOpacity>
