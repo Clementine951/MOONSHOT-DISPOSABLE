@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
-// import * as FileSystem from 'expo-file-system';
-// import * as MediaLibrary from 'expo-media-library';
 
-import { storage } from '../../firebaseConfig';
-import {ref, uploadBytes} from 'firebase/storage';
-// import { getStorage } from "firebase/storage";
+import { storage } from './../firebaseConfig';
+import { ref, uploadBytes } from 'firebase/storage';
 
-const TabCamera = () => {
-  const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+function CameraScreen() {
+  const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<{ uri?: string } | null>(null);
-  const [startOver, setStartOver] = useState(false);  // true to display the button before opening the camera
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [startOver, setStartOver] = useState(false);  
   const [type, setType] = useState(Camera.Constants.Type.back);
-  let cameraRef: Camera | null = null;
+  let cameraRef = null;
 
   useEffect(() => {
     (async () => {
@@ -39,7 +36,7 @@ const TabCamera = () => {
     const response = await fetch(capturedImage.uri);
     const blob = await response.blob();
   
-    const imageName = `images/${Date.now()}.jpg`; // Set a unique name for the image
+    const imageName = `images/${Date.now()}.jpg`;
   
     try {
       const storageRef = ref(storage, imageName);
@@ -47,17 +44,15 @@ const TabCamera = () => {
       console.log('Image uploaded successfully!');
     } catch (error) {
       console.error('Error uploading image:', error);
-      // Handle error appropriately
       return;
     }
   
-    // Reset states
     setPreviewVisible(false);
     setCapturedImage(null);
   };
 
   const toggleCameraType = () => {
-    setType((prevType: typeof Camera.Constants.Type.back | typeof Camera.Constants.Type.front) =>
+    setType(prevType =>
       prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
     );
   };
@@ -80,7 +75,7 @@ const TabCamera = () => {
               </View>
             </ImageBackground>
           ) : (
-            <Camera style={styles.camera} type={type} ref={(ref: Camera | null) => (cameraRef = ref)}>
+            <Camera style={styles.camera} type={type} ref={(ref) => (cameraRef = ref)}>
               <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
                 <Text style={styles.flipButtonText}>Flip</Text>
               </TouchableOpacity>
@@ -93,7 +88,7 @@ const TabCamera = () => {
       )}
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -155,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TabCamera;
+export default CameraScreen;

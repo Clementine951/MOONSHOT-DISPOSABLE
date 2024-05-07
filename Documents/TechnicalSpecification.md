@@ -39,3 +39,14 @@ Techno:
 - instant app
 - c#?
 - firebase
+
+
+Creation of an event 
+-> photos of the event stocked in a folder with the event name 
+-> name of the photos -> nameX.jpg -> name + number + .jpg
+
+
+Camera not available if not in an event
+
+
+Firebase Storage :
