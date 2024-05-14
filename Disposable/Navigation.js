@@ -8,6 +8,7 @@ import GalleryScreen from './Screens/Gallery';
 import SettingsScreen from './Screens/Settings';
 import CreatePage from './Screens/Create';
 import JoinPage from './Screens/Join';
+import HallPage from './Screens/Hall';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
@@ -19,34 +20,36 @@ export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="HomeTab">
+        <Tab.Screen name="Home">
           {() => (
             <HomeStack.Navigator>
-              <HomeStack.Screen name="HomeScreen" component={HomeScreen}/>
-              <HomeStack.Screen name="CreatePage" component={CreatePage}/>
-              <HomeStack.Screen name="JoinPage" component={JoinPage}/>
+              <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Disposable' }}/>
+              <HomeStack.Screen name="CreatePage" component={CreatePage} options={{ title: 'Create an event' }}/>
+              <HomeStack.Screen name="JoinPage" component={JoinPage} options={{ title: 'Join an event' }}/>
+              <HomeStack.Screen name="HallPage" component={HallPage} options={{ title: 'Event Hall' }}/>
+
             </HomeStack.Navigator>
           )}
         </Tab.Screen>
-        <Tab.Screen name="CameraTab">
+        <Tab.Screen name="Camera">
           {() => (
             <CameraStack.Navigator>
-              <CameraStack.Screen name="CameraScreen" component={CameraScreen} />
+              <CameraStack.Screen name="CameraScreen" component={CameraScreen} options={{title: 'Camera'}} />
             </CameraStack.Navigator>
           )}
         </Tab.Screen>
-        <Tab.Screen name="GalleryTab">
+        <Tab.Screen name="Gallery">
           {() => (
             <GalleryStack.Navigator>
-              <GalleryStack.Screen name="GalleryScreen" component={GalleryScreen} />
-              <GalleryStack.Screen name="CameraScreen" component={CameraScreen} />
+              <GalleryStack.Screen name="GalleryScreen" component={GalleryScreen} options={{title: 'Galleries'}}/>
+              <GalleryStack.Screen name="CameraScreen" component={CameraScreen} options={{title: 'Camera'}} />
             </GalleryStack.Navigator>
           )}
         </Tab.Screen>
-        <Tab.Screen name="SettingsTab">
+        <Tab.Screen name="Settings">
           {() => (
             <SettingsStack.Navigator>
-              <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} />
+              <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} options={{icon:'gear'}} />
             </SettingsStack.Navigator>
           )}
         </Tab.Screen>
