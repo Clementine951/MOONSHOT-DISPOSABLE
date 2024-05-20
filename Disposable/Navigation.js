@@ -2,16 +2,8 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have this package if you're using icons
-
-// Lazy load the screen components
-// const HomeScreen = React.lazy(() => import('./Screens/Home'));
-// const CameraScreen = React.lazy(() => import('./Screens/Camera'));
-// const GalleryScreen = React.lazy(() => import('./Screens/Gallery'));
-// const SettingsScreen = React.lazy(() => import('./Screens/Settings'));
-// const CreatePage = React.lazy(() => import('./Screens/Create'));
-// const JoinPage = React.lazy(() => import('./Screens/Join'));
-// const HallPage = React.lazy(() => import('./Screens/Hall'));
 
 import HomeScreen from './Screens/Home';
 import CameraScreen from './Screens/Camera';
@@ -27,15 +19,20 @@ const CameraStack = createNativeStackNavigator();
 const GalleryStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 
+const Green = "#09745F"
+
 export default function AppNavigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
         <Tab.Screen 
-          name="Home" 
+          name="Home"
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={size} />
+            tabBarIcon: ({ focused, size }) => (
+              <MaterialCommunityIcons name="home" color={focused ? Green : 'gray'} size={size} />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? Green : 'gray' }}>Home</Text>
             ),
           }}
         >
@@ -49,10 +46,13 @@ export default function AppNavigation() {
           )}
         </Tab.Screen>
         <Tab.Screen 
-          name="Camera" 
+          name="Camera"
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="camera" color={color} size={size} />
+            tabBarIcon: ({ focused, size }) => (
+              <MaterialCommunityIcons name="camera" color={focused ? Green : 'gray'} size={size} />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? Green : 'gray' }}>Camera</Text>
             ),
           }}
         >
@@ -63,10 +63,13 @@ export default function AppNavigation() {
           )}
         </Tab.Screen>
         <Tab.Screen 
-          name="Gallery" 
+          name="Gallery"
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="image" color={color} size={size} />
+            tabBarIcon: ({ focused, size }) => (
+              <MaterialCommunityIcons name="image" color={focused ? Green : 'gray'} size={size} />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? Green : 'gray' }}>Gallery</Text>
             ),
           }}
         >
@@ -78,10 +81,13 @@ export default function AppNavigation() {
           )}
         </Tab.Screen>
         <Tab.Screen 
-          name="Settings" 
+          name="Settings"
           options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="cog" color={color} size={size} />
+            tabBarIcon: ({ focused, size }) => (
+              <MaterialCommunityIcons name="cog" color={focused ? Green : 'gray'} size={size} />
+            ),
+            tabBarLabel: ({ focused }) => (
+              <Text style={{ color: focused ? Green : 'gray' }}>Settings</Text>
             ),
           }}
         >

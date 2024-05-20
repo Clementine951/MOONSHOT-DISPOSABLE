@@ -137,7 +137,7 @@ function CreatePage({ navigation }) {
       <List.Section>
       <Button
         mode="contained-tonal"
-        buttonColor={color}
+        buttonColor='#09745F'
         textColor='#FFF7F1'
         onPress={() => {
           navigation.replace('HallPage', { // Ensure this is the correct screen name
