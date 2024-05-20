@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { storage } from './../firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
@@ -11,6 +12,8 @@ function CameraScreen() {
   const [capturedImage, setCapturedImage] = useState(null);
   const [startOver, setStartOver] = useState(false);  
   const [type, setType] = useState(Camera.Constants.Type.back);
+  const [photosRemaining, setPhotosRemaining] = useState(10); // Example number of photos remaining
+  const [isMuted, setIsMuted] = useState(false);
   let cameraRef = null;
 
   useEffect(() => {
@@ -26,6 +29,7 @@ function CameraScreen() {
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
+    setPhotosRemaining(photosRemaining - 1); // Decrease the count of photos remaining
   };
 
   const savePhoto = async () => {
@@ -57,6 +61,17 @@ function CameraScreen() {
     );
   };
 
+  const toggleMute = () => {
+    setIsMuted(!isMuted);
+  };
+
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   return (
     <View style={styles.container}>
       {startOver ? (
@@ -76,11 +91,19 @@ function CameraScreen() {
             </ImageBackground>
           ) : (
             <Camera style={styles.camera} type={type} ref={(ref) => (cameraRef = ref)}>
-              <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
-                <Text style={styles.flipButtonText}>Flip</Text>
-              </TouchableOpacity>
+              <View style={styles.topControls}>
+                <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
+                  <MaterialIcons name="flip-camera-ios" size={30} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={toggleMute} style={styles.muteButton}>
+                  <MaterialIcons name={isMuted ? "flash-off" : "flash-on"} size={30} color="white" />
+                </TouchableOpacity>
+              </View>
               <View style={styles.captureButtonContainer}>
                 <TouchableOpacity onPress={takePicture} style={styles.captureButton} />
+              </View>
+              <View style={styles.photosRemainingContainer}>
+                <Text style={styles.photosRemainingText}>{photosRemaining}{"\n"}photos{"\n"}remaining</Text>
               </View>
             </Camera>
           )}
@@ -121,32 +144,40 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex: 1,
+    justifyContent: 'space-between',
+  },
+  topControls: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingTop: 40,
   },
   flipButton: {
-    position: 'absolute',
-    top: '5%',
-    left: '5%',
+    // Any additional styling you want for the flip button
   },
-  flipButtonText: {
-    fontSize: 18,
-    marginBottom: 10,
-    color: 'white',
+  muteButton: {
+    // Any additional styling you want for the mute button
   },
   captureButtonContainer: {
-    position: 'absolute',
-    bottom: 0,
     flexDirection: 'row',
-    flex: 1,
-    width: '100%',
-    padding: 20,
     justifyContent: 'center',
+    marginBottom: 30,
   },
   captureButton: {
     width: 70,
     height: 70,
-    borderRadius: 50,
+    borderRadius: 35,
     backgroundColor: '#fff',
+  },
+  photosRemainingContainer: {
+    position: 'absolute',
+    bottom: 35,
+    left: 20,
+  },
+  photosRemainingText: {
+    color: '#09745F',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });
 
