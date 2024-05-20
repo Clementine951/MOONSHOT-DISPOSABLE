@@ -22,12 +22,12 @@ function GalleryScreen() {
   // }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#123456', alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       {/* <Image
         style={{width: '70%', height: '70%'}}
         source={{ uri: url }}
       /> */}
-      <Text style={{color: 'white', fontSize: 20}}>Gallery Screen</Text>
+      <Text style={{fontSize: 20}}>Gallery Screen</Text>
     </View>
   );
 }

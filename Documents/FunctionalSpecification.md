@@ -555,7 +555,7 @@ To explore the mock-up of the Disposable Camera App on figma, you can click on t
 
 Graphic charter:
 
-<img src="./Images/GraphCharter.png">
+<img src="./Images/GraphCharter.png" style="width: 60%">
 
 // todo each page
 
@@ -563,11 +563,11 @@ Graphic charter:
 
 ## Personas
 
-<img src="./Images/1.png">
-<img src="./Images/2.png">
-<img src="./Images/3.png">
-<img src="./Images/4.png">
-<img src="./Images/5.png">
+<img src="./Images/1.png" style="width: 60%">
+<img src="./Images/2.png" style="width: 60%">
+<img src="./Images/3.png" style="width: 60%">
+<img src="./Images/4.png" style="width: 60%">
+<img src="./Images/5.png" style="width: 60%">
 
 
 ## Use Cases
