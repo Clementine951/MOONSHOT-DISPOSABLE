@@ -1,5 +1,6 @@
-# Functional specification
+# Functional specification <img src="./Images/LogoTrans.png" style="width: 145px; float: right; margin-top: 27px">
 
+<!-- 
 Questions
 - authentication for the V2
 - add if wrong QR code
@@ -24,12 +25,12 @@ Technical
 - ios 15 or earlier -> 10mb
 - app clip -> the main feature
 - website needed
-- from ios 16.4 -> app clip links 
+- from ios 16.4 -> app clip links  -->
 
 <details>
 <summary>Table of contents</summary>
 
-- [Functional specification](#functional-specification)
+- [Functional specification ](#functional-specification-)
 - [Project Overview](#project-overview)
   - [Report Issues](#report-issues)
 - [Project Definition](#project-definition)
@@ -79,17 +80,13 @@ Technical
 
 <br>
 
-# Project Overview
 
-The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. With features like customisable camera settings, event galleries, and cross-platform compatibility, the app aims to enhance the event experience and promote engagement among attendees.
 
-// todo 
-// talk about app clips and instant app
-// participants don't need to download the app
-// remove customisable camera settings
-// automatically shared with the other participants
-// promote engagement among attendees by reducing the time they will spent on their phone 
-// due to a specific number of photos allowed 
+# Project Overview 
+
+The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. Participants can access the app without downloading it fully, thanks to App Clips and Instant App features, making it easily accessible during events.
+
+Each event will have its own gallery where photos are automatically shared with all attendees, fostering a communal experience. The app is cross-platform compatible, ensuring all participants can engage with it regardless of their device. To promote engagement and reduce phone usage, the app limits the number of photos each participant can take, encouraging mindfulness and selectivity. By blending nostalgic charm with modern technology, the Disposable Camera application enhances the event experience and fosters greater interaction among attendees.
 
 ## Report Issues
 
@@ -99,23 +96,39 @@ If you notice errors in this document, or would like to give feedback, please fi
 
 ## Vision
 
-The vision for the Disposable Camera application project is to develop a user-friendly mobile application that facilitates effortless capturing and sharing of memorable moments during events, with a particular focus on enhancing accessibility for older individuals. By prioritising simplicity, intuitiveness, and inclusivity, the app aims to bridge generational gaps and foster meaningful connections among attendees, ensuring that everyone can participate fully in capturing and reliving event experiences.
+The vision for the Disposable Camera application is to develop a user-friendly mobile app that effortlessly facilitates the capturing and sharing of memorable moments during events. Inspired by the nostalgic charm of disposable cameras, the app focuses on enhancing accessibility, particularly for older individuals, by prioritizing simplicity, intuitiveness, and inclusivity.
 
-// todo
-// to narrow the use of the phone 
-// everyone can participate!
-// keep the older people?
-// without download
+Our goal is to bridge generational gaps and foster meaningful connections among attendees, ensuring that everyone can fully participate in capturing and reliving event experiences. By enabling access without the need for a full download and limiting the number of photos each participant can take, the app encourages users to be more present and engaged during events. The Disposable Camera application aims to transform event experiences by making them more interactive, inclusive, and memorable for all attendees, regardless of age or technical ability.
 
 ## Objectives
 
-- Capture and share moments
-- Nostalgic experience
-- User-friendly interface
-- Cross-platform compatibility
-- Enhanced engagement
+1. **Enhance Accessibility** 
 
-// 
+Develop the app with a focus on simplicity and intuitiveness to ensure it is accessible to users of all ages, particularly older individuals. This includes a user-friendly interface and easy-to-navigate features.
+
+2. **Seamless Access** 
+
+Implement App Clips and Instant App technologies to allow participants to access the app's features without needing a full download, reducing barriers to entry and enhancing user convenience.
+
+3. **Foster Engagement** 
+ 
+Encourage event attendees to be more present and engaged by limiting the number of photos each participant can take, promoting mindfulness and selective capturing of moments.
+
+4. **Facilitate Instant Sharing** 
+
+Ensure that photos taken by participants are automatically shared in a communal event gallery, allowing all attendees to instantly access and relive shared memories.
+
+5. **Cross-Platform Compatibility** 
+
+Design the app to be compatible across various devices and platforms, ensuring a seamless experience for all users, regardless of their device.
+
+6. **Promote Inclusivity** 
+
+Create an app that bridges generational gaps and fosters meaningful connections among attendees, allowing everyone to participate fully in capturing and sharing event experiences.
+
+7. **Enhance Event Experience** 
+   
+Aim to transform event experiences by integrating modern technology with the nostalgic concept of disposable cameras, making events more interactive, inclusive, and memorable.
 
 ## Scope
 The scope of the project encompasses a set of features designed to facilitate the seamless creation, management, and participation in events through the Disposable Camera App. It's important to note that the scope features outlined below may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences, as detailed in the functional requirements section.
@@ -123,7 +136,9 @@ The scope of the project encompasses a set of features designed to facilitate th
 ### All Users (Both Admin and Participant)
 
 Taking photos:
-- Capture photos using the app's camera interface during the event.
+- Capture photos using the app's camera interface during the event
+- Change camera side
+- Use the flash
 
 Access to the general gallery:
 - Share photos taken during the event with other participants and admin users.
@@ -275,6 +290,8 @@ The out-of-scope features listed below represent functionalities that are not in
 
 Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary). For detailed information on tasks and deadlines, please refer to our JIRA board.
 
+// todo modify where I put the management
+
 ## Milestones 
 // todo review
 
@@ -288,6 +305,9 @@ Project management, task allocation, and progress tracking are coordinated using
 | User Testing   | Conducting user testing and gathering feedback           |
 | V2             | Release of the second version of the application         |
 | Jury 2         | Presentation and evaluation by the final jury panel      |
+
+
+
 
 ## Risks and Assumptions
 
@@ -481,6 +501,8 @@ Project management, task allocation, and progress tracking are coordinated using
 ## Features Breakdown
 
 // todo
+
+
 ### Ubiquitous Requirements
 
 Ubiquitous functional requirements are always active. They are not invoked by an event or input, nor are they limited to a subset of the system’s operating states.
