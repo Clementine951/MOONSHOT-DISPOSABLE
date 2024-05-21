@@ -1,7 +1,7 @@
 name: Documentation Report
 description: "One or multiple documents contain errors"
-title: "Documentation Report [2024/XX/XX]"
-labels: ["Documentation", "Invalid"]
+title: "Document report"
+labels: [documentation]
 body:
   - type: textarea
     id: description
