@@ -1,6 +1,6 @@
 import React from 'react';
-import AppNavigation from './Navigation';
 import { EventProvider } from './Screens/EventContext';
+import AppNavigation from './Navigation';
 
 export default function App() {
   return (

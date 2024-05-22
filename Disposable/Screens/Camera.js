@@ -2,25 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
-
 import { storage } from './../firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
 
 function CameraScreen({ route }) {
-
-  const { event, number } = route.params; // Ensure the event parameter is available
+  const { event, number } = route.params;
 
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [startOver, setStartOver] = useState(false);  
+  const [startOver, setStartOver] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const [photosRemaining, setPhotosRemaining] = useState(number); // Example number of photos remaining
+  const [photosRemaining, setPhotosRemaining] = useState(number);
   const [isMuted, setIsMuted] = useState(false);
   let cameraRef = null;
 
-  
   let eventName = event;
 
   useEffect(() => {
@@ -36,7 +33,7 @@ function CameraScreen({ route }) {
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
-    setPhotosRemaining(photosRemaining - 1); // Decrease the count of photos remaining
+    setPhotosRemaining(photosRemaining - 1);
   };
 
   const savePhoto = async () => {
@@ -44,22 +41,22 @@ function CameraScreen({ route }) {
       console.log('No image to save');
       return;
     }
-    const response = await fetch(capturedImage.uri);
-    const blob = await response.blob();
-  
-    const imageName = `${eventName}/${Date.now()}.jpg`;
-  
     try {
+      const response = await fetch(capturedImage.uri);
+      const blob = await response.blob();
+
+      const imageName = `${eventName}/${Date.now()}.jpg`;
+
       const storageRef = ref(storage, imageName);
+      console.log('Uploading image to Firebase Storage:', imageName);
       await uploadBytes(storageRef, blob);
       console.log('Image uploaded successfully!');
+
+      setPreviewVisible(false);
+      setCapturedImage(null);
     } catch (error) {
       console.error('Error uploading image:', error);
-      return;
     }
-  
-    setPreviewVisible(false);
-    setCapturedImage(null);
   };
 
   const toggleCameraType = () => {
@@ -165,12 +162,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 40,
   },
-  flipButton: {
-    // Any additional styling you want for the flip button
-  },
-  flashButton: {
-    // Any additional styling you want for the flash button
-  },
+  flipButton: {},
+  flashButton: {},
   captureButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -196,5 +189,3 @@ const styles = StyleSheet.create({
 });
 
 export default CameraScreen;
-
-

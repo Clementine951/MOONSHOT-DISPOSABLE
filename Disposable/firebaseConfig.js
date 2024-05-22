@@ -1,21 +1,25 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApps, getApp } from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDSLu5sDvmvbEhezBRiXCriUBwU7c2gFxA",
-  authDomain: "disposable-6bb77.firebaseapp.com",
-  projectId: "disposable-6bb77",
-  storageBucket: "disposable-6bb77.appspot.com",
-  messagingSenderId: "209954740040",
-  appId: "1:209954740040:web:dbb98432b3c90eb432c57d",
-  measurementId: "G-Y7MBKJ9PS3"
+  apiKey: "AIzaSyBWXnvNsQ7A5qAP0qMvVQx7YlD8htZU6LA",
+  authDomain: "disposablecamera-5c3fa.firebaseapp.com",
+  projectId: "disposablecamera-5c3fa",
+  storageBucket: "disposablecamera-5c3fa.appspot.com",
+  messagingSenderId: "181466114591",
+  appId: "1:181466114591:web:4359f9056f5a8a4249032a"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app;
+if (getApps().length === 0) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApp();
+}
 
-// Get a reference to the storage service
+// Initialize Firestore and Storage
+const db = getFirestore(app);
 const storage = getStorage(app);
 
-export { storage };
+export { db, storage };

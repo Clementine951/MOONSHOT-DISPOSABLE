@@ -1,8 +1,9 @@
-// Create.js
 import React, { useState, useEffect, useContext } from 'react';
-import { View } from 'react-native';
+import { View, Alert } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
 import { EventContext } from './EventContext';
+import { db } from '../firebaseConfig';
+import { doc, setDoc } from 'firebase/firestore';
 
 function CreatePage({ navigation }) {
   const [event, setEventName] = useState('');
@@ -21,6 +22,29 @@ function CreatePage({ navigation }) {
       setIsButtonDisabled(true);
     }
   }, [event, start, duration, reveal, number]);
+
+  const handleValidate = async () => {
+    const eventDetails = { event, start, duration, reveal, number };
+
+    try {
+      // Save event details to Firestore
+      const eventDocRef = doc(db, 'events', 'currentEvent');
+      console.log('Saving event details to Firestore:', eventDetails);
+      await setDoc(eventDocRef, eventDetails);
+      console.log('Event details saved to Firestore.');
+
+      // Save event details to context
+      setEventDetails(eventDetails);
+      console.log('Event details saved to context:', eventDetails);
+
+      // Navigate to HallPage
+      console.log('Navigating to HallPage with event details:', eventDetails);
+      navigation.replace('HallPage', eventDetails);
+    } catch (error) {
+      console.error('Error saving event details to Firestore:', error);
+      Alert.alert('Error', 'Failed to save event details. Please try again.');
+    }
+  };
 
   return (
     <View>
@@ -89,10 +113,7 @@ function CreatePage({ navigation }) {
           mode="contained-tonal"
           buttonColor='#09745F'
           textColor='#FFF7F1'
-          onPress={() => {
-            setEventDetails({ event, start, duration, reveal, number });
-            navigation.replace('HallPage', { event, start, duration, reveal, number });
-          }}
+          onPress={handleValidate}
           style={{ margin: 5 }}
           disabled={isButtonDisabled}
         >
