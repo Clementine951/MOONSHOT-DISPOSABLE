@@ -1,7 +1,11 @@
 import React from 'react';
 import AppNavigation from './Navigation';
-
+import { EventProvider } from './Screens/EventContext';
 
 export default function App() {
-  return <AppNavigation />;
+  return (
+    <EventProvider>
+      <AppNavigation />
+    </EventProvider>
+  );
 }

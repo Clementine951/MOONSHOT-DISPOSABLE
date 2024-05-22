@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+// Create.js
+import React, { useState, useEffect, useContext } from 'react';
 import { View } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
+import { EventContext } from './EventContext';
 
 function CreatePage({ navigation }) {
   const [event, setEventName] = useState('');
@@ -10,6 +12,8 @@ function CreatePage({ navigation }) {
   const [number, setNumber] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
+  const { setEventDetails } = useContext(EventContext);
+
   useEffect(() => {
     if (event && start && duration && reveal && number) {
       setIsButtonDisabled(false);
@@ -17,8 +21,6 @@ function CreatePage({ navigation }) {
       setIsButtonDisabled(true);
     }
   }, [event, start, duration, reveal, number]);
-
-  const color = '#E6672B';
 
   return (
     <View>
@@ -35,17 +37,8 @@ function CreatePage({ navigation }) {
           value={start}
           density="medium"
           buttons={[
-            {
-              style: { flex: 1 },
-              value: 'startNow',
-              label: 'Now',
-            },
-            {
-              style: { flex: 1 },
-              disabled: true,
-              value: 'startLater',
-              label: 'Start Later',
-            },
+            { style: { flex: 1 }, value: 'startNow', label: 'Now' },
+            { style: { flex: 1 }, disabled: true, value: 'startLater', label: 'Start Later' },
           ]}
         />
       </List.Section>
@@ -56,26 +49,10 @@ function CreatePage({ navigation }) {
           value={duration}
           density="medium"
           buttons={[
-            {
-              style: { flex: 1 },
-              value: '8h',
-              label: '8h',
-            },
-            {
-              style: { flex: 1 },
-              value: '12h',
-              label: '12h',
-            },
-            {
-              style: { flex: 1 },
-              value: '24h',
-              label: '24h',
-            },
-            {
-              style: { flex: 1 },
-              value: '48h',
-              label: '48h',
-            },
+            { style: { flex: 1 }, value: '8h', label: '8h' },
+            { style: { flex: 1 }, value: '12h', label: '12h' },
+            { style: { flex: 1 }, value: '24h', label: '24h' },
+            { style: { flex: 1 }, value: '48h', label: '48h' },
           ]}
         />
       </List.Section>
@@ -86,21 +63,9 @@ function CreatePage({ navigation }) {
           value={reveal}
           density="medium"
           buttons={[
-            {
-              style: { flex: 1 },
-              value: 'revealNow',
-              label: 'Immediately',
-            },
-            {
-              style: { flex: 1 },
-              value: 'revealEnd',
-              label: 'At the end',
-            },
-            {
-              style: { flex: 1 },
-              value: 'revealNext',
-              label: '24h later',
-            },
+            { style: { flex: 1 }, value: 'revealNow', label: 'Immediately' },
+            { style: { flex: 1 }, value: 'revealEnd', label: 'At the end' },
+            { style: { flex: 1 }, value: 'revealNext', label: '24h later' },
           ]}
         />
       </List.Section>
@@ -111,52 +76,28 @@ function CreatePage({ navigation }) {
           value={number}
           density="medium"
           buttons={[
-            {
-              style: { flex: 1 },
-              value: 'five',
-              label: '5',
-            },
-            {
-              style: { flex: 1 },
-              value: 'ten',
-              label: '10',
-            },
-            {
-              style: { flex: 1 },
-              value: 'fifteen',
-              label: '15',
-            },
-            {
-              style: { flex: 1 },
-              value: 'twenty',
-              label: '20',
-            },
+            { style: { flex: 1 }, value: 'five', label: '5' },
+            { style: { flex: 1 }, value: 'ten', label: '10' },
+            { style: { flex: 1 }, value: 'fifteen', label: '15' },
+            { style: { flex: 1 }, value: 'twenty', label: '20' },
           ]}
         />
       </List.Section>
+
       <List.Section>
-      <Button
-        mode="contained-tonal"
-        buttonColor='#09745F'
-        textColor='#FFF7F1'
-        onPress={() => {
-          navigation.replace('HallPage', { // Ensure this is the correct screen name
-            // params: {
-              event: event,
-              start: start,
-              duration: duration,
-              reveal: reveal,
-              number: number,
-            // },
-          });
-        }}
-        style={{ margin: 5 }}
-        disabled={isButtonDisabled}
-      >
-        Validate
-      </Button>
-
-
+        <Button
+          mode="contained-tonal"
+          buttonColor='#09745F'
+          textColor='#FFF7F1'
+          onPress={() => {
+            setEventDetails({ event, start, duration, reveal, number });
+            navigation.replace('HallPage', { event, start, duration, reveal, number });
+          }}
+          style={{ margin: 5 }}
+          disabled={isButtonDisabled}
+        >
+          Validate
+        </Button>
       </List.Section>
     </View>
   );

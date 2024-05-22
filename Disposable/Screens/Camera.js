@@ -6,15 +6,22 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { storage } from './../firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
 
-function CameraScreen() {
+function CameraScreen({ route }) {
+
+  const { event, number } = route.params; // Ensure the event parameter is available
+
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [startOver, setStartOver] = useState(false);  
   const [type, setType] = useState(Camera.Constants.Type.back);
-  const [photosRemaining, setPhotosRemaining] = useState(10); // Example number of photos remaining
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  const [photosRemaining, setPhotosRemaining] = useState(number); // Example number of photos remaining
   const [isMuted, setIsMuted] = useState(false);
   let cameraRef = null;
+
+  
+  let eventName = event;
 
   useEffect(() => {
     (async () => {
@@ -40,7 +47,7 @@ function CameraScreen() {
     const response = await fetch(capturedImage.uri);
     const blob = await response.blob();
   
-    const imageName = `images/${Date.now()}.jpg`;
+    const imageName = `${eventName}/${Date.now()}.jpg`;
   
     try {
       const storageRef = ref(storage, imageName);
@@ -58,6 +65,12 @@ function CameraScreen() {
   const toggleCameraType = () => {
     setType(prevType =>
       prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
+    );
+  };
+
+  const toggleFlash = () => {
+    setFlash(prevFlash => 
+      prevFlash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off
     );
   };
 
@@ -90,13 +103,13 @@ function CameraScreen() {
               </View>
             </ImageBackground>
           ) : (
-            <Camera style={styles.camera} type={type} ref={(ref) => (cameraRef = ref)}>
+            <Camera style={styles.camera} type={type} flashMode={flash} ref={(ref) => (cameraRef = ref)}>
               <View style={styles.topControls}>
                 <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
                   <MaterialIcons name="flip-camera-ios" size={30} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={toggleMute} style={styles.muteButton}>
-                  <MaterialIcons name={isMuted ? "flash-off" : "flash-on"} size={30} color="white" />
+                <TouchableOpacity onPress={toggleFlash} style={styles.flashButton}>
+                  <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={30} color="white" />
                 </TouchableOpacity>
               </View>
               <View style={styles.captureButtonContainer}>
@@ -155,8 +168,8 @@ const styles = StyleSheet.create({
   flipButton: {
     // Any additional styling you want for the flip button
   },
-  muteButton: {
-    // Any additional styling you want for the mute button
+  flashButton: {
+    // Any additional styling you want for the flash button
   },
   captureButtonContainer: {
     flexDirection: 'row',
@@ -178,7 +191,10 @@ const styles = StyleSheet.create({
     color: '#09745F',
     fontSize: 18,
     fontWeight: 'bold',
+    textAlign: 'center',
   },
 });
 
 export default CameraScreen;
+
+

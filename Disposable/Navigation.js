@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Text } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons'; // Ensure you have this package if you're using icons
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { EventContext } from './Screens/EventContext';
 
 import HomeScreen from './Screens/Home';
 import CameraScreen from './Screens/Camera';
@@ -19,9 +20,11 @@ const CameraStack = createNativeStackNavigator();
 const GalleryStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 
-const Green = "#09745F"
+const Green = "#09745F";
 
 export default function AppNavigation() {
+  const { eventDetails } = useContext(EventContext);
+
   return (
     <NavigationContainer>
       <Tab.Navigator screenOptions={{ headerShown: false }}>
@@ -45,41 +48,53 @@ export default function AppNavigation() {
             </HomeStack.Navigator>
           )}
         </Tab.Screen>
-        <Tab.Screen 
-          name="Camera"
-          options={{
-            tabBarIcon: ({ focused, size }) => (
-              <MaterialCommunityIcons name="camera" color={focused ? Green : 'gray'} size={size} />
-            ),
-            tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? Green : 'gray' }}>Camera</Text>
-            ),
-          }}
-        >
-          {() => (
-            <CameraStack.Navigator>
-              <CameraStack.Screen name="CameraScreen" component={CameraScreen} options={{ title: 'Camera' }}/>
-            </CameraStack.Navigator>
-          )}
-        </Tab.Screen>
-        <Tab.Screen 
-          name="Gallery"
-          options={{
-            tabBarIcon: ({ focused, size }) => (
-              <MaterialCommunityIcons name="image" color={focused ? Green : 'gray'} size={size} />
-            ),
-            tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? Green : 'gray' }}>Gallery</Text>
-            ),
-          }}
-        >
-          {() => (
-            <GalleryStack.Navigator>
-              <GalleryStack.Screen name="GalleryScreen" component={GalleryScreen} options={{ title: 'Gallery' }}/>
-              <GalleryStack.Screen name="CameraScreen" component={CameraScreen} options={{ title: 'Camera' }}/>
-            </GalleryStack.Navigator>
-          )}
-        </Tab.Screen>
+        {eventDetails && (
+          <>
+            <Tab.Screen 
+              name="Camera"
+              options={{
+                tabBarIcon: ({ focused, size }) => (
+                  <MaterialCommunityIcons name="camera" color={focused ? Green : 'gray'} size={size} />
+                ),
+                tabBarLabel: ({ focused }) => (
+                  <Text style={{ color: focused ? Green : 'gray' }}>Camera</Text>
+                ),
+              }}
+            >
+              {() => (
+                <CameraStack.Navigator>
+                  <CameraStack.Screen 
+                    name="CameraScreen" 
+                    component={CameraScreen} 
+                    options={{ title: 'Camera' }}
+                    initialParams={{ event: eventDetails.event, number: eventDetails.number }}
+                  />
+                </CameraStack.Navigator>
+              )}
+            </Tab.Screen>
+            <Tab.Screen 
+              name="Gallery"
+              options={{
+                tabBarIcon: ({ focused, size }) => (
+                  <MaterialCommunityIcons name="image" color={focused ? Green : 'gray'} size={size} />
+                ),
+                tabBarLabel: ({ focused }) => (
+                  <Text style={{ color: focused ? Green : 'gray' }}>Gallery</Text>
+                ),
+              }}
+            >
+              {() => (
+                <GalleryStack.Navigator>
+                  <GalleryStack.Screen 
+                    name="GalleryScreen" 
+                    component={GalleryScreen} 
+                    options={{ title: 'Gallery' }}
+                  />
+                </GalleryStack.Navigator>
+              )}
+            </Tab.Screen>
+          </>
+        )}
         <Tab.Screen 
           name="Settings"
           options={{
@@ -93,7 +108,11 @@ export default function AppNavigation() {
         >
           {() => (
             <SettingsStack.Navigator>
-              <SettingsStack.Screen name="SettingsScreen" component={SettingsScreen} options={{ title: 'Settings' }}/>
+              <SettingsStack.Screen 
+                name="SettingsScreen" 
+                component={SettingsScreen} 
+                options={{ title: 'Settings' }}
+              />
             </SettingsStack.Navigator>
           )}
         </Tab.Screen>
