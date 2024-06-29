@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
-import { Camera } from 'expo-camera';
+import { Camera } from 'expo-camera/legacy';
 import { MaterialIcons } from '@expo/vector-icons';
 import { storage } from './../firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
@@ -33,7 +33,7 @@ function CameraScreen({ route }) {
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
-    setPhotosRemaining(photosRemaining - 1);
+    setPhotosRemaining((prev) => prev - 1);
   };
 
   const savePhoto = async () => {

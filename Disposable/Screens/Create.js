@@ -37,9 +37,8 @@ function CreatePage({ navigation }) {
       setEventDetails(eventDetails);
       console.log('Event details saved to context:', eventDetails);
 
-      // Navigate to HallPage
-      console.log('Navigating to HallPage with event details:', eventDetails);
-      navigation.replace('HallPage', eventDetails);
+      console.log('Navigating to HomePage with event details:', eventDetails);
+      navigation.popToTop('HomePage', eventDetails);
     } catch (error) {
       console.error('Error saving event details to Firestore:', error);
       Alert.alert('Error', 'Failed to save event details. Please try again.');
@@ -50,7 +49,6 @@ function CreatePage({ navigation }) {
     <View>
       <TextInput
         label="The event's name"
-        left={<TextInput.Icon name="event" />}
         value={event}
         onChangeText={(text) => setEventName(text)}
       />
