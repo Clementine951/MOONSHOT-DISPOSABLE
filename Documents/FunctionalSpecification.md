@@ -1,22 +1,25 @@
-# Functional specification <img src="./Images/LogoTrans.png" style="width: 145px; float: right; margin-top: 27px">
+# Functional specification 
+
+<!-- <img src="./Images/LogoTrans.png" style="width: 145px; float: right; margin-top: 27px"> -->
 
 <!-- 
 Questions
 - authentication for the V2
 - add if wrong QR code
-- when clicked on the button validate for create -> a go back?
-- Footer or header
+- when clicked on the button validate for create -> a go back no
+- Footer
 - if start to create an event but leave or close -> no save 
 - gallery -> start at personal
 - settings -> auto save or button
 - explain more the not downloadable thing
 - can join after the end of an event?
 - cross platform? 
-- settings -> general and event at the same place?
 - go back -> according to the stack or a dedicated place
 - qr code generation not sure what to do 
 - differentiate the original app from the clip one
 - qr code / nfc tags
+
+The COST -> 100€ apple + 25 android + firebase? + website
 
 Technical
 - app clips are a light version of your app that allows users to try features of your app without downloading and installing
@@ -24,13 +27,14 @@ Technical
 - Ios 16 is less
 - ios 15 or earlier -> 10mb
 - app clip -> the main feature
-- website needed
+- website needed?
 - from ios 16.4 -> app clip links  -->
 
 <details>
 <summary>Table of contents</summary>
 
-- [Functional specification ](#functional-specification-)
+- [Functional specification](#functional-specification)
+- [Purpose of the Document](#purpose-of-the-document)
 - [Project Overview](#project-overview)
   - [Report Issues](#report-issues)
 - [Project Definition](#project-definition)
@@ -80,11 +84,15 @@ Technical
 
 <br>
 
+# Purpose of the Document 
 
+The Functional Specification Document is a document that provides detailed information on how the system solution will function and the requested behaviour.  This document is created based on the high-level requirements identified in the Project Charter Document.  Included in this document will be the detailed functional requirements including use cases, system inputs and outputs, process flows, diagrams, and mock ups.
 
 # Project Overview 
 
-The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. Participants can access the app without downloading it fully, thanks to App Clips and Instant App features, making it easily accessible during events.
+The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos and create lasting memories. 
+
+Participants can access the app without downloading it fully, thanks to App Clips and Instant App features, making it easily accessible during events.
 
 Each event will have its own gallery where photos are automatically shared with all attendees, fostering a communal experience. The app is cross-platform compatible, ensuring all participants can engage with it regardless of their device. To promote engagement and reduce phone usage, the app limits the number of photos each participant can take, encouraging mindfulness and selectivity. By blending nostalgic charm with modern technology, the Disposable Camera application enhances the event experience and fosters greater interaction among attendees.
 
@@ -295,26 +303,23 @@ Project management, task allocation, and progress tracking are coordinated using
 ## Milestones 
 // todo review
 
-| Milestone      | Description                                              |
-|----------------|----------------------------------------------------------|
-| Functional     | Completion of functional requirements and feature set    |
-| Technical      | Implementation of technical architecture and framework   |
-| Roadmap        | Development plan for future iterations and enhancements  |
-| V1             | Release of the first version of the application          |
-| Jury 1         | Presentation and evaluation by the first jury panel      |
-| User Testing   | Conducting user testing and gathering feedback           |
-| V2             | Release of the second version of the application         |
-| Jury 2         | Presentation and evaluation by the final jury panel      |
-
-
-
+| Milestone      | Description                                              | Dates |
+|----------------|----------------------------------------------------------|-------|
+| Functional     | Completion of functional requirements and feature set    | 2024|
+| Technical      | Implementation of technical architecture and framework   | 2024|
+| Roadmap        | Development plan for future iterations and enhancements  | 2024|
+| V1             | Release of the first version of the application          | August 2024|
+| Jury 1         | Presentation and evaluation by the first jury panel      | September 2024 |
+| User Testing   | Conducting user testing and gathering feedback           | March 2025 |
+| V2             | Release of the second version of the application         | May 2025 |
+| Jury 2         | Presentation and evaluation by the final jury panel      | June 2025? |
 
 ## Risks and Assumptions
 
 ### Risks 
 
-|| Technical issues                                                                                                                                                        |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| | Technical issues |
+|-| ---------------- |
 | **Description** | Potential technical challenges or bugs in the app development process may delay project progress or affect the functionality of the final product.                 |
 | **Solution**    | Conduct thorough testing at each stage of development, employ experienced developers, and have contingency plans in place to address technical issues promptly. |
 
@@ -535,7 +540,7 @@ Unwanted behaviour requirements are often imposed when the system must respond t
 
 Template:   IF, THEN the shall.
 
-Example:     If the computed airspeed is unavailable, then the control system shall use the modelled airspeed.
+Example:     If the computed airspeed is unavailable, then the control system shall use the modelled airspeed. what 
 
 ### Complex Requirements
 
@@ -572,13 +577,13 @@ Graphic charter:
 
 ## Use Cases
 
-
+// todo review
 ### Use Case 1: Margaret's Baptism Photos
 
 **Actor**: Margaret
 
 - **Description**: Margaret desires to receive photos of all participants at her grandson's baptism, as she lacks photography skills and financial resources to hire a professional. She aims to ensure comprehensive coverage of the event by obtaining photos taken by others.
-- **Preconditions**: Margaret has access to a disposable camera.
+- **Preconditions**: Margaret has access to a phone and a qr code.
 - **Postconditions**: Margaret successfully collects photos from other participants, enhancing the coverage of her grandson's baptism.
 
 - **Flow:** 
@@ -715,7 +720,6 @@ not closing the event
 not losing data and photos
 
 ## Delivery
-
 
 As a free software with no commercial purpose, available to download from app store and play store
 

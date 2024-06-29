@@ -1,12 +1,19 @@
 import React from 'react';
 import { View, Text } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 
-function SettingsScreen() {
+const SettingsScreen = () => {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View>
       <Text>Settings</Text>
+      <MaterialIcons name="flash-on" size={30} color="black" />
+      <MaterialIcons name="flash-off" size={30} color="black" />
+      <MaterialIcons name="camera-front" size={30} color="black" />
+      <MaterialIcons name="camera-rear" size={30} color="black" />
+      <MaterialIcons name="save-alt" size={30} color="black" />
+
     </View>
   );
-}
+};
 
 export default SettingsScreen;

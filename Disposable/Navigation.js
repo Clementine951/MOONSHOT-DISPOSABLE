@@ -41,7 +41,7 @@ export default function AppNavigation() {
         >
           {() => (
             <HomeStack.Navigator>
-              <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Home' }}/>
+              <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Disposable' }}/>
               <HomeStack.Screen name="CreatePage" component={CreatePage} options={{ title: 'Create Event' }}/>
               <HomeStack.Screen name="JoinPage" component={JoinPage} options={{ title: 'Join Event' }}/>
               <HomeStack.Screen name="HallPage" component={HallPage} options={{ title: 'Event Hall' }}/>
@@ -74,6 +74,7 @@ export default function AppNavigation() {
             </Tab.Screen>
             <Tab.Screen 
               name="Gallery"
+              initialParams={{ eventId: eventDetails.eventId }}
               options={{
                 tabBarIcon: ({ focused, size }) => (
                   <MaterialCommunityIcons name="image" color={focused ? Green : 'gray'} size={size} />

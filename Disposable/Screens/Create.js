@@ -4,8 +4,10 @@ import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, setDoc } from 'firebase/firestore';
+import uuid from 'react-native-uuid';
 
 function CreatePage({ navigation }) {
+  // const [eventId, setEventId] = useState('');
   const [event, setEventName] = useState('');
   const [start, setStart] = useState('');
   const [duration, setDuration] = useState('');
@@ -24,11 +26,12 @@ function CreatePage({ navigation }) {
   }, [event, start, duration, reveal, number]);
 
   const handleValidate = async () => {
-    const eventDetails = { event, start, duration, reveal, number };
+    const eventId = `${event}_${uuid.v4()}`; // Generate a unique ID for the event
+    const eventDetails = { event, start, duration, reveal, number, eventId };
 
     try {
       // Save event details to Firestore
-      const eventDocRef = doc(db, 'events', 'currentEvent');
+      const eventDocRef = doc(db, 'events', eventId);
       console.log('Saving event details to Firestore:', eventDetails);
       await setDoc(eventDocRef, eventDetails);
       console.log('Event details saved to Firestore.');
@@ -37,9 +40,9 @@ function CreatePage({ navigation }) {
       setEventDetails(eventDetails);
       console.log('Event details saved to context:', eventDetails);
 
-      // Navigate to HallPage
-      console.log('Navigating to HallPage with event details:', eventDetails);
-      navigation.replace('HallPage', eventDetails);
+      // Navigate to HomeScreen
+      console.log('Navigating to HomeScreen with event details:', eventDetails);
+      navigation.popToTop('HomeScreen', eventDetails); // Become the first 
     } catch (error) {
       console.error('Error saving event details to Firestore:', error);
       Alert.alert('Error', 'Failed to save event details. Please try again.');
@@ -50,7 +53,6 @@ function CreatePage({ navigation }) {
     <View>
       <TextInput
         label="The event's name"
-        left={<TextInput.Icon name="event" />}
         value={event}
         onChangeText={(text) => setEventName(text)}
       />
@@ -100,10 +102,10 @@ function CreatePage({ navigation }) {
           value={number}
           density="medium"
           buttons={[
-            { style: { flex: 1 }, value: 'five', label: '5' },
-            { style: { flex: 1 }, value: 'ten', label: '10' },
-            { style: { flex: 1 }, value: 'fifteen', label: '15' },
-            { style: { flex: 1 }, value: 'twenty', label: '20' },
+            { style: { flex: 1 }, value: 5, label: '5' },
+            { style: { flex: 1 }, value: 10, label: '10' },
+            { style: { flex: 1 }, value: 15, label: '15' },
+            { style: { flex: 1 }, value: 20, label: '20' },
           ]}
         />
       </List.Section>

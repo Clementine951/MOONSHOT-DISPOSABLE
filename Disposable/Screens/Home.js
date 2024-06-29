@@ -22,7 +22,7 @@ function HomeScreen({ navigation }) {
     );
   }
 
-  // Render the default home screen content with the provided design
+  // Render the default home screen 
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#FFF', // Adjust as needed
+    backgroundColor: '#FFF',
   },
   logo: {
     width: 200,

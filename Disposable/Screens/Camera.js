@@ -1,123 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
-import { Camera } from 'expo-camera';
+import React, { useState, useRef, useCallback, useContext, useEffect } from 'react';
+import { Button, StyleSheet, Text, TouchableOpacity, View, ImageBackground, Alert } from 'react-native';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 import { MaterialIcons } from '@expo/vector-icons';
-import { storage } from './../firebaseConfig';
+import { storage } from '../firebaseConfig';
 import { ref, uploadBytes } from 'firebase/storage';
+import { EventContext } from './EventContext';
 
-function CameraScreen({ route }) {
-  const { event, number } = route.params;
-
-  const [hasPermission, setHasPermission] = useState(null);
+export default function CameraScreen({ route }) {
+  const { eventDetails } = useContext(EventContext);
+  const [facing, setFacing] = useState('back');
+  const [flash, setFlash] = useState('off');
+  const [permission, requestPermission] = useCameraPermissions();
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [startOver, setStartOver] = useState(false);
-  const [type, setType] = useState(Camera.Constants.Type.back);
-  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
-  const [photosRemaining, setPhotosRemaining] = useState(number);
-  const [isMuted, setIsMuted] = useState(false);
-  let cameraRef = null;
-
-  let eventName = event;
+  const [photosRemaining, setPhotosRemaining] = useState(eventDetails.number);
+  const cameraRef = useRef(null);
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      const { status } = await requestPermission();
+      if (status !== 'granted') {
+        Alert.alert('Permission denied', 'We need camera permissions to make this work!');
+      }
     })();
   }, []);
 
-  const takePicture = async () => {
-    if (!cameraRef) return;
+  if (!permission) {
+    return <View />;
+  }
 
-    const photo = await cameraRef.takePictureAsync();
-    setPreviewVisible(true);
-    setCapturedImage(photo);
-    setPhotosRemaining(photosRemaining - 1);
+  if (!permission.granted) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center' }}>We need your permission to show the camera</Text>
+        <Button onPress={requestPermission} title="grant permission" />
+      </View>
+    );
+  }
+
+  const takePicture = async () => {
+    if (cameraRef.current) {
+      try {
+        const photo = await cameraRef.current.takePictureAsync({
+          quality: 1,
+          base64: true,
+          skipProcessing: true
+        });
+        setPreviewVisible(true);
+        setCapturedImage(photo);
+        setPhotosRemaining((prev) => prev - 1);
+      } catch (error) {
+        console.error("Error taking picture: ", error);
+        Alert.alert("Error", "Failed to take picture. Please try again.");
+      }
+    }
   };
 
   const savePhoto = async () => {
-    if (!capturedImage || !capturedImage.uri) {
-      console.log('No image to save');
-      return;
+    if (capturedImage && capturedImage.uri) {
+      try {
+        const response = await fetch(capturedImage.uri);
+        const blob = await response.blob();
+        const imageName = `${Date.now()}.jpg`;
+        const storageRef = ref(storage, `${eventDetails.eventId}/${imageName}`);
+
+        await uploadBytes(storageRef, blob);
+        setPreviewVisible(false);
+        setCapturedImage(null);
+        console.log("Image saved");
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        Alert.alert("Error", "Failed to save photo. Please try again.");
+      }
+    } else {
+      console.error('No captured image to save');
+      Alert.alert("Error", "No captured image to save.");
     }
-    try {
-      const response = await fetch(capturedImage.uri);
-      const blob = await response.blob();
-
-      const imageName = `${eventName}/${Date.now()}.jpg`;
-
-      const storageRef = ref(storage, imageName);
-      console.log('Uploading image to Firebase Storage:', imageName);
-      await uploadBytes(storageRef, blob);
-      console.log('Image uploaded successfully!');
-
-      setPreviewVisible(false);
-      setCapturedImage(null);
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
   };
 
-  const toggleCameraType = () => {
-    setType(prevType =>
-      prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
-    );
+  const toggleCameraFacing = () => {
+    setFacing(current => (current === 'back' ? 'front' : 'back'));
   };
 
-  const toggleFlash = () => {
-    setFlash(prevFlash => 
-      prevFlash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off
-    );
+  const toggleCameraFlash = () => {
+    setFlash(current => (current === 'off' ? 'on' : 'off'));
   };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
-
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
 
   return (
     <View style={styles.container}>
-      {startOver ? (
-        <View style={styles.innerContainer} />
+      {previewVisible && capturedImage ? (
+        <ImageBackground source={{ uri: capturedImage.uri }} style={styles.camera}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={() => setPreviewVisible(false)}>
+              <Text style={styles.text}>Re-take</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={savePhoto}>
+              <Text style={styles.text}>Save Photo</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
       ) : (
-        <View style={styles.innerContainer}>
-          {previewVisible ? (
-            <ImageBackground source={{ uri: capturedImage?.uri }} style={styles.imageBackground}>
-              <View style={styles.imageControls}>
-                <TouchableOpacity onPress={() => setPreviewVisible(false)} style={styles.controlButton}>
-                  <Text style={styles.controlButtonText}>Re-take</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={savePhoto} style={styles.controlButton}>
-                  <Text style={styles.controlButtonText}>Save Photo</Text>
-                </TouchableOpacity>
-              </View>
-            </ImageBackground>
-          ) : (
-            <Camera style={styles.camera} type={type} flashMode={flash} ref={(ref) => (cameraRef = ref)}>
-              <View style={styles.topControls}>
-                <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
-                  <MaterialIcons name="flip-camera-ios" size={30} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={toggleFlash} style={styles.flashButton}>
-                  <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={30} color="white" />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.captureButtonContainer}>
-                <TouchableOpacity onPress={takePicture} style={styles.captureButton} />
-              </View>
-              <View style={styles.photosRemainingContainer}>
-                <Text style={styles.photosRemainingText}>{photosRemaining}{"\n"}photos{"\n"}remaining</Text>
-              </View>
-            </Camera>
-          )}
-        </View>
+        <CameraView style={styles.camera} facing={facing} flash={flash } ref={cameraRef}>
+          <View style={styles.topControls}>
+            <TouchableOpacity onPress={toggleCameraFacing} style={styles.controlButton}>
+            <MaterialIcons name={facing === 'front' ? 'camera-front' : 'camera-rear'} size={40} color="#09745F" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={toggleCameraFlash} style={styles.controlButton}>
+            <MaterialIcons name={flash === 'on' ? 'flash-on' : 'flash-off'} size={40} color="#09745F" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.bottomControls}>
+            <View style={styles.photosRemainingContainer}>
+              <Text style={styles.photosRemainingText}>{photosRemaining}{"\n"}PHOTOS{"\n"}REMAINING</Text>
+            </View>
+            <TouchableOpacity onPress={takePicture} style={styles.captureButton} />
+          </View>
+        </CameraView>
       )}
     </View>
   );
@@ -127,58 +125,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  innerContainer: {
-    flex: 1,
-  },
-  imageBackground: {
-    flex: 1,
-    padding: 15,
-    justifyContent: 'flex-end',
-  },
-  imageControls: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  controlButton: {
-    width: 130,
-    height: 40,
-    alignItems: 'center',
-    borderRadius: 4,
-    backgroundColor: '#000',
-    opacity: 0.7,
-    justifyContent: 'center',
-  },
-  controlButtonText: {
-    color: '#fff',
-    fontSize: 20,
-  },
   camera: {
     flex: 1,
     justifyContent: 'space-between',
   },
-  topControls: {
+  buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
     paddingTop: 40,
   },
-  flipButton: {},
-  flashButton: {},
-  captureButtonContainer: {
+  button: {
+    flex: 1,
+    alignItems: 'center',
+    margin: 10,
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+  },
+  topControls: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+    paddingHorizontal: 20,
+    paddingTop: 40,
+  },
+  controlButton: {
+    margin: 10,
+  },
+  bottomControls: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: 20,
     marginBottom: 30,
   },
-  captureButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
-    backgroundColor: '#fff',
-  },
   photosRemainingContainer: {
-    position: 'absolute',
-    bottom: 35,
-    left: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   photosRemainingText: {
     color: '#09745F',
@@ -186,6 +171,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  captureButton: {
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    backgroundColor: '#E8D7FF',
+    justifyContent: 'center',
+  },
 });
-
-export default CameraScreen;
