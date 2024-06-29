@@ -11,8 +11,6 @@ const initialLayout = { width: Dimensions.get('window').width };
 
 const GalleryScreen = () => {
   const { eventDetails } = useContext(EventContext);
-  // const { eventId } = useContext(EventContext);
-  // const eventId = eventDetails ? eventDetails.eventId : null;
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },

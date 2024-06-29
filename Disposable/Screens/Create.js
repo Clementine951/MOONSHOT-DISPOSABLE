@@ -98,10 +98,10 @@ function CreatePage({ navigation }) {
           value={number}
           density="medium"
           buttons={[
-            { style: { flex: 1 }, value: 'five', label: '5' },
-            { style: { flex: 1 }, value: 'ten', label: '10' },
-            { style: { flex: 1 }, value: 'fifteen', label: '15' },
-            { style: { flex: 1 }, value: 'twenty', label: '20' },
+            { style: { flex: 1 }, value: '5', label: '5' },
+            { style: { flex: 1 }, value: '10', label: '10' },
+            { style: { flex: 1 }, value: '15', label: '15' },
+            { style: { flex: 1 }, value: '20', label: '20' },
           ]}
         />
       </List.Section>

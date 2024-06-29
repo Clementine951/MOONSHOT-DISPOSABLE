@@ -33,7 +33,8 @@ function CameraScreen({ route }) {
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
-    setPhotosRemaining((prev) => prev - 1);
+    setPhotosRemaining(photosRemaining - 1);
+    
   };
 
   const savePhoto = async () => {
@@ -71,10 +72,6 @@ function CameraScreen({ route }) {
     );
   };
 
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-  };
-
   if (hasPermission === null) {
     return <View />;
   }
@@ -102,11 +99,11 @@ function CameraScreen({ route }) {
           ) : (
             <Camera style={styles.camera} type={type} flashMode={flash} ref={(ref) => (cameraRef = ref)}>
               <View style={styles.topControls}>
-                <TouchableOpacity onPress={toggleCameraType} style={styles.flipButton}>
-                  <MaterialIcons name="flip-camera-ios" size={30} color="white" />
+                <TouchableOpacity onPress={toggleCameraType} style={styles.controlButton}>
+                <MaterialIcons name={type === Camera.Constants.Type.back ? 'camera-front' : 'camera-rear'} size={40} color="#09745F" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={toggleFlash} style={styles.flashButton}>
-                  <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={30} color="white" />
+                <TouchableOpacity onPress={toggleFlash} style={styles.controlButton}>
+                  <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={40} color="#09745F" />
                 </TouchableOpacity>
               </View>
               <View style={styles.captureButtonContainer}>
@@ -157,13 +154,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   topControls: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
+    flexDirection: 'column',
+    alignItems: 'flex-end',
     paddingTop: 40,
   },
-  flipButton: {},
-  flashButton: {},
+  controlButton: {
+    margin: 10,
+  },
   captureButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -173,7 +170,7 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     borderRadius: 35,
-    backgroundColor: '#fff',
+    backgroundColor: '#E8D7FF',
   },
   photosRemainingContainer: {
     position: 'absolute',
