@@ -3,62 +3,68 @@ import { StyleSheet, Text, View, FlatList, Image, Dimensions, TouchableOpacity }
 import { MaterialIcons } from '@expo/vector-icons';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { SceneMap } from 'react-native-tab-view';
-import { storage } from '../firebaseConfig';
-import { listAll, getDownloadURL, ref } from 'firebase/storage';
+import { db } from '../firebaseConfig';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { EventContext } from './EventContext';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
+// GalleryScreen component handles displaying images in tabs
 const GalleryScreen = () => {
-  const { eventDetails } = useContext(EventContext);
-  const [index, setIndex] = useState(0);
+  const { eventDetails } = useContext(EventContext);  // Get event details from context
+  const [index, setIndex] = useState(0);  // State for tab index
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },
     { key: 'general', title: 'General' }
-  ]);
-  const [images, setImages] = useState([]);
-  const [personalImages, setPersonalImages] = useState([]);
-  const [generalImages, setGeneralImages] = useState([]);
+  ]);  // Routes for tabs
+  const [generalImages, setGeneralImages] = useState([]);  // State for general images
 
+  // Effect to fetch images from Firestore
   useEffect(() => {
-    const fetchImages = async () => {
-      if (!eventDetails.eventId) return;
-      try {
-        const listRef = ref(storage, `${eventDetails.eventId}/${imageName}`);
-        const res = await listAll(listRef);
-        const urls = await Promise.all(res.items.map((itemRef) => getDownloadURL(itemRef)));
-        setImages(urls);
-        setPersonalImages(urls.filter(url => url.includes('personal')));
-        setGeneralImages(urls.filter(url => url.includes('general')));
-      } catch (error) {
-        console.error('Error fetching images: ', error);
+    if (!eventDetails.event) return;
+
+    // Query Firestore to get images ordered by timestamp
+    const q = query(collection(db, 'events', eventDetails.event, 'images'), orderBy('timestamp'));
+
+    // Real-time listener for Firestore updates
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const urls = snapshot.docs.map(doc => doc.data().url);
+        console.log('Fetched URLs:', urls); // Log the URLs
+        setGeneralImages(urls);
+      },
+      (error) => {
+        console.error('Error fetching images:', error);
       }
-    };
+    );
 
-    fetchImages();
-  }, [eventDetails.eventId]);
+    return () => unsubscribe(); // Clean up the listener on unmount
+  }, [eventDetails.event]);
 
-  const renderImage = ({ item }) => (
-    <View style={styles.imageContainer}>
-      <Image source={{ uri: item }} style={styles.image} />
+  // Function to render each image
+  const renderImage = ({ item }) => {
+    console.log('Rendering image with URL:', item); // Log the URL being rendered
+    return (
+      <View style={styles.imageContainer}>
+        <Image
+          source={{ uri: item }}
+          style={styles.image}
+          onError={(e) => console.error('Error loading image:', e.nativeEvent.error)}
+          resizeMode="cover"
+        />
+      </View>
+    );
+  };
+
+  // Component for Personal tab (currently showing "No photos")
+  const PersonalRoute = () => (
+    <View style={styles.noPhotosContainer}>
+      <Text style={styles.noPhotosText}>No photos</Text>
     </View>
   );
 
-  const PersonalRoute = () => (
-    personalImages.length > 0 ? (
-      <FlatList
-        data={personalImages}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderImage}
-        numColumns={3}
-      />
-    ) : (
-      <View style={styles.noPhotosContainer}>
-        <Text style={styles.noPhotosText}>No photos</Text>
-      </View>
-    )
-  );
-
+  // Component for General tab displaying images
   const GeneralRoute = () => (
     generalImages.length > 0 ? (
       <FlatList
@@ -77,7 +83,7 @@ const GalleryScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <Text style={styles.topBarText}>{images.length} Photos</Text>
+        <Text style={styles.topBarText}>{generalImages.length} Photos</Text>
         <TouchableOpacity>
           <MaterialIcons name="file-download" size={30} color="#09745F" />
         </TouchableOpacity>
@@ -103,6 +109,7 @@ const GalleryScreen = () => {
   );
 };
 
+// Styles for the GalleryScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
