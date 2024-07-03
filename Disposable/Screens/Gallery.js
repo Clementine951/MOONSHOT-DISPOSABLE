@@ -9,62 +9,64 @@ import { EventContext } from './EventContext';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
-// GalleryScreen component handles displaying images in tabs
 const GalleryScreen = () => {
-  const { eventDetails } = useContext(EventContext);  // Get event details from context
-  const [index, setIndex] = useState(0);  // State for tab index
+  const { eventDetails, deviceId } = useContext(EventContext);
+  const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },
     { key: 'general', title: 'General' }
-  ]);  // Routes for tabs
-  const [generalImages, setGeneralImages] = useState([]);  // State for general images
+  ]);
+  const [generalImages, setGeneralImages] = useState([]);
+  const [personalImages, setPersonalImages] = useState([]);
 
-  // Effect to fetch images from Firestore
   useEffect(() => {
-    if (!eventDetails.event) return;
+    if (!eventDetails.eventId) return;
 
-    // Query Firestore to get images ordered by timestamp
-    const q = query(collection(db, 'events', eventDetails.event, 'images'), orderBy('timestamp'));
+    const generalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
-    // Real-time listener for Firestore updates
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const urls = snapshot.docs.map(doc => doc.data().url);
-        console.log('Fetched URLs:', urls); // Log the URLs
-        setGeneralImages(urls);
-      },
-      (error) => {
-        console.error('Error fetching images:', error);
-      }
-    );
+    const unsubscribeGeneral = onSnapshot(generalQuery, (snapshot) => {
+      const urls = snapshot.docs.map(doc => doc.data().url);
+      setGeneralImages(urls);
+    }, (error) => {
+      console.error('Error fetching general images:', error);
+    });
 
-    return () => unsubscribe(); // Clean up the listener on unmount
-  }, [eventDetails.event]);
+    const personalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
-  // Function to render each image
-  const renderImage = ({ item }) => {
-    console.log('Rendering image with URL:', item); // Log the URL being rendered
-    return (
-      <View style={styles.imageContainer}>
-        <Image
-          source={{ uri: item }}
-          style={styles.image}
-          onError={(e) => console.error('Error loading image:', e.nativeEvent.error)}
-          resizeMode="cover"
-        />
-      </View>
-    );
-  };
+    const unsubscribePersonal = onSnapshot(personalQuery, (snapshot) => {
+      const urls = snapshot.docs.filter(doc => doc.data().owner === deviceId).map(doc => doc.data().url);
+      setPersonalImages(urls);
+    }, (error) => {
+      console.error('Error fetching personal images:', error);
+    });
 
-  // Component for Personal tab (currently showing "No photos")
-  const PersonalRoute = () => (
-    <View style={styles.noPhotosContainer}>
-      <Text style={styles.noPhotosText}>No photos</Text>
+    return () => {
+      unsubscribeGeneral();
+      unsubscribePersonal();
+    };
+  }, [eventDetails.eventId, deviceId]);
+
+  const renderImage = ({ item }) => (
+    <View style={styles.imageContainer}>
+      <Image source={{ uri: item }} style={styles.image} />
     </View>
   );
 
-  // Component for General tab displaying images
+  const PersonalRoute = () => (
+    personalImages.length > 0 ? (
+      <FlatList
+        data={personalImages}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={renderImage}
+        numColumns={3}
+      />
+    ) : (
+      <View style={styles.noPhotosContainer}>
+        <Text style={styles.noPhotosText}>No photos</Text>
+      </View>
+    )
+  );
+
   const GeneralRoute = () => (
     generalImages.length > 0 ? (
       <FlatList
@@ -109,7 +111,6 @@ const GalleryScreen = () => {
   );
 };
 
-// Styles for the GalleryScreen component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -3,42 +3,87 @@ import { View, Alert } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, collection } from 'firebase/firestore';
 
 function CreatePage({ navigation }) {
-  const [event, setEventName] = useState('');
+  const [eventName, setEventName] = useState('');
   const [start, setStart] = useState('');
   const [duration, setDuration] = useState('');
   const [reveal, setReveal] = useState('');
-  const [number, setNumber] = useState('');
+  const [numberOfPhotos, setNumberOfPhotos] = useState('');
+  const [userName, setUserName] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
-  const { setEventDetails } = useContext(EventContext);
+  const { setEventDetails, deviceId, setUserName: setContextUserName } = useContext(EventContext);
 
   useEffect(() => {
-    if (event && start && duration && reveal && number) {
+    if (eventName && start && duration && reveal && numberOfPhotos && userName) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [event, start, duration, reveal, number]);
+  }, [eventName, start, duration, reveal, numberOfPhotos, userName]);
 
   const handleValidate = async () => {
-    const eventDetails = { event, start, duration, reveal, number };
+    let revealTime = null;
+    const durationInHours = parseInt(duration, 10);
+
+    if (reveal === 'revealEnd') {
+      revealTime = new Date(Date.now() + durationInHours * 3600 * 1000);
+      if (isNaN(revealTime.getTime())) {
+        Alert.alert('Error', 'Invalid reveal time calculated.');
+        return;
+      }
+    } else if (reveal === 'revealNow'){
+      revealTime = new Date(Date.now());
+      if (isNaN(revealTime.getTime())) {
+        Alert.alert('Error', 'Invalid reveal time calculated.');
+        return;
+      }
+    } else if (reveal=== 'revealNext'){
+      revealTime = new Date(Date.now() + durationInHours + 24 * 3600 * 1000);
+      if (isNaN(revealTime.getTime())) {
+        Alert.alert('Error', 'Invalid reveal time calculated.');
+        return;
+      }
+    }
+
+    const eventDetails = {
+      eventId: eventName, // Use event name as ID for simplicity
+      eventName: eventName,
+      start,
+      duration: durationInHours, // Store duration as number of hours
+      reveal,
+      numberOfPhotos: parseInt(numberOfPhotos, 10), // Ensure number is parsed as integer
+      revealTime,
+      userName,
+    };
 
     try {
+      console.log('Event Name:', eventName);
+      console.log('Device ID:', deviceId);
+
+      if (!eventName || !deviceId){
+        throw new Error('Event name or device ID is missing');
+      }
+
       // Save event details to Firestore
-      const eventDocRef = doc(db, 'events', 'currentEvent');
-      console.log('Saving event details to Firestore:', eventDetails);
+      const eventDocRef = doc(db, 'events', eventName);
       await setDoc(eventDocRef, eventDetails);
-      console.log('Event details saved to Firestore.');
+
+      // Add the user as a participant
+      const participantDocRef = doc(collection(db, 'events', eventName, 'participants'), deviceId);
+      await setDoc(participantDocRef, {
+        userId: deviceId,
+        role: 'organizer',
+        name: userName, // This can be adjusted to include user name if available
+      });
 
       // Save event details to context
       setEventDetails(eventDetails);
-      console.log('Event details saved to context:', eventDetails);
+      setContextUserName(userName);
 
-      console.log('Navigating to HomePage with event details:', eventDetails);
-      navigation.popToTop('HomePage', eventDetails);
+      navigation.navigate('HomeScreen');
     } catch (error) {
       console.error('Error saving event details to Firestore:', error);
       Alert.alert('Error', 'Failed to save event details. Please try again.');
@@ -47,9 +92,16 @@ function CreatePage({ navigation }) {
 
   return (
     <View>
+        <TextInput
+          label="Your name"
+          value={userName}
+          onChangeText={(text) => setUserName(text)}
+        >
+        </TextInput>
+
       <TextInput
         label="The event's name"
-        value={event}
+        value={eventName}
         onChangeText={(text) => setEventName(text)}
       />
 
@@ -71,10 +123,10 @@ function CreatePage({ navigation }) {
           value={duration}
           density="medium"
           buttons={[
-            { style: { flex: 1 }, value: '8h', label: '8h' },
-            { style: { flex: 1 }, value: '12h', label: '12h' },
-            { style: { flex: 1 }, value: '24h', label: '24h' },
-            { style: { flex: 1 }, value: '48h', label: '48h' },
+            { style: { flex: 1 }, value: '8', label: '8h' },
+            { style: { flex: 1 }, value: '12', label: '12h' },
+            { style: { flex: 1 }, value: '24', label: '24h' },
+            { style: { flex: 1 }, value: '48', label: '48h' },
           ]}
         />
       </List.Section>
@@ -94,8 +146,8 @@ function CreatePage({ navigation }) {
 
       <List.Section title={`Photos per person`}>
         <SegmentedButtons
-          onValueChange={(value) => setNumber(value)}
-          value={number}
+          onValueChange={(value) => setNumberOfPhotos(value)}
+          value={numberOfPhotos}
           density="medium"
           buttons={[
             { style: { flex: 1 }, value: '5', label: '5' },

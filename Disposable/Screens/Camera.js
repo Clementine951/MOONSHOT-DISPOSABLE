@@ -1,63 +1,73 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Alert } from 'react-native';
 import { Camera } from 'expo-camera/legacy'; // legacy for SDK 51
 import { MaterialIcons } from '@expo/vector-icons';
 import { storage, db } from '../firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, doc, setDoc } from 'firebase/firestore';
+import { EventContext } from './EventContext'; // Ensure EventContext is imported correctly
 
-// CameraScreen component handles image capturing and uploading
 const CameraScreen = ({ route }) => {
-  const { event, number } = route.params;  // Get event details and number of photos remaining from route parameters
-  const [hasPermission, setHasPermission] = useState(null);  // Camera permission state
-  const [previewVisible, setPreviewVisible] = useState(false);  // Preview visibility state
-  const [capturedImage, setCapturedImage] = useState(null);  // Captured image state
-  const [photosRemaining, setPhotosRemaining] = useState(number);  // Remaining photos state
-  const [type, setType] = useState(Camera.Constants.Type.back);  // Camera type state (front/back)
-  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);  // Flash mode state (on/off)
-  let cameraRef = null;  // Reference to the camera
+  const { eventName, numberOfPhotos } = route.params || {}; // Destructuring route.params with default values
+  const { deviceId, userName } = useContext(EventContext); // Access deviceId from EventContext
+  const [hasPermission, setHasPermission] = useState(null);
+  const [previewVisible, setPreviewVisible] = useState(false);
+  const [capturedImage, setCapturedImage] = useState(null);
+  const [photosRemaining, setPhotosRemaining] = useState(parseInt(numberOfPhotos, 10) || 0);  // Initialize photosRemaining with numberOfPhotos
+  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
+  let cameraRef = null;
 
-  // Request camera permissions when the component mounts
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');  // Set camera permission state
+      setHasPermission(status === 'granted');
     })();
   }, []);
 
-  // Capture a picture and set preview state
+  useEffect(() => {
+    console.log(`Initial number of photos: ${numberOfPhotos}`);
+    console.log(`Parsed number of photos: ${parseInt(numberOfPhotos, 10)}`);
+    console.log(`Event: ${eventName}`);
+    setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0);
+  }, [numberOfPhotos, eventName]);
+
   const takePicture = async () => {
     if (!cameraRef) return;
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
-    setPhotosRemaining(photosRemaining - 1);  // Decrease the number of photos remaining
+    setPhotosRemaining((prev) => prev - 1);  // Decrease the number of photos remaining
   };
 
-  // Save the captured photo to Firebase Storage and Firestore
   const savePhoto = async () => {
     if (!capturedImage || !capturedImage.uri) {
       console.log('No image to save');
       return;
     }
     try {
+      if (!eventName) {
+        console.error('Event is undefined');
+        Alert.alert('Error', 'Event is undefined. Cannot save photo.');
+        return;
+      }
       const response = await fetch(capturedImage.uri);
-      const blob = await response.blob();  // Convert image URI to blob
-      const imageName = `${event}/${Date.now()}.jpg`;  // Create a unique image name
-      const storageRef = ref(storage, imageName);  // Reference to the storage location
+      const blob = await response.blob();
+      const imageName = `${eventName}/${deviceId}${Date.now()}.jpg`;
+      const storageRef = ref(storage, imageName);
       console.log('Uploading image to Firebase Storage:', imageName);
-      await uploadBytes(storageRef, blob);  // Upload image to Firebase Storage
+      await uploadBytes(storageRef, blob);
       console.log('Image uploaded successfully!');
 
-      const downloadURL = await getDownloadURL(storageRef);  // Get the download URL of the uploaded image
-      const imageDocRef = doc(collection(db, 'events', event, 'images'));  // Reference to the Firestore document
+      const downloadURL = await getDownloadURL(storageRef);
+      const imageDocRef = doc(collection(db, 'events', eventName, 'images'));
       await setDoc(imageDocRef, {
         url: downloadURL,
-        timestamp: Date.now()
-      });  // Save the image URL and timestamp to Firestore
+        timestamp: Date.now(),
+        owner: userName
+      });
       console.log('Image URL saved to Firestore');
 
-      // Reset preview and captured image states
       setPreviewVisible(false);
       setCapturedImage(null);
     } catch (error) {
@@ -65,25 +75,21 @@ const CameraScreen = ({ route }) => {
     }
   };
 
-  // Toggle the camera type between front and back
   const toggleCameraType = () => {
-    setType(prevType =>
+    setType((prevType) =>
       prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
     );
   };
 
-  // Toggle the flash mode between on and off
   const toggleFlash = () => {
-    setFlash(prevFlash => 
+    setFlash((prevFlash) =>
       prevFlash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off
     );
   };
 
-  // If camera permissions are not determined, render an empty view
   if (hasPermission === null) {
     return <View />;
   }
-  // If camera permissions are denied, render a message
   if (hasPermission === false) {
     return <Text>No access to camera</Text>;
   }

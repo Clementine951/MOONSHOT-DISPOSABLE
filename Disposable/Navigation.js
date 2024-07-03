@@ -67,7 +67,7 @@ export default function AppNavigation() {
                     name="CameraScreen" 
                     component={CameraScreen} 
                     options={{ title: 'Camera' }}
-                    initialParams={{ event: eventDetails.event, number: eventDetails.number }}
+                    initialParams={{ eventName: eventDetails.eventName, numberOfPhotos: eventDetails.numberOfPhotos }}
                   />
                 </CameraStack.Navigator>
               )}

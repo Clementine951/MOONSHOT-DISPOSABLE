@@ -1,28 +1,61 @@
 import React, { useContext } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { EventContext } from './EventContext';
+import { db } from '../firebaseConfig';
+import { deleteDoc, doc, collection } from 'firebase/firestore';
 
 function HomeScreen({ navigation }) {
-  const { eventDetails } = useContext(EventContext);
+  const { eventDetails, clearEventDetails, userName } = useContext(EventContext);
+
+  const handleEndEvent = async () => {
+    Alert.alert(
+      "End Event",
+      "Are you sure you want to end the event?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "End Event",
+          onPress: async () => {
+            try {
+              const eventDocRef = doc(db, 'events', eventDetails.eventId);
+              await deleteDoc(eventDocRef);
+
+              const participantsRef = collection(db, 'events', eventDetails.eventId, 'participants');
+              // Use batch delete for participants and other related data
+
+              clearEventDetails();
+              navigation.navigate('HomeScreen');
+            } catch (error) {
+              console.error('Error ending event:', error);
+              Alert.alert('Error', 'Failed to end event. Please try again.');
+            }
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
 
   if (eventDetails) {
-    // Render the event details screen
     return (
       <View style={styles.container}>
-        <Text style={styles.eventName}>{eventDetails.event}</Text>
+        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+        <Text style={styles.eventInfo}>{userName}</Text>
         <Text style={styles.eventInfo}>XX participants</Text>
-        <Text style={styles.eventInfo}>{eventDetails.number} photos taken</Text>
+        <Text style={styles.eventInfo}>{eventDetails.numberOfPhotos} photos taken</Text>
         <TouchableOpacity style={styles.eventButton}>
           <Text style={styles.eventButtonText}>Share event</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.eventButton}>
+        <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
           <Text style={styles.eventButtonText}>End the event</Text>
         </TouchableOpacity>
       </View>
     );
   }
 
-  // Render the default home screen content with the provided design
   return (
     <View style={styles.container}>
       <Image source={require('../assets/logo.png')} style={styles.logo} />
