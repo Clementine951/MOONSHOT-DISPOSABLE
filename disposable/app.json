@@ -19,7 +19,8 @@
       "infoPlist": {
         "NSCameraUsageDescription": "We need access to your camera to take photos.",
         "NSPhotoLibraryUsageDescription": "We need access to your photo library to save photos."
-      }
+      },
+      "bundleIdentifier": "com.moonshot.disposable"
     },
     "android": {
       "permissions": [
@@ -30,7 +31,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.moonshot.disposable"
     },
     "web": {
       "favicon": "./assets/favicon.png"
