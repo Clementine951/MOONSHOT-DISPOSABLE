@@ -9,8 +9,8 @@ function HomeScreen({ navigation }) {
 
   const handleEndEvent = async () => {
     Alert.alert(
-      "End Event",
-      "Are you sure you want to end the event?",
+      "Ending the Event Now",
+      "The photos will only be available during 1 hour.",
       [
         {
           text: "Cancel",
@@ -33,7 +33,7 @@ function HomeScreen({ navigation }) {
               Alert.alert('Error', 'Failed to end event. Please try again.');
             }
           }
-        }
+        },
       ],
       { cancelable: false }
     );
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
   eventButton: {
     marginTop: 20,
     padding: 15,
-    backgroundColor: '#E6E6FA',
+    backgroundColor: '#E8D7FF',
     borderRadius: 5,
     width: '80%',
   },

@@ -38,6 +38,8 @@ const CameraScreen = ({ route }) => {
     setPreviewVisible(true);
     setCapturedImage(photo);
     setPhotosRemaining((prev) => prev - 1);  // Decrease the number of photos remaining
+    // savePhoto(capturedImage);
+
   };
 
   const savePhoto = async () => {
@@ -53,7 +55,7 @@ const CameraScreen = ({ route }) => {
       }
       const response = await fetch(capturedImage.uri);
       const blob = await response.blob();
-      const imageName = `${eventName}/${deviceId}${Date.now()}.jpg`;
+      const imageName = `${eventName}/${Date.now()}.jpg`;
       const storageRef = ref(storage, imageName);
       console.log('Uploading image to Firebase Storage:', imageName);
       await uploadBytes(storageRef, blob);
@@ -87,6 +89,12 @@ const CameraScreen = ({ route }) => {
     );
   };
 
+  const reTake = () => {
+    setPreviewVisible(false);
+    setCapturedImage(null);
+    setPhotosRemaining((prev) => prev + 1);
+  }
+
   if (hasPermission === null) {
     return <View />;
   }
@@ -99,7 +107,7 @@ const CameraScreen = ({ route }) => {
       {previewVisible ? (
         <ImageBackground source={{ uri: capturedImage?.uri }} style={styles.imageBackground}>
           <View style={styles.imageControls}>
-            <TouchableOpacity onPress={() => setPreviewVisible(false)} style={styles.controlButton}>
+            <TouchableOpacity onPress={reTake} style={styles.controlButton}>
               <Text style={styles.controlButtonText}>Re-take</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={savePhoto} style={styles.controlButton}>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert } from 'react-native';
-import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
+import { View, Alert, StyleSheet } from 'react-native';
+import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, setDoc, collection } from 'firebase/firestore';
+import { Linking, TouchableOpacity, Text } from 'react-native';
 
 function CreatePage({ navigation }) {
   const [eventName, setEventName] = useState('');
@@ -13,16 +14,17 @@ function CreatePage({ navigation }) {
   const [numberOfPhotos, setNumberOfPhotos] = useState('');
   const [userName, setUserName] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   const { setEventDetails, deviceId, setUserName: setContextUserName } = useContext(EventContext);
 
   useEffect(() => {
-    if (eventName && start && duration && reveal && numberOfPhotos && userName) {
+    if (eventName && start && duration && reveal && numberOfPhotos && userName && acceptTerms) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [eventName, start, duration, reveal, numberOfPhotos, userName]);
+  }, [eventName, start, duration, reveal, numberOfPhotos, userName, acceptTerms]);
 
   const handleValidate = async () => {
     let revealTime = null;
@@ -40,16 +42,10 @@ function CreatePage({ navigation }) {
         Alert.alert('Error', 'Invalid reveal time calculated.');
         return;
       }
-    } else if (reveal=== 'revealNext'){
-      revealTime = new Date(Date.now() + durationInHours + 24 * 3600 * 1000);
-      if (isNaN(revealTime.getTime())) {
-        Alert.alert('Error', 'Invalid reveal time calculated.');
-        return;
-      }
     }
 
     const eventDetails = {
-      eventId: eventName, // Use event name as ID for simplicity
+      eventId: eventName, //todo Use event name as ID for simplicity
       eventName: eventName,
       start,
       duration: durationInHours, // Store duration as number of hours
@@ -92,12 +88,11 @@ function CreatePage({ navigation }) {
 
   return (
     <View>
-        <TextInput
-          label="Your name"
-          value={userName}
-          onChangeText={(text) => setUserName(text)}
-        >
-        </TextInput>
+      <TextInput
+        label="Your name"
+        value={userName}
+        onChangeText={(text) => setUserName(text)}
+      />
 
       <TextInput
         label="The event's name"
@@ -139,7 +134,6 @@ function CreatePage({ navigation }) {
           buttons={[
             { style: { flex: 1 }, value: 'revealNow', label: 'Immediately' },
             { style: { flex: 1 }, value: 'revealEnd', label: 'At the end' },
-            { style: { flex: 1 }, value: 'revealNext', label: '24h later' },
           ]}
         />
       </List.Section>
@@ -159,6 +153,22 @@ function CreatePage({ navigation }) {
       </List.Section>
 
       <List.Section>
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            status={acceptTerms ? 'checked' : 'unchecked'}
+            onPress={() => setAcceptTerms(!acceptTerms)}
+          />
+          <Text onPress={() => setAcceptTerms(!acceptTerms)}>
+            I accept the 
+            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')}>
+              <Text style={styles.link}> Terms and Conditions </Text>
+            </TouchableOpacity>
+            and
+            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')}>
+              <Text style={styles.link}> Privacy Policy </Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
         <Button
           mode="contained-tonal"
           buttonColor='#09745F'
@@ -173,5 +183,17 @@ function CreatePage({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  link: {
+    color: '#09745F',
+    textDecorationLine: 'underline',
+  },
+});
 
 export default CreatePage;
