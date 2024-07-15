@@ -1,25 +1,39 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { Camera } from 'expo-camera';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
 
 function JoinPage({ navigation }) {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
   const [eventId, setEventId] = useState('');
   const [userName, setUserName] = useState('');
   const [eventDetails, setEventDetails] = useState(null);
+  const [inputMode, setInputMode] = useState(''); // 'scan' or 'manual'
   const { setEventDetails: setContextEventDetails, setUserName: setContextUserName, deviceId, setUserRole } = useContext(EventContext);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
 
   const fetchEventDetails = async (id) => {
     try {
       console.log("Fetching Event Details for ID: ", id);
-      const eventDocRef = doc(db, 'events', id);
+      const trimmedId = id.trim();
+      console.log("Trimmed Event ID: ", trimmedId);
+      const eventDocRef = doc(db, 'events', trimmedId);
+      console.log("Event Doc Ref: ", eventDocRef.path);
       const eventDoc = await getDoc(eventDocRef);
       if (eventDoc.exists()) {
         console.log("Event Details: ", eventDoc.data());
         setEventDetails(eventDoc.data());
       } else {
-        console.error('Event not found for ID:', id);
+        console.error('Event not found for ID:', trimmedId);
         Alert.alert('Error', 'Event not found. Please check the event ID.');
       }
     } catch (error) {
@@ -58,6 +72,34 @@ function JoinPage({ navigation }) {
     }
   };
 
+  const handleInputModeChange = (mode) => {
+    setInputMode(mode);
+    setEventId('');
+    setEventDetails(null);
+    setUserName('');
+    setScanned(false);
+  };
+
+  if (inputMode === 'scan') {
+    return (
+      <View style={{ flex: 1 }}>
+        {hasPermission === null ? (
+          <Text>Requesting for camera permission</Text>
+        ) : hasPermission === false ? (
+          <Text>No access to camera</Text>
+        ) : (
+          <Camera
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={StyleSheet.absoluteFillObject}
+          />
+        )}
+        {scanned && (
+          <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />
+        )}
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {eventDetails ? (
@@ -73,6 +115,7 @@ function JoinPage({ navigation }) {
         </>
       ) : (
         <>
+          <Button title="Scan QR Code" onPress={() => handleInputModeChange('scan')} />
           <TextInput
             style={styles.input}
             placeholder="Enter Event ID"

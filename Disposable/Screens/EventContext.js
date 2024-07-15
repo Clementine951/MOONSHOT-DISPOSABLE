@@ -44,18 +44,29 @@ export const EventProvider = ({ children }) => {
         const savedUserName = await AsyncStorage.getItem('userName');
         if (savedUserName) {
           setUserName(savedUserName);
-        } else {
-          setUserName('');
-        }
+        } 
         console.log('Loaded user name:', savedUserName);
       } catch (error){
         console.error('Failed to load user name:', error);
       }
     };
 
+    const loadUserRole = async () => {
+      try {
+        const savedUserRole = await AsyncStorage.getItem('userRole');
+        if (savedUserRole) {
+          setUserRole(savedUserRole);
+        }
+        console.log('Loaded user role:', savedUserRole);
+      } catch (error){
+        console.error('Failed to load user role:', error);
+      }
+    }
+
     loadDeviceId();
     loadEventDetails();
     loadUserName();
+    loadUserRole();
   }, []);
 
   useEffect(() => {
@@ -91,6 +102,23 @@ export const EventProvider = ({ children }) => {
 
     saveUserName();
   }, [userName]);
+
+  useEffect(() => {
+    const saveUserRole = async () => {
+      try {
+        if (userRole) {
+          await AsyncStorage.setItem('userRole', userRole);
+        } else {
+          await AsyncStorage.removeItem('userRole');
+        }
+        console.log('Saved user role:', userRole);
+      } catch (error) {
+        console.error('Failed to save user role:', error);
+      }
+    };
+
+    saveUserRole();
+  }, [userRole]);
 
   const clearEventDetails = async () => {
     try {

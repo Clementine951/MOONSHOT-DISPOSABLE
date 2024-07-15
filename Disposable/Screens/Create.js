@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { View, Alert, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
@@ -14,7 +14,6 @@ function CreatePage({ navigation }) {
   const [userName, setUserName] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [acceptTerms, setAcceptTerms] = useState(false);
-
 
   const { setEventDetails, deviceId, setUserName: setContextUserName, setUserRole } = useContext(EventContext);
 
@@ -126,60 +125,58 @@ function CreatePage({ navigation }) {
         />
       </List.Section>
 
-      <List.Section title={`Photos reveal`}>
+      <List.Section title={`Reveal of the photo`}>
         <SegmentedButtons
           onValueChange={(value) => setReveal(value)}
           value={reveal}
           density="medium"
           buttons={[
-            { style: { flex: 1 }, value: 'revealNow', label: 'Immediately' },
+            { style: { flex: 1 }, value: 'revealNow', label: 'Now' },
             { style: { flex: 1 }, value: 'revealEnd', label: 'At the end' },
           ]}
         />
       </List.Section>
 
-      <List.Section title={`Photos per person`}>
+      <List.Section title={`Number of photos`}>
         <SegmentedButtons
           onValueChange={(value) => setNumberOfPhotos(value)}
           value={numberOfPhotos}
           density="medium"
           buttons={[
-            { style: { flex: 1 }, value: '5', label: '5' },
             { style: { flex: 1 }, value: '10', label: '10' },
             { style: { flex: 1 }, value: '15', label: '15' },
-            { style: { flex: 1 }, value: '20', label: '20' },
+            { style: { flex: 1 }, value: '25', label: '25' },
           ]}
         />
       </List.Section>
 
-      <List.Section>
-        <View style={styles.checkboxContainer}>
-          <Checkbox
-            status={acceptTerms ? 'checked' : 'unchecked'}
-            onPress={() => setAcceptTerms(!acceptTerms)}
-          />
-          <Text onPress={() => setAcceptTerms(!acceptTerms)}>
-            I accept the 
-            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')}>
-              <Text style={styles.link}> Terms and Conditions </Text>
-            </TouchableOpacity>
-            and
-            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')}>
-              <Text style={styles.link}> Privacy Policy </Text>
-            </TouchableOpacity>
-          </Text>
-        </View>
-        <Button
-          mode="contained-tonal"
+      <View style={styles.checkboxContainer}>
+        <Checkbox
+          status={acceptTerms ? 'checked' : 'unchecked'}
           buttonColor='#09745F'
-          textColor='#FFF7F1'
-          onPress={handleValidate}
-          style={{ margin: 5 }}
-          disabled={isButtonDisabled}
-        >
-          Validate
-        </Button>
-      </List.Section>
+          onPress={() => setAcceptTerms(!acceptTerms)}
+        />
+        <Text style={styles.checkboxLabel}>
+          I accept the{' '}
+          <Text onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')} style={styles.link}>
+            Terms and Conditions
+          </Text>{' '}
+          and{' '}
+          <Text onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')} style={styles.link}>
+            Privacy Policy
+          </Text>
+        </Text>
+      </View>
+
+      <Button
+        mode="contained"
+        disabled={isButtonDisabled}
+        style={{ marginTop: 16 }}
+        buttonColor='#09745F'
+        onPress={handleValidate}
+      >
+        Validate
+      </Button>
     </View>
   );
 }
@@ -188,11 +185,15 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginVertical: 10,
+  },
+  checkboxLabel: {
+    flex: 1,
+    marginLeft: 8,
   },
   link: {
-    color: '#09745F',
     textDecorationLine: 'underline',
+    color: 'blue',
   },
 });
 

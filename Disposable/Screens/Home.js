@@ -1,3 +1,4 @@
+// Home.js
 import React, { useContext } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { EventContext } from './EventContext';
@@ -39,18 +40,7 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  if (eventDetails && userRole === 'participant') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
-        <Text style={styles.eventInfo}>{userName}</Text>
-        <Text style={styles.eventInfo}>End of the event in </Text>
-        <TouchableOpacity style={styles.eventButton} onPress={clearEventDetails}>
-          <Text style={styles.eventButtonText}>Leave the event</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  } else if (eventDetails && userRole === 'organizer') {
+  if (eventDetails && userRole === 'organizer') {
     return (
       <View style={styles.container}>
         <Text style={styles.eventName}>{eventDetails.eventName}</Text>
@@ -62,6 +52,16 @@ function HomeScreen({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
           <Text style={styles.eventButtonText}>End the event</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } else if (eventDetails && userRole === 'participant') {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+        <Text style={styles.eventInfo}>{userName}</Text>
+        <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
+          <Text style={styles.eventButtonText}>Leave Event</Text>
         </TouchableOpacity>
       </View>
     );
