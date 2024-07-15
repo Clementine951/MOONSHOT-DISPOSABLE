@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, FlatList, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Image, Dimensions, TouchableOpacity, Modal, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { TabView, TabBar } from 'react-native-tab-view';
-import { SceneMap } from 'react-native-tab-view';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { db } from '../firebaseConfig';
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { EventContext } from './EventContext';
+import * as FileSystem from 'expo-file-system';
+import * as MediaLibrary from 'expo-media-library';
 
 const initialLayout = { width: Dimensions.get('window').width };
 
@@ -18,6 +19,8 @@ const GalleryScreen = () => {
   ]);
   const [generalImages, setGeneralImages] = useState([]);
   const [personalImages, setPersonalImages] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (!eventDetails?.eventId) return;
@@ -46,11 +49,65 @@ const GalleryScreen = () => {
     };
   }, [eventDetails?.eventId, userName]);
 
-  const renderImage = ({ item }) => (
-    <View style={styles.imageContainer}>
+  const openModal = (index) => {
+    setCurrentImageIndex(index);
+    setIsModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
+
+  const renderImage = ({ item, index }) => (
+    <TouchableOpacity onPress={() => openModal(index)} style={styles.imageContainer}>
       <Image source={{ uri: item }} style={styles.image} />
-    </View>
+    </TouchableOpacity>
   );
+
+  const renderModalContent = () => (
+    <Modal visible={isModalVisible} transparent={true} onRequestClose={closeModal}>
+      <View style={styles.modalContainer}>
+        <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
+          <MaterialIcons name="close" size={30} color="#FFF" />
+        </TouchableOpacity>
+        <FlatList
+          data={generalImages}
+          horizontal
+          pagingEnabled
+          initialScrollIndex={currentImageIndex}
+          getItemLayout={(data, index) => (
+            { length: Dimensions.get('window').width, offset: Dimensions.get('window').width * index, index }
+          )}
+          renderItem={({ item }) => (
+            <Image source={{ uri: item }} style={styles.fullImage} />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      </View>
+    </Modal>
+  );
+
+  const downloadImages = async () => {
+    const { status } = await MediaLibrary.requestPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'Permission to access the gallery is required.');
+      return;
+    }
+
+    try {
+      for (const url of generalImages) {
+        const filename = url.split('/').pop();
+        const fileUri = FileSystem.documentDirectory + filename;
+
+        await FileSystem.downloadAsync(url, fileUri);
+        await MediaLibrary.createAssetAsync(fileUri);
+      }
+      Alert.alert('Saved', 'All photos have been saved to your gallery.');
+    } catch (error) {
+      console.error('Error downloading images:', error);
+      Alert.alert('Error', 'Failed to download images. Please try again.');
+    }
+  };
 
   const PersonalRoute = () => (
     personalImages.length > 0 ? (
@@ -86,7 +143,7 @@ const GalleryScreen = () => {
     <View style={styles.container}>
       <View style={styles.topBar}>
         <Text style={styles.topBarText}>{generalImages.length} Photos</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={downloadImages}>
           <MaterialIcons name="file-download" size={30} color="#09745F" />
         </TouchableOpacity>
       </View>
@@ -107,6 +164,7 @@ const GalleryScreen = () => {
           />
         )}
       />
+      {renderModalContent()}
     </View>
   );
 };
@@ -154,6 +212,23 @@ const styles = StyleSheet.create({
   noPhotosText: {
     fontSize: 18,
     color: '#09745F',
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    zIndex: 1,
+  },
+  fullImage: {
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+    resizeMode: 'contain',
   },
 });
 

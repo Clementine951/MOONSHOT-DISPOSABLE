@@ -1,4 +1,5 @@
 import React from 'react';
+import 'react-native-gesture-handler';
 import { EventProvider } from './Screens/EventContext';
 import AppNavigation from './Navigation';
 

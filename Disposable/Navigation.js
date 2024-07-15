@@ -18,7 +18,6 @@ import PrivacyScreen from './Screens/Privacy';
 import TermsCondScreen from './Screens/TermsCond';
 import CreatePage from './Screens/Create';
 import JoinPage from './Screens/Join';
-import HallPage from './Screens/Hall';
 import PrivacyPolicy from './Screens/Privacy';
 
 const Tab = createBottomTabNavigator();
@@ -51,7 +50,6 @@ export default function AppNavigation() {
               <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Disposable' }}/>
               <HomeStack.Screen name="CreatePage" component={CreatePage} options={{ title: 'Creation' }}/>
               <HomeStack.Screen name="JoinPage" component={JoinPage} options={{ title: 'Join Event' }}/>
-              <HomeStack.Screen name="HallPage" component={HallPage} options={{ title: 'Event Hall' }}/>
             </HomeStack.Navigator>
           )}
         </Tab.Screen>
