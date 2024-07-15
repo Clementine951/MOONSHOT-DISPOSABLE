@@ -8,7 +8,7 @@ import { collection, doc, setDoc } from 'firebase/firestore';
 import { EventContext } from './EventContext'; // Ensure EventContext is imported correctly
 
 const CameraScreen = ({ route }) => {
-  const { eventName, numberOfPhotos } = route.params || {}; // Destructuring route.params with default values
+  const { eventId, numberOfPhotos } = route.params || {}; // Destructuring route.params with default values
   const { deviceId, userName } = useContext(EventContext); // Access deviceId from EventContext
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -28,9 +28,9 @@ const CameraScreen = ({ route }) => {
   useEffect(() => {
     console.log(`Initial number of photos: ${numberOfPhotos}`);
     console.log(`Parsed number of photos: ${parseInt(numberOfPhotos, 10)}`);
-    console.log(`Event: ${eventName}`);
+    console.log(`Event: ${eventId}`);
     setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0);
-  }, [numberOfPhotos, eventName]);
+  }, [numberOfPhotos, eventId]);
 
   const takePicture = async () => {
     if (!cameraRef) return;
@@ -48,21 +48,21 @@ const CameraScreen = ({ route }) => {
       return;
     }
     try {
-      if (!eventName) {
+      if (!eventId) {
         console.error('Event is undefined');
         Alert.alert('Error', 'Event is undefined. Cannot save photo.');
         return;
       }
       const response = await fetch(capturedImage.uri);
       const blob = await response.blob();
-      const imageName = `${eventName}/${Date.now()}.jpg`;
+      const imageName = `${eventId}/${userName}${Date.now()}.jpg`;
       const storageRef = ref(storage, imageName);
       console.log('Uploading image to Firebase Storage:', imageName);
       await uploadBytes(storageRef, blob);
       console.log('Image uploaded successfully!');
 
       const downloadURL = await getDownloadURL(storageRef);
-      const imageDocRef = doc(collection(db, 'events', eventName, 'images'));
+      const imageDocRef = doc(collection(db, 'events', eventId, 'images'));
       await setDoc(imageDocRef, {
         url: downloadURL,
         timestamp: Date.now(),
@@ -171,9 +171,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-end',
     paddingTop: 40,
-  },
-  controlButton: {
-    margin: 10,
   },
   captureButtonContainer: {
     flexDirection: 'row',

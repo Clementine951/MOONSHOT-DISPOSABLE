@@ -7,6 +7,7 @@ import { doc, setDoc, collection } from 'firebase/firestore';
 import { Linking, TouchableOpacity, Text } from 'react-native';
 
 function CreatePage({ navigation }) {
+  const [eventId, setEventId] = useState('');
   const [eventName, setEventName] = useState('');
   const [start, setStart] = useState('');
   const [duration, setDuration] = useState('');
@@ -19,16 +20,17 @@ function CreatePage({ navigation }) {
   const { setEventDetails, deviceId, setUserName: setContextUserName } = useContext(EventContext);
 
   useEffect(() => {
-    if (eventName && start && duration && reveal && numberOfPhotos && userName && acceptTerms) {
+    if (eventId, eventName && start && duration && reveal && numberOfPhotos && userName && acceptTerms) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [eventName, start, duration, reveal, numberOfPhotos, userName, acceptTerms]);
+  }, [eventId, eventName, start, duration, reveal, numberOfPhotos, userName, acceptTerms]);
 
   const handleValidate = async () => {
     let revealTime = null;
     const durationInHours = parseInt(duration, 10);
+    setEventId(eventId);
 
     if (reveal === 'revealEnd') {
       revealTime = new Date(Date.now() + durationInHours * 3600 * 1000);
@@ -44,9 +46,10 @@ function CreatePage({ navigation }) {
       }
     }
 
+    const eventId = `${eventName}_${Date.now()}`;
     const eventDetails = {
-      eventId: eventName, //todo Use event name as ID for simplicity
-      eventName: eventName,
+      eventId,
+      eventName,
       start,
       duration: durationInHours, // Store duration as number of hours
       reveal,
@@ -64,15 +67,15 @@ function CreatePage({ navigation }) {
       }
 
       // Save event details to Firestore
-      const eventDocRef = doc(db, 'events', eventName);
+      const eventDocRef = doc(db, 'events', eventId);
       await setDoc(eventDocRef, eventDetails);
 
       // Add the user as a participant
-      const participantDocRef = doc(collection(db, 'events', eventName, 'participants'), deviceId);
+      const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId);
       await setDoc(participantDocRef, {
         userId: deviceId,
         role: 'organizer',
-        name: userName, // This can be adjusted to include user name if available
+        name: userName,
       });
 
       // Save event details to context

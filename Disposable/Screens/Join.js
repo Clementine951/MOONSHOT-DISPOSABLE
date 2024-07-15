@@ -1,81 +1,107 @@
-import React , {useState} from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { View, Text, TextInput, Button, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { EventContext } from './EventContext';
+import { db } from '../firebaseConfig';
+import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
 
+function JoinPage({ navigation }) {
+  const [eventId, setEventId] = useState('');
+  const [userName, setUserName] = useState('');
+  const [eventDetails, setEventDetails] = useState(null);
+  const { setEventDetails: setContextEventDetails, setUserName: setContextUserName, deviceId } = useContext(EventContext);
 
-function JoinPage() {
-  const { control, handleSubmit, formState: { errors } } = useForm();
-  const [submittedData, setSubmittedData] = useState(null);
+  const fetchEventDetails = async (id) => {
+    try {
+      console.log("Fetching Event Details for ID: ", id);
+      const eventDocRef = doc(db, 'events', id.trim());
+      const eventDoc = await getDoc(eventDocRef);
+      if (eventDoc.exists()) {
+        console.log("Event Details: ", eventDoc.data());
+        setEventDetails(eventDoc.data());
+      } else {
+        console.error('Event not found for ID:', id);
+        Alert.alert('Error', 'Event not found. Please check the event ID.');
+      }
+    } catch (error) {
+      console.error('Error fetching event details:', error);
+      Alert.alert('Error', 'Failed to fetch event details. Please try again.');
+    }
+  };
 
-  const onSubmit = (data) => {
-    // Simulate form submission
-    console.log('Submitted Data:', data);
-    setSubmittedData(data);
+  const handleJoinEvent = async () => {
+    if (!userName) {
+      Alert.alert('Error', 'Please enter your name.');
+      return;
+    }
+
+    if (!eventId) {
+      Alert.alert('Error', 'Please enter a valid event ID.');
+      return;
+    }
+
+    try {
+      const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId);
+      await setDoc(participantDocRef, {
+        userId: deviceId,
+        role: 'participant',
+        name: userName,
+      });
+
+      setContextEventDetails(eventDetails);
+      setContextUserName(userName);
+
+      navigation.navigate('HomeScreen');
+    } catch (error) {
+      console.error('Error joining event:', error);
+      Alert.alert('Error', 'Failed to join event. Please try again.');
+    }
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        {/* Form Girdileri */}
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              style={styles.input}
-              placeholder="Your Name"
-            />
-          )}
-          name="name"
-          rules={{ required: 'You must enter your name' }}
-        />
-        {errors.name && <Text style={styles.errorText}>{errors.name.message}</Text>}
-
-        <Controller
-          control={control}
-          render={({ field }) => (
-            <TextInput
-              {...field}
-              style={styles.input}
-              placeholder="Email"
-            />
-          )}
-          name="email"
-          rules={{ required: 'You must enter your email', pattern: { value: /^\S+@\S+$/i, message: 'Enter a valid email address' } }}
-        />
-        {errors.email && <Text style={styles.errorText}>{errors.email.message}</Text>}
-
-        {/* Submit Butonu */}
-        <Button title="Submit" onPress={handleSubmit(onSubmit)} />
-
-        {submittedData && (
-          <View style={styles.submittedContainer}>
-            <Text style={styles.submittedTitle}>Submitted Data:</Text>
-            <Text>Name: {submittedData.name}</Text>
-            <Text>Email: {submittedData.email}</Text>
-          </View>
-        )}
-      </View>
-    </SafeAreaView>
+    <View style={styles.container}>
+      {eventDetails ? (
+        <>
+          <Text style={styles.label}>Event Name: {eventDetails.eventName}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Your name"
+            value={userName}
+            onChangeText={setUserName}
+          />
+          <Button title="Join Event" onPress={handleJoinEvent} />
+        </>
+      ) : (
+        <>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Event ID"
+            value={eventId}
+            onChangeText={(text) => setEventId(text.trim())}
+          />
+          <Button title="Fetch Event Details" onPress={() => fetchEventDetails(eventId)} />
+        </>
+      )}
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flex: 1,
+    padding: 20,
+    justifyContent: 'center',
+  },
+  label: {
+    fontSize: 18,
+    marginBottom: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
     borderWidth: 1,
-    marginBottom: 10,
-    padding: 8,
-  },
-  errorText: {
-    color: 'red',
-    marginBottom: 10,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 20,
   },
 });
-
 
 export default JoinPage;
