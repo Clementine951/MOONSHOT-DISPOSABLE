@@ -66,7 +66,7 @@ const CameraScreen = ({ route }) => {
       await setDoc(imageDocRef, {
         url: downloadURL,
         timestamp: Date.now(),
-        owner: userName
+        owner: userName, 
       });
       console.log('Image URL saved to Firestore');
 

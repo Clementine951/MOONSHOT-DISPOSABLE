@@ -10,7 +10,7 @@ import { EventContext } from './EventContext';
 const initialLayout = { width: Dimensions.get('window').width };
 
 const GalleryScreen = () => {
-  const { eventDetails, deviceId } = useContext(EventContext);
+  const { eventDetails, userName } = useContext(EventContext);
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },
@@ -20,7 +20,7 @@ const GalleryScreen = () => {
   const [personalImages, setPersonalImages] = useState([]);
 
   useEffect(() => {
-    if (!eventDetails.eventId) return;
+    if (!eventDetails?.eventId) return;
 
     const generalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
@@ -34,7 +34,7 @@ const GalleryScreen = () => {
     const personalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
     const unsubscribePersonal = onSnapshot(personalQuery, (snapshot) => {
-      const urls = snapshot.docs.filter(doc => doc.data().owner === deviceId).map(doc => doc.data().url);
+      const urls = snapshot.docs.filter(doc => doc.data().owner === userName).map(doc => doc.data().url);
       setPersonalImages(urls);
     }, (error) => {
       console.error('Error fetching personal images:', error);
@@ -44,7 +44,7 @@ const GalleryScreen = () => {
       unsubscribeGeneral();
       unsubscribePersonal();
     };
-  }, [eventDetails.eventId, deviceId]);
+  }, [eventDetails?.eventId, userName]);
 
   const renderImage = ({ item }) => (
     <View style={styles.imageContainer}>
@@ -58,7 +58,7 @@ const GalleryScreen = () => {
         data={personalImages}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderImage}
-        numColumns={3}
+        numColumns={4}
       />
     ) : (
       <View style={styles.noPhotosContainer}>
@@ -73,7 +73,7 @@ const GalleryScreen = () => {
         data={generalImages}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderImage}
-        numColumns={3}
+        numColumns={4}
       />
     ) : (
       <View style={styles.noPhotosContainer}>

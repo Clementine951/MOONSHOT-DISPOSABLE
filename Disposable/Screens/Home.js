@@ -39,7 +39,18 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  if (eventDetails && userRole === 'organizer') {
+  if (eventDetails && userRole === 'participant') {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+        <Text style={styles.eventInfo}>{userName}</Text>
+        <Text style={styles.eventInfo}>End of the event in </Text>
+        <TouchableOpacity style={styles.eventButton} onPress={clearEventDetails}>
+          <Text style={styles.eventButtonText}>Leave the event</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  } else if (eventDetails && userRole === 'organizer') {
     return (
       <View style={styles.container}>
         <Text style={styles.eventName}>{eventDetails.eventName}</Text>
@@ -52,12 +63,6 @@ function HomeScreen({ navigation }) {
         <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
           <Text style={styles.eventButtonText}>End the event</Text>
         </TouchableOpacity>
-      </View>
-    );
-  } else if (eventDetails && userRole === 'participant') {
-    return (
-      <View style={styles.container}>
-        <Text>Participant</Text>
       </View>
     );
   }
