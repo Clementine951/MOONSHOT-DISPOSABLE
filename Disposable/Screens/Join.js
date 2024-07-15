@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
@@ -8,12 +8,12 @@ function JoinPage({ navigation }) {
   const [eventId, setEventId] = useState('');
   const [userName, setUserName] = useState('');
   const [eventDetails, setEventDetails] = useState(null);
-  const { setEventDetails: setContextEventDetails, setUserName: setContextUserName, deviceId } = useContext(EventContext);
+  const { setEventDetails: setContextEventDetails, setUserName: setContextUserName, deviceId, setUserRole } = useContext(EventContext);
 
   const fetchEventDetails = async (id) => {
     try {
       console.log("Fetching Event Details for ID: ", id);
-      const eventDocRef = doc(db, 'events', id.trim());
+      const eventDocRef = doc(db, 'events', id);
       const eventDoc = await getDoc(eventDocRef);
       if (eventDoc.exists()) {
         console.log("Event Details: ", eventDoc.data());
@@ -49,6 +49,7 @@ function JoinPage({ navigation }) {
 
       setContextEventDetails(eventDetails);
       setContextUserName(userName);
+      setUserRole('participant');
 
       navigation.navigate('HomeScreen');
     } catch (error) {

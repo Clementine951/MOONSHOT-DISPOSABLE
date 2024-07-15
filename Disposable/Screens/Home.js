@@ -5,7 +5,7 @@ import { db } from '../firebaseConfig';
 import { deleteDoc, doc, collection } from 'firebase/firestore';
 
 function HomeScreen({ navigation }) {
-  const { eventDetails, clearEventDetails, userName } = useContext(EventContext);
+  const { eventDetails, clearEventDetails, userName, userRole } = useContext(EventContext);
 
   const handleEndEvent = async () => {
     Alert.alert(
@@ -39,7 +39,7 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  if (eventDetails) {
+  if (eventDetails && userRole === 'organizer') {
     return (
       <View style={styles.container}>
         <Text style={styles.eventName}>{eventDetails.eventName}</Text>
@@ -52,6 +52,12 @@ function HomeScreen({ navigation }) {
         <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
           <Text style={styles.eventButtonText}>End the event</Text>
         </TouchableOpacity>
+      </View>
+    );
+  } else if (eventDetails && userRole === 'participant') {
+    return (
+      <View style={styles.container}>
+        <Text>Participant</Text>
       </View>
     );
   }
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#FFF', // Adjust as needed
+    backgroundColor: '#FFF',
   },
   logo: {
     width: 200,

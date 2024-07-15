@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert, StyleSheet } from 'react-native';
-import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
+import { View, Alert } from 'react-native';
+import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, setDoc, collection } from 'firebase/firestore';
-import { Linking, TouchableOpacity, Text } from 'react-native';
 
 function CreatePage({ navigation }) {
-  const [eventId, setEventId] = useState('');
   const [eventName, setEventName] = useState('');
   const [start, setStart] = useState('');
   const [duration, setDuration] = useState('');
@@ -15,22 +13,20 @@ function CreatePage({ navigation }) {
   const [numberOfPhotos, setNumberOfPhotos] = useState('');
   const [userName, setUserName] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [acceptTerms, setAcceptTerms] = useState(false);
 
-  const { setEventDetails, deviceId, setUserName: setContextUserName } = useContext(EventContext);
+  const { setEventDetails, deviceId, setUserName: setContextUserName, setUserRole } = useContext(EventContext);
 
   useEffect(() => {
-    if (eventId, eventName && start && duration && reveal && numberOfPhotos && userName && acceptTerms) {
+    if (eventName && start && duration && reveal && numberOfPhotos && userName) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [eventId, eventName, start, duration, reveal, numberOfPhotos, userName, acceptTerms]);
+  }, [eventName, start, duration, reveal, numberOfPhotos, userName]);
 
   const handleValidate = async () => {
     let revealTime = null;
     const durationInHours = parseInt(duration, 10);
-    setEventId(eventId);
 
     if (reveal === 'revealEnd') {
       revealTime = new Date(Date.now() + durationInHours * 3600 * 1000);
@@ -47,13 +43,14 @@ function CreatePage({ navigation }) {
     }
 
     const eventId = `${eventName}_${Date.now()}`;
+
     const eventDetails = {
       eventId,
       eventName,
       start,
-      duration: durationInHours, // Store duration as number of hours
+      duration: durationInHours,
       reveal,
-      numberOfPhotos: parseInt(numberOfPhotos, 10), // Ensure number is parsed as integer
+      numberOfPhotos: parseInt(numberOfPhotos, 10),
       revealTime,
       userName,
     };
@@ -66,11 +63,9 @@ function CreatePage({ navigation }) {
         throw new Error('Event name or device ID is missing');
       }
 
-      // Save event details to Firestore
       const eventDocRef = doc(db, 'events', eventId);
       await setDoc(eventDocRef, eventDetails);
 
-      // Add the user as a participant
       const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId);
       await setDoc(participantDocRef, {
         userId: deviceId,
@@ -78,9 +73,9 @@ function CreatePage({ navigation }) {
         name: userName,
       });
 
-      // Save event details to context
       setEventDetails(eventDetails);
       setContextUserName(userName);
+      setUserRole('organizer');
 
       navigation.navigate('HomeScreen');
     } catch (error) {
@@ -156,22 +151,6 @@ function CreatePage({ navigation }) {
       </List.Section>
 
       <List.Section>
-        <View style={styles.checkboxContainer}>
-          <Checkbox
-            status={acceptTerms ? 'checked' : 'unchecked'}
-            onPress={() => setAcceptTerms(!acceptTerms)}
-          />
-          <Text onPress={() => setAcceptTerms(!acceptTerms)}>
-            I accept the 
-            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')}>
-              <Text style={styles.link}> Terms and Conditions </Text>
-            </TouchableOpacity>
-            and
-            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')}>
-              <Text style={styles.link}> Privacy Policy </Text>
-            </TouchableOpacity>
-          </Text>
-        </View>
         <Button
           mode="contained-tonal"
           buttonColor='#09745F'
@@ -186,17 +165,5 @@ function CreatePage({ navigation }) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  checkboxContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  link: {
-    color: '#09745F',
-    textDecorationLine: 'underline',
-  },
-});
 
 export default CreatePage;

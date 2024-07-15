@@ -8,6 +8,7 @@ export const EventProvider = ({ children }) => {
   const [eventDetails, setEventDetails] = useState(null);
   const [deviceId, setDeviceId] = useState(null);
   const [userName, setUserName] = useState('');
+  const [userRole, setUserRole] = useState('');
 
   useEffect(() => {
     const loadDeviceId = async () => {
@@ -29,6 +30,8 @@ export const EventProvider = ({ children }) => {
         const savedEventDetails = await AsyncStorage.getItem('eventDetails');
         if (savedEventDetails) {
           setEventDetails(JSON.parse(savedEventDetails));
+        } else {
+          setEventDetails(null);
         }
         console.log('Loaded event details:', savedEventDetails);
       } catch (error) {
@@ -41,12 +44,14 @@ export const EventProvider = ({ children }) => {
         const savedUserName = await AsyncStorage.getItem('userName');
         if (savedUserName) {
           setUserName(savedUserName);
+        } else {
+          setUserName('');
         }
         console.log('Loaded user name:', savedUserName);
       } catch (error){
         console.error('Failed to load user name:', error);
       }
-    }
+    };
 
     loadDeviceId();
     loadEventDetails();
@@ -90,15 +95,17 @@ export const EventProvider = ({ children }) => {
   const clearEventDetails = async () => {
     try {
       await AsyncStorage.removeItem('eventDetails');
+      await AsyncStorage.removeItem('userName');
       setEventDetails(null);
-      console.log('Cleared event details');
+      setUserName('');
+      console.log('Cleared event details and user name');
     } catch (error) {
-      console.error('Failed to clear event details:', error);
+      console.error('Failed to clear event details and user name:', error);
     }
   };
 
   return (
-    <EventContext.Provider value={{ eventDetails, setEventDetails, clearEventDetails, deviceId, userName, setUserName }}>
+    <EventContext.Provider value={{ eventDetails, setEventDetails, clearEventDetails, deviceId, userName, setUserName, userRole, setUserRole }}>
       {children}
     </EventContext.Provider>
   );
