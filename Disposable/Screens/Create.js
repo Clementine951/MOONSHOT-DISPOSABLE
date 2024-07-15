@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert } from 'react-native';
-import { TextInput, List, Button, SegmentedButtons } from 'react-native-paper';
+import { View, Alert, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, setDoc, collection } from 'firebase/firestore';
@@ -13,16 +13,18 @@ function CreatePage({ navigation }) {
   const [numberOfPhotos, setNumberOfPhotos] = useState('');
   const [userName, setUserName] = useState('');
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [acceptTerms, setAcceptTerms] = useState(false);
+
 
   const { setEventDetails, deviceId, setUserName: setContextUserName, setUserRole } = useContext(EventContext);
 
   useEffect(() => {
-    if (eventName && start && duration && reveal && numberOfPhotos && userName) {
+    if (eventName && start && duration && reveal && numberOfPhotos && userName && acceptTerms) {
       setIsButtonDisabled(false);
     } else {
       setIsButtonDisabled(true);
     }
-  }, [eventName, start, duration, reveal, numberOfPhotos, userName]);
+  }, [eventName, start, duration, reveal, numberOfPhotos, userName, acceptTerms]);
 
   const handleValidate = async () => {
     let revealTime = null;
@@ -151,6 +153,22 @@ function CreatePage({ navigation }) {
       </List.Section>
 
       <List.Section>
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            status={acceptTerms ? 'checked' : 'unchecked'}
+            onPress={() => setAcceptTerms(!acceptTerms)}
+          />
+          <Text onPress={() => setAcceptTerms(!acceptTerms)}>
+            I accept the 
+            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')}>
+              <Text style={styles.link}> Terms and Conditions </Text>
+            </TouchableOpacity>
+            and
+            <TouchableOpacity onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')}>
+              <Text style={styles.link}> Privacy Policy </Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
         <Button
           mode="contained-tonal"
           buttonColor='#09745F'
@@ -165,5 +183,17 @@ function CreatePage({ navigation }) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  link: {
+    color: '#09745F',
+    textDecorationLine: 'underline',
+  },
+});
 
 export default CreatePage;

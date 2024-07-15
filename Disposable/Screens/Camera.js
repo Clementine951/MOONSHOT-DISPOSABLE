@@ -155,9 +155,9 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     borderRadius: 4,
-    backgroundColor: '#000',
-    opacity: 0.7,
-    justifyContent: 'center',
+    // backgroundColor: '#000',
+    // opacity: 0.7,
+    justifyContent: 'space-between',
   },
   controlButtonText: {
     color: '#fff',
