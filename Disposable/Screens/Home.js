@@ -1,12 +1,48 @@
-// Home.js
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
-import { deleteDoc, doc, collection } from 'firebase/firestore';
+import { deleteDoc, doc, collection, getDocs, updateDoc } from 'firebase/firestore';
 
 function HomeScreen({ navigation }) {
-  const { eventDetails, clearEventDetails, userName, userRole } = useContext(EventContext);
+  const { eventDetails, clearEventDetails, userName, userRole, setEventDetails } = useContext(EventContext);
+  const [participantCount, setParticipantCount] = useState(0);
+  const [countdown, setCountdown] = useState(null);
+
+  useEffect(() => {
+    const fetchParticipants = async () => {
+      if (eventDetails) {
+        const participantsRef = collection(db, 'events', eventDetails.eventId, 'participants');
+        const snapshot = await getDocs(participantsRef);
+        setParticipantCount(snapshot.size);
+      }
+    };
+
+    fetchParticipants();
+
+    const updateCountdown = () => {
+      if (eventDetails?.revealTime) {
+        const now = new Date();
+        const endTime = new Date(eventDetails.revealTime);
+        const diff = endTime - now;
+
+        if (diff <= 0) {
+          setCountdown('00:00:00');
+        } else {
+          const hours = String(Math.floor(diff / 1000 / 60 / 60)).padStart(2, '0');
+          const minutes = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
+          const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
+          setCountdown(`${hours}:${minutes}:${seconds}`);
+        }
+      }
+    };
+
+    if (eventDetails && eventDetails.revealTime) {
+      updateCountdown(); // Initial call to set the countdown immediately
+      const intervalId = setInterval(updateCountdown, 1000); // Update every second
+      return () => clearInterval(intervalId);
+    }
+  }, [eventDetails]);
 
   const handleEndEvent = async () => {
     Alert.alert(
@@ -22,12 +58,19 @@ function HomeScreen({ navigation }) {
           onPress: async () => {
             try {
               const eventDocRef = doc(db, 'events', eventDetails.eventId);
-              await deleteDoc(eventDocRef);
+              const oneHourFromNow = new Date(Date.now() + 60 * 60 * 1000);
 
-              const participantsRef = collection(db, 'events', eventDetails.eventId, 'participants');
-              // Use batch delete for participants and other related data
+              // Update the event document with the new revealTime
+              await updateDoc(eventDocRef, {
+                revealTime: oneHourFromNow.toISOString() // Ensure the time is stored as a string in ISO format
+              });
 
-              clearEventDetails();
+              // Update the local eventDetails with the new revealTime
+              setEventDetails((prevDetails) => ({
+                ...prevDetails,
+                revealTime: oneHourFromNow.toISOString()
+              }));
+
               navigation.navigate('HomeScreen');
             } catch (error) {
               console.error('Error ending event:', error);
@@ -40,48 +83,71 @@ function HomeScreen({ navigation }) {
     );
   };
 
-  if (eventDetails && userRole === 'organizer') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
-        <Text style={styles.eventInfo}>{userName}</Text>
-        <Text style={styles.eventInfo}>XX participants</Text>
-        <Text style={styles.eventInfo}>{eventDetails.numberOfPhotos} photos taken</Text>
-        <TouchableOpacity style={styles.eventButton}>
-          <Text style={styles.eventButtonText}>Share event</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
-          <Text style={styles.eventButtonText}>End the event</Text>
-        </TouchableOpacity>
-      </View>
+  const handleLeaveEvent = () => {
+    Alert.alert(
+      "Leave Event",
+      "You won't be able to add more photos, but your already saved photos are safe. Are you sure you want to leave?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Leave",
+          onPress: async () => {
+            clearEventDetails();
+            navigation.navigate('HomeScreen');
+          }
+        }
+      ],
+      { cancelable: false }
     );
-  } else if (eventDetails && userRole === 'participant') {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.eventName}>{eventDetails.eventName}</Text>
-        <Text style={styles.eventInfo}>{userName}</Text>
-        <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
-          <Text style={styles.eventButtonText}>Leave Event</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  };
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/logo.png')} style={styles.logo} />
-      <TouchableOpacity 
-        style={styles.createButton} 
-        onPress={() => navigation.navigate('CreatePage')}
-      >
-        <Text style={styles.createButtonText}>Create an event</Text>
-      </TouchableOpacity>
-      <TouchableOpacity 
-        style={styles.joinButton} 
-        onPress={() => navigation.navigate('JoinPage')}
-      >
-        <Text style={styles.joinButtonText}>Join an event</Text>
-      </TouchableOpacity>
+      {eventDetails && userRole === 'organizer' && (
+        <>
+          <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+          <Text style={styles.eventInfo}>{userName}</Text>
+          <Text style={styles.eventInfo}>{participantCount} participants</Text>
+          <Text style={styles.eventInfo}>{countdown}</Text>
+          <TouchableOpacity style={styles.eventButton}>
+            <Text style={styles.eventButtonText}>Share event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
+            <Text style={styles.eventButtonText}>End the event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.eventButton} onPress={handleLeaveEvent}>
+            <Text style={styles.eventButtonText}>Leave the event</Text>
+          </TouchableOpacity>
+        </>
+      )}
+      {eventDetails && userRole === 'participant' && (
+        <>
+          <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+          <Text style={styles.eventInfo}>{userName}</Text>
+          <Text style={styles.eventInfo}>{participantCount} participants</Text>
+          <Text style={styles.eventInfo}>{countdown}</Text>
+          <TouchableOpacity style={styles.eventButton} onPress={handleLeaveEvent}>
+            <Text style={styles.eventButtonText}>Leave the event</Text>
+          </TouchableOpacity>
+        </>
+      )}
+      {!eventDetails && (
+        <>
+          <Image source={require('../assets/logo.png')} style={styles.logo} />
+          <TouchableOpacity 
+            style={styles.createButton} 
+            onPress={() => navigation.navigate('CreatePage')}
+          >
+            <Text style={styles.createButtonText}>Create an event</Text>
+          </TouchableOpacity>
+          <TouchableOpacity 
+            style={styles.joinButton} 
+            onPress={() => navigation.navigate('JoinPage')}
+          >
+            <Text style={styles.joinButtonText}>Join an event</Text>
+          </TouchableOpacity>
+        </>
+      )}
     </View>
   );
 }
@@ -102,7 +168,7 @@ const styles = StyleSheet.create({
   },
   createButton: {
     marginBottom: 20,
-    padding: 15,
+    padding: 10,
     backgroundColor: '#E6E6FA',
     borderRadius: 10,
     width: '80%',
@@ -114,7 +180,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   joinButton: {
-    padding: 15,
+    padding: 10,
     backgroundColor: '#E6E6FA',
     borderRadius: 10,
     width: '80%',
@@ -138,9 +204,9 @@ const styles = StyleSheet.create({
   },
   eventButton: {
     marginTop: 20,
-    padding: 15,
+    padding: 10,
     backgroundColor: '#E8D7FF',
-    borderRadius: 5,
+    borderRadius: 10,
     width: '80%',
   },
   eventButtonText: {

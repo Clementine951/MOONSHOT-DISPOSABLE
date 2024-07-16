@@ -36,7 +36,7 @@ function CreatePage({ navigation }) {
         return;
       }
     } else if (reveal === 'revealNow'){
-      revealTime = new Date(Date.now());
+      revealTime = new Date(Date.now() + durationInHours * 3600 * 1000); // Set reveal time to be the end of the event duration
       if (isNaN(revealTime.getTime())) {
         Alert.alert('Error', 'Invalid reveal time calculated.');
         return;
@@ -52,7 +52,7 @@ function CreatePage({ navigation }) {
       duration: durationInHours,
       reveal,
       numberOfPhotos: parseInt(numberOfPhotos, 10),
-      revealTime,
+      revealTime: revealTime.toISOString(), // Ensure the time is stored as a string in ISO format
       userName,
     };
 
@@ -150,23 +150,15 @@ function CreatePage({ navigation }) {
         />
       </List.Section>
 
-      <View style={styles.checkboxContainer}>
+      <TouchableOpacity onPress={() => setAcceptTerms(!acceptTerms)} style={styles.checkboxContainer}>
         <Checkbox
           status={acceptTerms ? 'checked' : 'unchecked'}
-          buttonColor='#09745F'
           onPress={() => setAcceptTerms(!acceptTerms)}
         />
         <Text style={styles.checkboxLabel}>
-          I accept the{' '}
-          <Text onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')} style={styles.link}>
-            Terms and Conditions
-          </Text>{' '}
-          and{' '}
-          <Text onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')} style={styles.link}>
-            Privacy Policy
-          </Text>
+          Accept <Text style={styles.link} onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/terms-co')}>Terms and Conditions</Text> and <Text style={styles.link} onPress={() => Linking.openURL('https://sites.google.com/view/disposable-app/privacy')}>Privacy Policy</Text>
         </Text>
-      </View>
+      </TouchableOpacity>
 
       <Button
         mode="contained"

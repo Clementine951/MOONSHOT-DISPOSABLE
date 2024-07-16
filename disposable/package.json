@@ -22,6 +22,7 @@
     "expo-file-system": "~17.0.1",
     "expo-media-library": "~16.0.4",
     "expo-radio-button": "^1.0.8",
+    "expo-screen-orientation": "^7.0.5",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.12.2",
     "punycode": "^2.3.1",

@@ -5,15 +5,16 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { storage, db } from '../firebaseConfig';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, doc, setDoc } from 'firebase/firestore';
-import { EventContext } from './EventContext'; // Ensure EventContext is imported correctly
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { EventContext } from './EventContext'; 
 
 const CameraScreen = ({ route }) => {
-  const { eventId, numberOfPhotos } = route.params || {}; // Destructuring route.params with default values
-  const { deviceId, userName } = useContext(EventContext); // Access deviceId from EventContext
+  const { eventId, numberOfPhotos } = route.params || {}; 
+  const { deviceId, userName } = useContext(EventContext); 
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [photosRemaining, setPhotosRemaining] = useState(parseInt(numberOfPhotos, 10) || 0);  // Initialize photosRemaining with numberOfPhotos
+  const [photosRemaining, setPhotosRemaining] = useState(0); 
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   let cameraRef = null;
@@ -26,10 +27,16 @@ const CameraScreen = ({ route }) => {
   }, []);
 
   useEffect(() => {
-    console.log(`Initial number of photos: ${numberOfPhotos}`);
-    console.log(`Parsed number of photos: ${parseInt(numberOfPhotos, 10)}`);
-    console.log(`Event: ${eventId}`);
-    setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0);
+    const fetchPhotosRemaining = async () => {
+      const savedPhotosRemaining = await AsyncStorage.getItem(`photosRemaining_${eventId}`);
+      if (savedPhotosRemaining !== null) {
+        setPhotosRemaining(parseInt(savedPhotosRemaining, 10));
+      } else {
+        setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0);
+      }
+    };
+
+    fetchPhotosRemaining();
   }, [numberOfPhotos, eventId]);
 
   const takePicture = async () => {
@@ -37,9 +44,11 @@ const CameraScreen = ({ route }) => {
     const photo = await cameraRef.takePictureAsync();
     setPreviewVisible(true);
     setCapturedImage(photo);
-    setPhotosRemaining((prev) => prev - 1);  // Decrease the number of photos remaining
-    // savePhoto(capturedImage);
-
+    setPhotosRemaining((prev) => {
+      const newPhotosRemaining = prev - 1;
+      AsyncStorage.setItem(`photosRemaining_${eventId}`, newPhotosRemaining.toString());
+      return newPhotosRemaining;
+    });
   };
 
   const savePhoto = async () => {
@@ -92,7 +101,11 @@ const CameraScreen = ({ route }) => {
   const reTake = () => {
     setPreviewVisible(false);
     setCapturedImage(null);
-    setPhotosRemaining((prev) => prev + 1);
+    setPhotosRemaining((prev) => {
+      const newPhotosRemaining = prev + 1;
+      AsyncStorage.setItem(`photosRemaining_${eventId}`, newPhotosRemaining.toString());
+      return newPhotosRemaining;
+    });
   }
 
   if (hasPermission === null) {
