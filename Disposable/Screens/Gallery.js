@@ -21,15 +21,19 @@ const GalleryScreen = () => {
   const [personalImages, setPersonalImages] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [modalImages, setModalImages] = useState([]);
 
   useEffect(() => {
     if (!eventDetails?.eventId) return;
+
+    console.log('Fetching images for event:', eventDetails.eventId);
 
     const generalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
     const unsubscribeGeneral = onSnapshot(generalQuery, (snapshot) => {
       const images = snapshot.docs.map(doc => ({ url: doc.data().url, owner: doc.data().owner }));
       setGeneralImages(images);
+      console.log('General images fetched:', images);
     }, (error) => {
       console.error('Error fetching general images:', error);
     });
@@ -39,8 +43,9 @@ const GalleryScreen = () => {
     const unsubscribePersonal = onSnapshot(personalQuery, (snapshot) => {
       const images = snapshot.docs
         .map(doc => ({ url: doc.data().url, owner: doc.data().owner }))
-        .filter(image => image.owner === userName); // Ensure we are filtering by the current user's name
+        .filter(image => image.owner === userName);
       setPersonalImages(images);
+      console.log('Personal images fetched for user', userName, ':', images);
     }, (error) => {
       console.error('Error fetching personal images:', error);
     });
@@ -51,8 +56,9 @@ const GalleryScreen = () => {
     };
   }, [eventDetails?.eventId, userName]);
 
-  const openModal = (index) => {
+  const openModal = (index, images) => {
     setCurrentImageIndex(index);
+    setModalImages(images);
     setIsModalVisible(true);
   };
 
@@ -60,8 +66,8 @@ const GalleryScreen = () => {
     setIsModalVisible(false);
   };
 
-  const renderImage = ({ item, index }) => (
-    <TouchableOpacity onPress={() => openModal(index)} style={styles.imageContainer}>
+  const renderImage = ({ item, index, images }) => (
+    <TouchableOpacity onPress={() => openModal(index, images)} style={styles.imageContainer}>
       <Image source={{ uri: item.url }} style={styles.image} />
     </TouchableOpacity>
   );
@@ -73,7 +79,7 @@ const GalleryScreen = () => {
           <MaterialIcons name="close" size={30} color="#FFF" />
         </TouchableOpacity>
         <FlatList
-          data={generalImages}
+          data={modalImages}
           horizontal
           pagingEnabled
           initialScrollIndex={currentImageIndex}
@@ -120,7 +126,7 @@ const GalleryScreen = () => {
       <FlatList
         data={personalImages}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={renderImage}
+        renderItem={({ item, index }) => renderImage({ item, index, images: personalImages })}
         numColumns={4}
       />
     ) : (
@@ -135,7 +141,7 @@ const GalleryScreen = () => {
       <FlatList
         data={generalImages}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={renderImage}
+        renderItem={({ item, index }) => renderImage({ item, index, images: generalImages })}
         numColumns={4}
       />
     ) : (
