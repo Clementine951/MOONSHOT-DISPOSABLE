@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Clipboard } from 'react-native';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { deleteDoc, doc, collection, getDocs, updateDoc } from 'firebase/firestore';
@@ -101,6 +101,11 @@ function HomeScreen({ navigation }) {
     );
   };
 
+  const handleShareEvent = () => {
+    Clipboard.setString(eventDetails.eventId);
+    Alert.alert('Copied to Clipboard', 'Event ID has been copied to your clipboard.');
+  };
+
   return (
     <View style={styles.container}>
       {eventDetails && userRole === 'organizer' && (
@@ -111,7 +116,7 @@ function HomeScreen({ navigation }) {
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
           <Text style={styles.eventInfo}>{countdown}</Text>
           <TouchableOpacity style={styles.eventButton}>
-            <Text style={styles.eventButtonText}>Share event</Text>
+            <Text style={styles.eventButtonText} onPress={handleShareEvent}>Share event</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
             <Text style={styles.eventButtonText}>End the event</Text>
