@@ -10,16 +10,18 @@ function HomeScreen({ navigation }) {
   const [countdown, setCountdown] = useState(null);
 
   useEffect(() => {
+    // Fetch participants when event details change
     const fetchParticipants = async () => {
       if (eventDetails) {
         const participantsRef = collection(db, 'events', eventDetails.eventId, 'participants');
         const snapshot = await getDocs(participantsRef);
-        setParticipantCount(snapshot.size);
+        setParticipantCount(snapshot.size); // Set the number of participants
       }
     };
 
     fetchParticipants();
 
+    // Function to update the countdown timer
     const updateCountdown = () => {
       if (eventDetails?.revealTime) {
         const now = new Date();
@@ -32,7 +34,7 @@ function HomeScreen({ navigation }) {
           const hours = String(Math.floor(diff / 1000 / 60 / 60)).padStart(2, '0');
           const minutes = String(Math.floor((diff / 1000 / 60) % 60)).padStart(2, '0');
           const seconds = String(Math.floor((diff / 1000) % 60)).padStart(2, '0');
-          setCountdown(`${hours}:${minutes}:${seconds}`);
+          setCountdown(`${hours}:${minutes}:${seconds}`); // Set the countdown timer
         }
       }
     };
@@ -40,10 +42,11 @@ function HomeScreen({ navigation }) {
     if (eventDetails && eventDetails.revealTime) {
       updateCountdown(); // Initial call to set the countdown immediately
       const intervalId = setInterval(updateCountdown, 1000); // Update every second
-      return () => clearInterval(intervalId);
+      return () => clearInterval(intervalId); // Cleanup interval on unmount
     }
   }, [eventDetails]);
 
+  // Function to handle ending the event
   const handleEndEvent = async () => {
     Alert.alert(
       "Ending the Event Now",
@@ -83,6 +86,7 @@ function HomeScreen({ navigation }) {
     );
   };
 
+  // Function to handle leaving the event
   const handleLeaveEvent = () => {
     Alert.alert(
       "Leave Event",
@@ -101,8 +105,9 @@ function HomeScreen({ navigation }) {
     );
   };
 
+  // Function to handle sharing the event
   const handleShareEvent = () => {
-    Clipboard.setString(eventDetails.eventId);
+    Clipboard.setString(eventDetails.eventId); // Copy event ID to clipboard
     Alert.alert('Copied to Clipboard', 'Event ID has been copied to your clipboard.');
   };
 
@@ -111,7 +116,7 @@ function HomeScreen({ navigation }) {
       {eventDetails && userRole === 'organizer' && (
         <>
           <Text style={styles.eventName}>{eventDetails.eventName}</Text>
-          {/* <Text style={styles.eventInfo}>{eventDetails.eventId}</Text> */}
+          {/* Display user name and participant count */}
           <Text style={styles.eventInfo}>{userName}</Text>
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
           <Text style={styles.eventInfo}>{countdown}</Text>
@@ -158,6 +163,7 @@ function HomeScreen({ navigation }) {
   );
 }
 
+// Define styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -10,7 +10,7 @@ import { EventContext } from './EventContext';
 
 const CameraScreen = ({ route }) => {
   const { eventId, numberOfPhotos } = route.params || {}; 
-  const { deviceId, userName } = useContext(EventContext); 
+  const { userName } = useContext(EventContext); 
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);

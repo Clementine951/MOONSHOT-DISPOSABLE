@@ -7,43 +7,48 @@ import { db } from '../firebaseConfig';
 import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
 
 function JoinPage({ navigation }) {
+  // State variables
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
   const [eventId, setEventId] = useState('');
   const [userName, setUserName] = useState('');
   const [eventDetails, setEventDetails] = useState(null);
-  const [inputMode, setInputMode] = useState(''); // 'scan' or 'manual'
-  const { setEventDetails: setContextEventDetails, setUserName: setContextUserName, deviceId, setUserRole } = useContext(EventContext);
+  const [inputMode, setInputMode] = useState('');
+
+  // Context to manage global state
+  const { 
+    setEventDetails: setContextEventDetails, 
+    setUserName: setContextUserName, 
+    deviceId, 
+    setUserRole 
+  } = useContext(EventContext);
 
   useEffect(() => {
+    // Request camera permissions on component mount
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === 'granted'); // Update permission state
     })();
   }, []);
 
   const fetchEventDetails = async (id) => {
+    // Function to fetch event details from Firestore
     try {
-      console.log("Fetching Event Details for ID: ", id);
-      const trimmedId = id.trim();
-      console.log("Trimmed Event ID: ", trimmedId);
-      const eventDocRef = doc(db, 'events', trimmedId);
-      console.log("Event Doc Ref: ", eventDocRef.path);
-      const eventDoc = await getDoc(eventDocRef);
+      const trimmedId = id.trim(); // Trim whitespace from entered event ID
+      const eventDocRef = doc(db, 'events', trimmedId); // Reference to event document in Firestore
+      const eventDoc = await getDoc(eventDocRef); // Fetch event document
       if (eventDoc.exists()) {
-        console.log("Event Details: ", eventDoc.data());
-        setEventDetails(eventDoc.data());
+        setEventDetails(eventDoc.data()); // Update event details state
       } else {
-        console.error('Event not found for ID:', trimmedId);
         Alert.alert('Error', 'Event not found. Please check the event ID.');
       }
     } catch (error) {
-      console.error('Error fetching event details:', error);
       Alert.alert('Error', 'Failed to fetch event details. Please try again.');
     }
   };
 
   const handleJoinEvent = async () => {
+    // Function to handle joining the event
     if (!userName) {
       Alert.alert('Error', 'Please enter your name / pseudo.');
       return;
@@ -55,32 +60,33 @@ function JoinPage({ navigation }) {
     }
 
     try {
-      const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId);
+      const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId); // Reference to participant document
       await setDoc(participantDocRef, {
         userId: deviceId,
         role: 'participant',
         name: userName,
       });
 
-      setContextEventDetails(eventDetails);
-      setContextUserName(userName);
-      setUserRole('participant');
+      setContextEventDetails(eventDetails); // Update global event details state
+      setContextUserName(userName); // Update global user name state
+      setUserRole('participant'); // Update global user role state
 
-      navigation.navigate('HomeScreen');
+      navigation.navigate('HomeScreen'); // Navigate to HomeScreen
     } catch (error) {
-      console.error('Error joining event:', error);
       Alert.alert('Error', 'Failed to join event. Please try again.');
     }
   };
 
   const handleInputModeChange = (mode) => {
+    // Function to handle changing input mode
     setInputMode(mode);
-    setEventId('');
-    setEventDetails(null);
-    setUserName('');
-    setScanned(false);
+    setEventId(''); // Reset event ID
+    setEventDetails(null); // Reset event details
+    setUserName(''); // Reset user name
+    setScanned(false); // Reset scanned state
   };
 
+  // If input mode is 'scan', render the camera view for scanning QR codes
   if (inputMode === 'scan') {
     return (
       <View style={{ flex: 1 }}>
@@ -122,7 +128,7 @@ function JoinPage({ navigation }) {
         </>
       ) : (
         <>
-          {/* <Button title="Scan QR Code" onPress={() => handleInputModeChange('scan')} /> */}
+          {/* Option to scan QR Code or manually enter event ID */}
           <TextInput
             label="Enter the event ID"
             value={eventId}
@@ -142,6 +148,7 @@ function JoinPage({ navigation }) {
   );
 }
 
+// Define styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,

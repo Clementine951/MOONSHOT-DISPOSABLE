@@ -8,11 +8,15 @@ import { EventContext } from './EventContext';
 import * as FileSystem from 'expo-file-system';
 import * as MediaLibrary from 'expo-media-library';
 
+// Define initial layout for tab view
 const initialLayout = { width: Dimensions.get('window').width };
 
 const GalleryScreen = () => {
+
+  // Use EventContext to access event details and user information
   const { eventDetails, userName } = useContext(EventContext);
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(0); // State for the currently selected tab index
+  // Define routes for tabs
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },
     { key: 'general', title: 'General' }
@@ -24,12 +28,15 @@ const GalleryScreen = () => {
   const [modalImages, setModalImages] = useState([]);
 
   useEffect(() => {
+    // Fetch images when event details or userName change
     if (!eventDetails?.eventId) return;
 
     console.log('Fetching images for event:', eventDetails.eventId);
 
+    // Query to fetch general images
     const generalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
+    // Subscribe to changes in general images
     const unsubscribeGeneral = onSnapshot(generalQuery, (snapshot) => {
       const images = snapshot.docs.map(doc => ({ url: doc.data().url, owner: doc.data().owner }));
       setGeneralImages(images);
@@ -38,40 +45,47 @@ const GalleryScreen = () => {
       console.error('Error fetching general images:', error);
     });
 
+    // Query to fetch personal images
     const personalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
+    // Subscribe to changes in personal images
     const unsubscribePersonal = onSnapshot(personalQuery, (snapshot) => {
       const images = snapshot.docs
         .map(doc => ({ url: doc.data().url, owner: doc.data().owner }))
-        .filter(image => image.owner === userName);
+        .filter(image => image.owner === userName); // Filter images by current user's name
       setPersonalImages(images);
       console.log('Personal images fetched for user', userName, ':', images);
     }, (error) => {
       console.error('Error fetching personal images:', error);
     });
 
+    // Cleanup subscriptions on unmount
     return () => {
       unsubscribeGeneral();
       unsubscribePersonal();
     };
   }, [eventDetails?.eventId, userName]);
 
+  // Open modal with selected image
   const openModal = (index, images) => {
     setCurrentImageIndex(index);
     setModalImages(images);
     setIsModalVisible(true);
   };
 
+  // Close modal
   const closeModal = () => {
     setIsModalVisible(false);
   };
 
+  // Render each image in the FlatList
   const renderImage = ({ item, index, images }) => (
     <TouchableOpacity onPress={() => openModal(index, images)} style={styles.imageContainer}>
       <Image source={{ uri: item.url }} style={styles.image} />
     </TouchableOpacity>
   );
 
+  // Render content inside modal
   const renderModalContent = () => (
     <Modal visible={isModalVisible} transparent={true} onRequestClose={closeModal}>
       <View style={styles.modalContainer}>
@@ -98,6 +112,7 @@ const GalleryScreen = () => {
     </Modal>
   );
 
+  // Download all general images to device gallery
   const downloadImages = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
     if (status !== 'granted') {
@@ -121,6 +136,7 @@ const GalleryScreen = () => {
     }
   };
 
+  // Component to render personal tab
   const PersonalRoute = () => (
     personalImages.length > 0 ? (
       <FlatList
@@ -136,6 +152,7 @@ const GalleryScreen = () => {
     )
   );
 
+  // Component to render general tab
   const GeneralRoute = () => (
     generalImages.length > 0 ? (
       <FlatList
