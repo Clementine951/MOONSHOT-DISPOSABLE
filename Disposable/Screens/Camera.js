@@ -10,7 +10,7 @@ import { EventContext } from './EventContext';
 
 const CameraScreen = ({ route }) => {
   const { eventId, numberOfPhotos } = route.params || {}; 
-  const { userName } = useContext(EventContext); 
+  const { deviceId, userName } = useContext(EventContext); 
   const [hasPermission, setHasPermission] = useState(null);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
@@ -20,38 +20,42 @@ const CameraScreen = ({ route }) => {
   let cameraRef = null;
 
   useEffect(() => {
+    // Request camera permissions on component mount
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === 'granted');
+      setHasPermission(status === 'granted'); // Update permission state
     })();
   }, []);
 
   useEffect(() => {
+    // Fetch remaining photos from AsyncStorage
     const fetchPhotosRemaining = async () => {
-      const savedPhotosRemaining = await AsyncStorage.getItem(`photosRemaining_${eventId}`);
+      const savedPhotosRemaining = await AsyncStorage.getItem(`photosRemaining_${eventId}_${deviceId}`);
       if (savedPhotosRemaining !== null) {
-        setPhotosRemaining(parseInt(savedPhotosRemaining, 10));
+        setPhotosRemaining(parseInt(savedPhotosRemaining, 10)); // Set remaining photos from storage
       } else {
-        setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0);
+        setPhotosRemaining(parseInt(numberOfPhotos, 10) || 0); // Set initial remaining photos
       }
     };
 
     fetchPhotosRemaining();
-  }, [numberOfPhotos, eventId]);
+  }, [numberOfPhotos, eventId, deviceId]);
 
   const takePicture = async () => {
-    if (!cameraRef) return;
-    const photo = await cameraRef.takePictureAsync();
-    setPreviewVisible(true);
-    setCapturedImage(photo);
+    // Function to take a picture
+    if (!cameraRef || photosRemaining <= 0) return; // Block camera if no photos remaining
+    const photo = await cameraRef.takePictureAsync(); // Capture photo
+    setPreviewVisible(true); // Show image preview
+    setCapturedImage(photo); // Store captured image
     setPhotosRemaining((prev) => {
       const newPhotosRemaining = prev - 1;
-      AsyncStorage.setItem(`photosRemaining_${eventId}`, newPhotosRemaining.toString());
+      AsyncStorage.setItem(`photosRemaining_${eventId}_${deviceId}`, newPhotosRemaining.toString()); // Update remaining photos in storage
       return newPhotosRemaining;
     });
   };
 
   const savePhoto = async () => {
+    // Function to save photo
     if (!capturedImage || !capturedImage.uri) {
       console.log('No image to save');
       return;
@@ -63,56 +67,59 @@ const CameraScreen = ({ route }) => {
         return;
       }
       const response = await fetch(capturedImage.uri);
-      const blob = await response.blob();
-      const imageName = `${eventId}/${userName}${Date.now()}.jpg`;
-      const storageRef = ref(storage, imageName);
+      const blob = await response.blob(); // Convert image to blob
+      const imageName = `${eventId}/${userName}${Date.now()}.jpg`; // Generate image name
+      const storageRef = ref(storage, imageName); // Create storage reference
       console.log('Uploading image to Firebase Storage:', imageName);
-      await uploadBytes(storageRef, blob);
+      await uploadBytes(storageRef, blob); // Upload image to Firebase storage
       console.log('Image uploaded successfully!');
 
-      const downloadURL = await getDownloadURL(storageRef);
-      const imageDocRef = doc(collection(db, 'events', eventId, 'images'));
+      const downloadURL = await getDownloadURL(storageRef); // Get image URL
+      const imageDocRef = doc(collection(db, 'events', eventId, 'images')); // Create Firestore document reference
       await setDoc(imageDocRef, {
         url: downloadURL,
         timestamp: Date.now(),
-        owner: userName, 
+        owner: userName, // Save image URL and metadata to Firestore
       });
       console.log('Image URL saved to Firestore');
 
-      setPreviewVisible(false);
-      setCapturedImage(null);
+      setPreviewVisible(false); // Hide image preview
+      setCapturedImage(null); // Clear captured image state
     } catch (error) {
       console.error('Error uploading image:', error);
     }
   };
 
   const toggleCameraType = () => {
+    // Function to toggle camera type (front/back)
     setType((prevType) =>
       prevType === Camera.Constants.Type.back ? Camera.Constants.Type.front : Camera.Constants.Type.back
     );
   };
 
   const toggleFlash = () => {
+    // Function to toggle flash mode (on/off)
     setFlash((prevFlash) =>
       prevFlash === Camera.Constants.FlashMode.off ? Camera.Constants.FlashMode.on : Camera.Constants.FlashMode.off
     );
   };
 
   const reTake = () => {
-    setPreviewVisible(false);
-    setCapturedImage(null);
+    // Function to retake picture
+    setPreviewVisible(false); // Hide image preview
+    setCapturedImage(null); // Clear captured image state
     setPhotosRemaining((prev) => {
       const newPhotosRemaining = prev + 1;
-      AsyncStorage.setItem(`photosRemaining_${eventId}`, newPhotosRemaining.toString());
+      AsyncStorage.setItem(`photosRemaining_${eventId}_${deviceId}`, newPhotosRemaining.toString()); // Update remaining photos in storage
       return newPhotosRemaining;
     });
   }
 
   if (hasPermission === null) {
-    return <View />;
+    return <View />; // Return empty view if permission status is unknown
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>No access to camera</Text>; // Return message if camera access is denied
   }
 
   return (
@@ -150,6 +157,7 @@ const CameraScreen = ({ route }) => {
   );
 };
 
+// Define styles for the component
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -168,8 +176,6 @@ const styles = StyleSheet.create({
     height: 40,
     alignItems: 'center',
     borderRadius: 4,
-    // backgroundColor: '#000',
-    // opacity: 0.7,
     justifyContent: 'space-between',
   },
   controlButtonText: {
