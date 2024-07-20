@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Text, TextInput, Button, Alert, StyleSheet } from 'react-native';
+import { View, Text, Alert, StyleSheet } from 'react-native';
+import { Button, TextInput } from 'react-native-paper';
 import { Camera } from 'expo-camera';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
@@ -16,7 +17,7 @@ function JoinPage({ navigation }) {
 
   useEffect(() => {
     (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
+      const { status } = await Camera.requestCameraPermissionsAsync();
       setHasPermission(status === 'granted');
     })();
   }, []);
@@ -44,7 +45,7 @@ function JoinPage({ navigation }) {
 
   const handleJoinEvent = async () => {
     if (!userName) {
-      Alert.alert('Error', 'Please enter your name.');
+      Alert.alert('Error', 'Please enter your name / pseudo.');
       return;
     }
 
@@ -104,25 +105,37 @@ function JoinPage({ navigation }) {
     <View style={styles.container}>
       {eventDetails ? (
         <>
-          <Text style={styles.label}>Event Name: {eventDetails.eventName}</Text>
+          <Text style={styles.eventName}>{eventDetails.eventName}</Text>
           <TextInput
-            style={styles.input}
-            placeholder="Your name"
+            label="Your name"
             value={userName}
             onChangeText={setUserName}
           />
-          <Button title="Join Event" onPress={handleJoinEvent} />
+          <Button 
+            mode="contained" 
+            style={styles.button}
+            buttonColor='#09745F'
+            onPress={handleJoinEvent} 
+          >
+            Join the event
+          </Button>
         </>
       ) : (
         <>
-          <Button title="Scan QR Code" onPress={() => handleInputModeChange('scan')} />
+          {/* <Button title="Scan QR Code" onPress={() => handleInputModeChange('scan')} /> */}
           <TextInput
-            style={styles.input}
-            placeholder="Enter Event ID"
+            label="Enter the event ID"
             value={eventId}
             onChangeText={(text) => setEventId(text.trim())}
           />
-          <Button title="Fetch Event Details" onPress={() => fetchEventDetails(eventId)} />
+          <Button 
+            mode="contained"
+            style={styles.button}
+            buttonColor='#09745F'
+            onPress={() => fetchEventDetails(eventId)}
+          >
+            Join the event
+          </Button>
         </>
       )}
     </View>
@@ -135,16 +148,16 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: 'center',
   },
-  label: {
-    fontSize: 18,
-    marginBottom: 10,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
+  eventName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#09745F',
     marginBottom: 20,
+    textAlign: 'center',
+  },
+  button: {
+    marginTop: 20,
+    backgroundColor: '#09745F',
   },
 });
 

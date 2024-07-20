@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert, StyleSheet, Text, TouchableOpacity, Linking } from 'react-native';
+import { View, Alert, StyleSheet, Text, TouchableOpacity, Linking, ScrollView } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
@@ -86,9 +86,9 @@ function CreatePage({ navigation }) {
   };
 
   return (
-    <View>
+    <ScrollView>
       <TextInput
-        label="Your name"
+        label="Your name / pseudo"
         value={userName}
         onChangeText={(text) => setUserName(text)}
       />
@@ -169,7 +169,7 @@ function CreatePage({ navigation }) {
       >
         Validate
       </Button>
-    </View>
+    </ScrollView>
   );
 }
 

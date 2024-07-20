@@ -134,7 +134,7 @@ const GalleryScreen = () => {
       />
     ) : (
       <View style={styles.noPhotosContainer}>
-        <Text style={styles.noPhotosText}>No photos</Text>
+        <Text style={styles.noPhotosText}>No photos have been taken for the moment</Text>
       </View>
     )
   );

@@ -106,6 +106,7 @@ function HomeScreen({ navigation }) {
       {eventDetails && userRole === 'organizer' && (
         <>
           <Text style={styles.eventName}>{eventDetails.eventName}</Text>
+          <Text style={styles.eventInfo}>{eventDetails.eventId}</Text>
           <Text style={styles.eventInfo}>{userName}</Text>
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
           <Text style={styles.eventInfo}>{countdown}</Text>
