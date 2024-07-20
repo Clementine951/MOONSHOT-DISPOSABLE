@@ -28,8 +28,8 @@ const GalleryScreen = () => {
     const generalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
     const unsubscribeGeneral = onSnapshot(generalQuery, (snapshot) => {
-      const urls = snapshot.docs.map(doc => doc.data().url);
-      setGeneralImages(urls);
+      const images = snapshot.docs.map(doc => ({ url: doc.data().url, owner: doc.data().owner }));
+      setGeneralImages(images);
     }, (error) => {
       console.error('Error fetching general images:', error);
     });
@@ -37,8 +37,10 @@ const GalleryScreen = () => {
     const personalQuery = query(collection(db, 'events', eventDetails.eventId, 'images'), orderBy('timestamp'));
 
     const unsubscribePersonal = onSnapshot(personalQuery, (snapshot) => {
-      const urls = snapshot.docs.filter(doc => doc.data().owner === userName).map(doc => doc.data().url);
-      setPersonalImages(urls);
+      const images = snapshot.docs
+        .map(doc => ({ url: doc.data().url, owner: doc.data().owner }))
+        .filter(image => image.owner === userName); // Ensure we are filtering by the current user's name
+      setPersonalImages(images);
     }, (error) => {
       console.error('Error fetching personal images:', error);
     });
@@ -60,7 +62,7 @@ const GalleryScreen = () => {
 
   const renderImage = ({ item, index }) => (
     <TouchableOpacity onPress={() => openModal(index)} style={styles.imageContainer}>
-      <Image source={{ uri: item }} style={styles.image} />
+      <Image source={{ uri: item.url }} style={styles.image} />
     </TouchableOpacity>
   );
 
@@ -79,7 +81,10 @@ const GalleryScreen = () => {
             { length: Dimensions.get('window').width, offset: Dimensions.get('window').width * index, index }
           )}
           renderItem={({ item }) => (
-            <Image source={{ uri: item }} style={styles.fullImage} />
+            <View style={styles.fullImageContainer}>
+              <Image source={{ uri: item.url }} style={styles.fullImage} />
+              <Text style={styles.imageOwner}>Taken by: {item.owner}</Text>
+            </View>
           )}
           keyExtractor={(item, index) => index.toString()}
         />
@@ -95,7 +100,8 @@ const GalleryScreen = () => {
     }
 
     try {
-      for (const url of generalImages) {
+      for (const image of generalImages) {
+        const url = image.url;
         const filename = url.split('/').pop();
         const fileUri = FileSystem.documentDirectory + filename;
 
@@ -225,10 +231,21 @@ const styles = StyleSheet.create({
     right: 20,
     zIndex: 1,
   },
-  fullImage: {
+  fullImageContainer: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fullImage: {
+    width: '100%',
+    height: '90%',
     resizeMode: 'contain',
+  },
+  imageOwner: {
+    color: '#FFF',
+    fontSize: 18,
+    marginTop: 10,
   },
 });
 

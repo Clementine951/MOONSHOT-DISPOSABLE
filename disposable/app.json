@@ -17,7 +17,7 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSCameraUsageDescription": "We need access to your camera to take photos.",
+        "NSCameraUsageDescription": "Your photos will be used to share memories within the event.",
         "NSPhotoLibraryUsageDescription": "We need access to your photo library to save photos."
       },
       "bundleIdentifier": "com.moonshot.disposable"
