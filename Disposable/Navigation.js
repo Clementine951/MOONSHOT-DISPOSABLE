@@ -2,9 +2,10 @@ import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
+import { Text, Dimensions } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { EventContext } from './Screens/EventContext';
+
+import {EventContext} from './Screens/EventContext';
 
 import HomeScreen from './Screens/Home';
 import CameraScreen from './Screens/Camera';
@@ -14,7 +15,6 @@ import EventSettingsScreen from './Screens/EventSettings';
 import DataSettingsScreen from './Screens/DataSettings';
 import AppSettingsScreen from './Screens/AppSettings';
 import ContactFormScreen from './Screens/ContactForm';
-import PrivacyScreen from './Screens/Privacy';
 import TermsCondScreen from './Screens/TermsCond';
 import CreatePage from './Screens/Create';
 import JoinPage from './Screens/Join';
@@ -27,6 +27,17 @@ const GalleryStack = createNativeStackNavigator();
 const SettingsStack = createNativeStackNavigator();
 
 const Green = "#09745F";
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
+
+// Define responsive styles
+const tabBarLabelStyle = {
+  fontSize: width > 768 ? 25 : 12, // Larger font size for iPad
+  paddingHorizontal: width > 768 ? 20 : 0,
+  // marginTop: width > 768 ? 40 : 0,
+};
+
 
 export default function AppNavigation() {
   const { eventDetails } = useContext(EventContext);
@@ -41,7 +52,7 @@ export default function AppNavigation() {
               <MaterialCommunityIcons name="home" color={focused ? Green : 'gray'} size={size} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? Green : 'gray' }}>Home</Text>
+              <Text style={{ color: focused ? Green : 'gray', ...tabBarLabelStyle }}>Home</Text>
             ),
           }}
         >
@@ -62,7 +73,7 @@ export default function AppNavigation() {
                   <MaterialCommunityIcons name="camera" color={focused ? Green : 'gray'} size={size} />
                 ),
                 tabBarLabel: ({ focused }) => (
-                  <Text style={{ color: focused ? Green : 'gray' }}>Camera</Text>
+                  <Text style={{ color: focused ? Green : 'gray', ...tabBarLabelStyle }}>Camera</Text>
                 ),
               }}
             >
@@ -84,7 +95,7 @@ export default function AppNavigation() {
                   <MaterialCommunityIcons name="image" color={focused ? Green : 'gray'} size={size} />
                 ),
                 tabBarLabel: ({ focused }) => (
-                  <Text style={{ color: focused ? Green : 'gray' }}>Gallery</Text>
+                  <Text style={{ color: focused ? Green : 'gray', ...tabBarLabelStyle  }}>Gallery</Text>
                 ),
               }}
             >
@@ -107,7 +118,7 @@ export default function AppNavigation() {
               <MaterialCommunityIcons name="cog" color={focused ? Green : 'gray'} size={size} />
             ),
             tabBarLabel: ({ focused }) => (
-              <Text style={{ color: focused ? Green : 'gray' }}>Settings</Text>
+              <Text style={{ color: focused ? Green : 'gray', ...tabBarLabelStyle  }}>Settings</Text>
             ),
           }}
         >

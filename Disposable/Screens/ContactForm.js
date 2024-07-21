@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert, Dimensions, Linking } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import { db } from '../firebaseConfig'; // Make sure to import your firebaseConfig file
 import { collection, addDoc } from 'firebase/firestore';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 function ContactFormScreen({ navigation }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const subjects = ['General inquiry', 'Technical support', 'Feedback', 'Data access', 'Data deletion', 'Other'];
+  const subjects = ['Technical support', 'Feedback', 'Data access', 'Data deletion', 'Other'];
 
   const handleCheckboxChange = (subject) => {
     if (selectedSubjects.includes(subject)) {
@@ -78,16 +81,20 @@ function ContactFormScreen({ navigation }) {
 
       <Text style={styles.label}>Subjects</Text>
       {subjects.map((subject) => (
-        <View key={subject} style={styles.checkboxContainer}>
+        <TouchableOpacity
+          key={subject}
+          style={styles.checkboxContainer}
+          onPress={() => handleCheckboxChange(subject)}
+        >
           <Checkbox
             status={selectedSubjects.includes(subject) ? 'checked' : 'unchecked'}
             onPress={() => handleCheckboxChange(subject)}
-            
+            style={styles.checkbox}
           />
           <Text style={styles.checkboxLabel}>{subject}</Text>
-        </View>
+        </TouchableOpacity>
       ))}
-
+      
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
@@ -100,8 +107,9 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   label: {
-    fontSize: 18,
-    marginBottom: 5,
+    fontSize: width > 768 ? 30 : 18,
+    marginBottom: width > 768 ? 15 : 5,
+    marginTop: width > 768 ? 10 : 5,
   },
   input: {
     borderWidth: 1,
@@ -109,6 +117,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 15,
+    fontSize: width > 768 ? 25 : 15,
   },
   textArea: {
     height: 100,
@@ -116,21 +125,29 @@ const styles = StyleSheet.create({
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 10,
+    marginBottom: width > 768 ? 40 : 10,
   },
   checkboxLabel: {
-    fontSize: 16,
-    marginLeft: 8,
+    fontSize: width > 768 ? 27 : 16,
+    marginLeft: width > 768 ? 30 : 8,
   },
   button: {
     backgroundColor: '#09745F',
-    padding: 15,
+    padding: width > 768 ? 30 : 15,
     borderRadius: 5,
     alignItems: 'center',
   },
   buttonText: {
     color: '#FFF',
-    fontSize: 16,
+    fontSize: width > 768 ? 30 : 16,
+  },
+  checkbox: {
+    width: width > 768 ? 60 : 20,
+    height: width > 768 ? 60 : 20,
+  },
+  link: {
+    color: 'blue',
+    textDecorationLine: 'underline',
   },
 });
 

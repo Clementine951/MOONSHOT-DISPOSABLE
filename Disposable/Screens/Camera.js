@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, Alert, Dimensions } from 'react-native';
 import { Camera } from 'expo-camera/legacy'; // legacy for SDK 51
 import { MaterialIcons } from '@expo/vector-icons';
 import { storage, db } from '../firebaseConfig';
@@ -7,6 +7,9 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { EventContext } from './EventContext'; 
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 const CameraScreen = ({ route }) => {
   const { eventId, numberOfPhotos } = route.params || {}; 
@@ -138,11 +141,11 @@ const CameraScreen = ({ route }) => {
       ) : (
         <Camera style={styles.camera} type={type} flashMode={flash} ref={(ref) => (cameraRef = ref)}>
           <View style={styles.topControls}>
-            <TouchableOpacity onPress={toggleCameraType} style={styles.controlButton}>
-              <MaterialIcons name={type === Camera.Constants.Type.back ? 'camera-front' : 'camera-rear'} size={40} color="#09745F" />
+            <TouchableOpacity onPress={toggleCameraType} style={styles.controlButtonSwitch}>
+              <MaterialIcons name={type === Camera.Constants.Type.back ? 'camera-front' : 'camera-rear'} size={width > 768 ? 90 : 40} color="#09745F" style={styles.controlButtonTop}/>
             </TouchableOpacity>
-            <TouchableOpacity onPress={toggleFlash} style={styles.controlButton}>
-              <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={40} color="#09745F" />
+            <TouchableOpacity onPress={toggleFlash} style={styles.controlButtonSwitch}>
+              <MaterialIcons name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"} size={width > 768 ? 90 : 40} color="#09745F" style={styles.controlButtonTop}/>
             </TouchableOpacity>
           </View>
           <View style={styles.captureButtonContainer}>
@@ -172,15 +175,21 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   controlButton: {
-    width: 130,
-    height: 40,
+    width: width > 768 ? 500 : 130,
+    height: width > 768 ? 70 :40,
+    marginBottom: width > 768 ? 30 : 0,
+    alignItems: 'center',
+    borderRadius: 4,
+    justifyContent: 'space-between',
+  },
+  controlButtonSwitch: {
     alignItems: 'center',
     borderRadius: 4,
     justifyContent: 'space-between',
   },
   controlButtonText: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: width > 768 ? 60 : 20,
   },
   camera: {
     flex: 1,
@@ -194,25 +203,30 @@ const styles = StyleSheet.create({
   captureButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 30,
+    marginBottom: width > 768 ? 75 : 30,
   },
   captureButton: {
-    width: 70,
-    height: 70,
-    borderRadius: 35,
+    width: width > 768 ? 140 : 70,
+    height: width > 768 ? 140 : 70,
+    borderRadius: width > 768 ? 70 : 35,
     backgroundColor: '#FFF',
   },
   photosRemainingContainer: {
     position: 'absolute',
-    bottom: 35,
-    left: 20,
+    bottom: width > 768 ? 80 : 35,
+    left: width > 768 ? 70 : 20,
   },
   photosRemainingText: {
     color: '#09745F',
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     fontWeight: 'bold',
     textAlign: 'center',
   },
+  controlButtonTop: {
+    padding: width > 768 ? 30 : 10,
+    marginRight: 20,
+    color: "#09745F"
+  }
 });
 
 export default CameraScreen;

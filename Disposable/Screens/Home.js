@@ -1,8 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Clipboard } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Clipboard, Dimensions } from 'react-native';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { deleteDoc, doc, collection, getDocs, updateDoc } from 'firebase/firestore';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 function HomeScreen({ navigation }) {
   const { eventDetails, clearEventDetails, userName, userRole, setEventDetails } = useContext(EventContext);
@@ -119,7 +122,7 @@ function HomeScreen({ navigation }) {
           {/* Display user name and participant count */}
           <Text style={styles.eventInfo}>{userName}</Text>
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
-          <Text style={styles.eventInfo}>{countdown}</Text>
+          <Text style={[styles.eventInfo, styles.count]}>{countdown}</Text>
           <TouchableOpacity style={styles.eventButton}>
             <Text style={styles.eventButtonText} onPress={handleShareEvent}>Share event</Text>
           </TouchableOpacity>
@@ -136,7 +139,7 @@ function HomeScreen({ navigation }) {
           <Text style={styles.eventName}>{eventDetails.eventName}</Text>
           <Text style={styles.eventInfo}>{userName}</Text>
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
-          <Text style={styles.eventInfo}>{countdown}</Text>
+          <Text style={[styles.eventInfo, styles.count]}>{countdown}</Text>
           <TouchableOpacity style={styles.eventButton} onPress={handleLeaveEvent}>
             <Text style={styles.eventButtonText}>Leave the event</Text>
           </TouchableOpacity>
@@ -173,46 +176,47 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: width > 768 ? 400 : 200,
+    height: width > 768 ? 400 : 200,
     resizeMode: 'contain',
     marginBottom: 20,
   },
   createButton: {
     marginBottom: 20,
-    padding: 10,
+    padding: width > 768 ? 20 : 10,
     backgroundColor: '#E6E6FA',
     borderRadius: 10,
     width: '80%',
   },
   createButtonText: {
     color: '#09745F',
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   joinButton: {
-    padding: 10,
+    padding: width > 768 ? 20 : 10,
     backgroundColor: '#E6E6FA',
     borderRadius: 10,
     width: '80%',
+    marginTop: width > 768 ? 20 : 0,
   },
   joinButtonText: {
     color: '#09745F',
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     textAlign: 'center',
     fontWeight: 'bold',
   },
   eventName: {
-    fontSize: 24,
+    fontSize: width > 768 ? 60 : 24,
     fontWeight: 'bold',
     color: '#09745F',
-    marginBottom: 20,
+    marginBottom: width > 768 ? 60 : 20,
   },
   eventInfo: {
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     color: '#09745F',
-    marginBottom: 10,
+    marginBottom: width > 768 ? 30 : 15,
   },
   eventButton: {
     marginTop: 20,
@@ -223,9 +227,13 @@ const styles = StyleSheet.create({
   },
   eventButtonText: {
     color: '#09745F',
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     textAlign: 'center',
   },
+  count: {
+    // color: width > 768 ? 'blue' : 'pink',
+    marginBottom: width > 768 ? 70 : 0,
+  }
 });
 
 export default HomeScreen;

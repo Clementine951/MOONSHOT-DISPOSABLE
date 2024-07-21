@@ -1,7 +1,10 @@
 import React, {useContext} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { EventContext } from './EventContext';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 function SettingsScreen() {
   const navigation = useNavigation();
@@ -40,10 +43,10 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   section: {
-    fontSize: 18,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#000',
+    fontSize: width > 768 ? 30 : 18,
+    paddingVertical: width > 768 ? 40 : 15,
+    borderBottomWidth: 1,  
+    paddingLeft: width > 768 ? 40 : 0,
   },
   separator: {
     height: 1,

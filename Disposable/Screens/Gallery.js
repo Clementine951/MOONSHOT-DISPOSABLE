@@ -11,11 +11,15 @@ import * as MediaLibrary from 'expo-media-library';
 // Define initial layout for tab view
 const initialLayout = { width: Dimensions.get('window').width };
 
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
+
 const GalleryScreen = () => {
 
   // Use EventContext to access event details and user information
   const { eventDetails, userName } = useContext(EventContext);
   const [index, setIndex] = useState(0); // State for the currently selected tab index
+
   // Define routes for tabs
   const [routes] = useState([
     { key: 'personal', title: 'Personal' },
@@ -90,7 +94,7 @@ const GalleryScreen = () => {
     <Modal visible={isModalVisible} transparent={true} onRequestClose={closeModal}>
       <View style={styles.modalContainer}>
         <TouchableOpacity onPress={closeModal} style={styles.closeButton}>
-          <MaterialIcons name="close" size={30} color="#FFF" />
+          <MaterialIcons name="close" size={width > 768 ? 60 : 30} color="#FFF" />
         </TouchableOpacity>
         <FlatList
           data={modalImages}
@@ -173,7 +177,7 @@ const GalleryScreen = () => {
       <View style={styles.topBar}>
         <Text style={styles.topBarText}>{generalImages.length} Photos</Text>
         <TouchableOpacity onPress={downloadImages}>
-          <MaterialIcons name="file-download" size={30} color="#09745F" />
+          <MaterialIcons name="file-download" size={width > 768 ? 60 : 30} color="#09745F" />
         </TouchableOpacity>
       </View>
       <TabView
@@ -207,11 +211,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 10,
+    padding: width > 768 ? 30 : 20,
+    paddingLeft: width > 768 ? 60 : 25,
     backgroundColor: '#FFF',
   },
   topBarText: {
-    fontSize: 18,
+    fontSize: width > 768 ? 40 : 18,
     fontWeight: 'bold',
     color: '#09745F',
   },
@@ -223,6 +228,7 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     color: '#09745F',
+    fontSize: width > 768 ? 30 : 18,
     fontWeight: 'bold',
   },
   imageContainer: {
@@ -267,7 +273,7 @@ const styles = StyleSheet.create({
   },
   imageOwner: {
     color: '#FFF',
-    fontSize: 18,
+    fontSize: width > 768 ? 30 : 18,
     marginTop: 10,
   },
 });

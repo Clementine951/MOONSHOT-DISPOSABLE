@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 function DataSettingsScreen() {
     const navigation = useNavigation();
@@ -31,8 +33,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   option: {
-    fontSize: 18,
-    paddingVertical: 15,
+    fontSize: width > 768 ? 30 : 18,
+    paddingVertical: width > 768 ? 40 : 15,
     borderBottomWidth: 1,
     borderBottomColor: '#000',
     // color: 'grey'
