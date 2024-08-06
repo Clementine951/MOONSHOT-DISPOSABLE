@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { View, Alert, StyleSheet, Text, TouchableOpacity, Linking, ScrollView } from 'react-native';
+import { View, Alert, StyleSheet, Text, TouchableOpacity, Linking, ScrollView, Dimensions } from 'react-native';
 import { TextInput, List, Button, SegmentedButtons, Checkbox } from 'react-native-paper';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { doc, setDoc, collection } from 'firebase/firestore';
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
 
 function CreatePage({ navigation }) {
   const [eventName, setEventName] = useState('');
@@ -91,6 +94,7 @@ function CreatePage({ navigation }) {
         label="Your name / pseudo"
         value={userName}
         onChangeText={(text) => setUserName(text)}
+        
       />
 
       <TextInput
@@ -103,7 +107,7 @@ function CreatePage({ navigation }) {
         <SegmentedButtons
           onValueChange={(value) => setStart(value)}
           value={start}
-          density="medium"
+          density={width > 768 ? 'large' : 'medium'}
           buttons={[
             { style: { flex: 1 }, value: 'startNow', label: 'Now' },
             { style: { flex: 1 }, disabled: true, value: 'startLater', label: 'Start Later' },
@@ -115,7 +119,7 @@ function CreatePage({ navigation }) {
         <SegmentedButtons
           onValueChange={(value) => setDuration(value)}
           value={duration}
-          density="medium"
+          density={width > 768 ? 'large' : 'medium'}
           buttons={[
             { style: { flex: 1 }, value: '8', label: '8h' },
             { style: { flex: 1 }, value: '12', label: '12h' },
@@ -129,7 +133,7 @@ function CreatePage({ navigation }) {
         <SegmentedButtons
           onValueChange={(value) => setReveal(value)}
           value={reveal}
-          density="medium"
+          density={width > 768 ? 'large' : 'medium'}
           buttons={[
             { style: { flex: 1 }, value: 'revealNow', label: 'Now' },
             { style: { flex: 1 }, value: 'revealEnd', label: 'At the end' },
@@ -141,7 +145,7 @@ function CreatePage({ navigation }) {
         <SegmentedButtons
           onValueChange={(value) => setNumberOfPhotos(value)}
           value={numberOfPhotos}
-          density="medium"
+          density={width > 768 ? 'large' : 'medium'}
           buttons={[
             { style: { flex: 1 }, value: '10', label: '10' },
             { style: { flex: 1 }, value: '15', label: '15' },
