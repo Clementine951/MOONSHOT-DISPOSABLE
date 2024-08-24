@@ -1,8 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Clipboard, Dimensions } from 'react-native';
+import React, { useContext, useEffect, useState, useRef } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image, Alert, Dimensions } from 'react-native';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
 import { deleteDoc, doc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { shareAsync } from 'expo-sharing';
+import QRCode from 'react-native-qrcode-svg';
+import * as FileSystem from 'expo-file-system';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -11,6 +14,9 @@ function HomeScreen({ navigation }) {
   const { eventDetails, clearEventDetails, userName, userRole, setEventDetails } = useContext(EventContext);
   const [participantCount, setParticipantCount] = useState(0);
   const [countdown, setCountdown] = useState(null);
+
+  // Ref to the QRCode component
+  const qrCodeRef = useRef(null);
 
   useEffect(() => {
     // Fetch participants when event details change
@@ -109,9 +115,33 @@ function HomeScreen({ navigation }) {
   };
 
   // Function to handle sharing the event
-  const handleShareEvent = () => {
-    Clipboard.setString(eventDetails.eventId); // Copy event ID to clipboard
-    Alert.alert('Copied to Clipboard', 'Event ID has been copied to your clipboard.');
+  const handleShareEvent = async () => {
+    if (!eventDetails?.eventId) {
+      Alert.alert('Error', 'Event ID is missing.');
+      return;
+    }
+
+    const url = `https://disposableapp.xyz/clip?eventId=${eventDetails.eventId}`;
+
+    // Save the QRCode to a temporary file
+    qrCodeRef.current.toDataURL(async (data) => {
+      try {
+        // Convert base64 image to binary data and save it
+        const imageURI = FileSystem.documentDirectory + `${eventDetails.eventId}_QRCode.png`;
+        await FileSystem.writeAsStringAsync(imageURI, data, { encoding: FileSystem.EncodingType.Base64 });
+
+        // Share the image
+        await shareAsync(imageURI, {
+          mimeType: 'image/png',
+          dialogTitle: 'Share your event QR code',
+          UTI: 'image/png',
+        });
+        console.log("QR code shared successfully!");
+      } catch (error) {
+        console.error('Error sharing QR code:', error);
+        Alert.alert('Error', 'Failed to share QR code.');
+      }
+    });
   };
 
   return (
@@ -123,8 +153,17 @@ function HomeScreen({ navigation }) {
           <Text style={styles.eventInfo}>{userName}</Text>
           <Text style={styles.eventInfo}>{participantCount} participants</Text>
           <Text style={[styles.eventInfo, styles.count]}>{countdown}</Text>
-          <TouchableOpacity style={styles.eventButton}>
-            <Text style={styles.eventButtonText} onPress={handleShareEvent}>Share event</Text>
+          <View style={styles.qrContainer}>
+            <QRCode
+              value={`https://disposableapp.xyz/clip?eventId=${eventDetails.eventId}`}
+              size={250}
+              color="black"
+              backgroundColor="white"
+              getRef={qrCodeRef}  // Attach the ref here
+            />
+          </View>
+          <TouchableOpacity style={styles.eventButton} onPress={handleShareEvent}>
+            <Text style={styles.eventButtonText}>Share Event</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.eventButton} onPress={handleEndEvent}>
             <Text style={styles.eventButtonText}>End the event</Text>
@@ -231,9 +270,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   count: {
-    // color: width > 768 ? 'blue' : 'pink',
     marginBottom: width > 768 ? 70 : 0,
-  }
+  },
+  qrContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
 });
 
 export default HomeScreen;
