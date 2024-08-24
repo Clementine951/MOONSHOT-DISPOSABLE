@@ -11,20 +11,8 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		261B0E142C79C2C00026F4EC /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E132C79C2C00026F4EC /* SDWebImageSwiftUI */; };
 		261B0E162C79CABA0026F4EC /* libFirebaseFirestore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 261B0E152C79CABA0026F4EC /* libFirebaseFirestore.a */; };
-		261B0E182C79CE530026F4EC /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E172C79CE530026F4EC /* FirebaseAnalytics */; };
-		261B0E1A2C79CE530026F4EC /* FirebaseAnalyticsOnDeviceConversion in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E192C79CE530026F4EC /* FirebaseAnalyticsOnDeviceConversion */; };
-		261B0E1C2C79CE540026F4EC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E1B2C79CE540026F4EC /* FirebaseAnalyticsWithoutAdIdSupport */; };
-		261B0E1E2C79CE540026F4EC /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E1D2C79CE540026F4EC /* FirebaseAppCheck */; };
-		261B0E202C79CE540026F4EC /* FirebaseAppDistribution-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 261B0E1F2C79CE540026F4EC /* FirebaseAppDistribution-Beta */; };
 		263EC8562C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */; };
-		263EC8572C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */; };
-		263EC8592C76417D00DFFA8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 263EC8582C76417D00DFFA8E /* GoogleService-Info.plist */; };
-		263EC85A2C76417D00DFFA8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 263EC8582C76417D00DFFA8E /* GoogleService-Info.plist */; };
-		263EC85D2C76440500DFFA8E /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 263EC85C2C76440500DFFA8E /* FirebaseDatabase */; };
-		263EC85F2C76440500DFFA8E /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 263EC85E2C76440500DFFA8E /* FirebaseFirestore */; };
-		263EC8612C76440500DFFA8E /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 263EC8602C76440500DFFA8E /* FirebaseStorage */; };
 		265168322C74E3C200F069BC /* DisposableClipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168312C74E3C200F069BC /* DisposableClipApp.swift */; };
 		265168342C74E3C200F069BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168332C74E3C200F069BC /* ContentView.swift */; };
 		265168362C74E3C400F069BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 265168352C74E3C400F069BC /* Assets.xcassets */; };
@@ -33,11 +21,15 @@
 		2651684F2C74E3C400F069BC /* DisposableClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651684E2C74E3C400F069BC /* DisposableClipUITests.swift */; };
 		265168512C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168502C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift */; };
 		265168542C74E3C400F069BC /* DisposableClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 2651682F2C74E3C200F069BC /* DisposableClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		26E9A5642C79EC000057501C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5632C79EC000057501C /* FirebaseFirestore */; };
+		26E9A5662C79EC000057501C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5652C79EC000057501C /* FirebaseStorage */; };
+		26E9A5682C79EE200057501C /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5672C79EE200057501C /* SDWebImageSwiftUI */; };
+		26E9A56A2C79EF4F0057501C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		42B850059F2283811DE9FF24 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D35170193387CC45F79934A9 /* PrivacyInfo.xcprivacy */; };
-		96905EF65AED1B983A6B3ABC /* libPods-dispo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-dispo.a */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		BB4531E1B506FA85607DAF6D /* libPods-dispo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4ADDDABF14B5FA5966C5447B /* libPods-dispo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,7 +79,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = dispo/main.m; sourceTree = "<group>"; };
 		261B0E152C79CABA0026F4EC /* libFirebaseFirestore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseFirestore.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		263EC8582C76417D00DFFA8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2651682F2C74E3C200F069BC /* DisposableClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisposableClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		265168312C74E3C200F069BC /* DisposableClipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipApp.swift; sourceTree = "<group>"; };
 		265168332C74E3C200F069BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -100,13 +91,14 @@
 		2651684A2C74E3C400F069BC /* DisposableClipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableClipUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2651684E2C74E3C400F069BC /* DisposableClipUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipUITests.swift; sourceTree = "<group>"; };
 		265168502C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		26F8D20EE1F74037A43B3C0F /* dispo-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "dispo-Bridging-Header.h"; path = "dispo/dispo-Bridging-Header.h"; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-dispo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dispo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6C2E3173556A471DD304B334 /* Pods-dispo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dispo.debug.xcconfig"; path = "Target Support Files/Pods-dispo/Pods-dispo.debug.xcconfig"; sourceTree = "<group>"; };
-		7A4D352CD337FB3A3BF06240 /* Pods-dispo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dispo.release.xcconfig"; path = "Target Support Files/Pods-dispo/Pods-dispo.release.xcconfig"; sourceTree = "<group>"; };
+		4ADDDABF14B5FA5966C5447B /* libPods-dispo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dispo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A336A9DBFBB1E315624980A0 /* Pods-dispo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dispo.debug.xcconfig"; path = "Target Support Files/Pods-dispo/Pods-dispo.debug.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = dispo/SplashScreen.storyboard; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		D35170193387CC45F79934A9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = dispo/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		E52FB9F805F33621DAA4794E /* Pods-dispo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dispo.release.xcconfig"; path = "Target Support Files/Pods-dispo/Pods-dispo.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F534A152BF494983A2D409FE /* noop-file.swift */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.swift; name = "noop-file.swift"; path = "dispo/noop-file.swift"; sourceTree = "<group>"; };
 		FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-dispo/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
@@ -118,7 +110,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				261B0E162C79CABA0026F4EC /* libFirebaseFirestore.a in Frameworks */,
-				96905EF65AED1B983A6B3ABC /* libPods-dispo.a in Frameworks */,
+				BB4531E1B506FA85607DAF6D /* libPods-dispo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,15 +118,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				261B0E1E2C79CE540026F4EC /* FirebaseAppCheck in Frameworks */,
-				261B0E142C79C2C00026F4EC /* SDWebImageSwiftUI in Frameworks */,
-				261B0E1A2C79CE530026F4EC /* FirebaseAnalyticsOnDeviceConversion in Frameworks */,
-				263EC85D2C76440500DFFA8E /* FirebaseDatabase in Frameworks */,
-				263EC85F2C76440500DFFA8E /* FirebaseFirestore in Frameworks */,
-				261B0E1C2C79CE540026F4EC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */,
-				261B0E182C79CE530026F4EC /* FirebaseAnalytics in Frameworks */,
-				263EC8612C76440500DFFA8E /* FirebaseStorage in Frameworks */,
-				261B0E202C79CE540026F4EC /* FirebaseAppDistribution-Beta in Frameworks */,
+				26E9A5682C79EE200057501C /* SDWebImageSwiftUI in Frameworks */,
+				26E9A5642C79EC000057501C /* FirebaseFirestore in Frameworks */,
+				26E9A5662C79EC000057501C /* FirebaseStorage in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,9 +164,9 @@
 			children = (
 				265168312C74E3C200F069BC /* DisposableClipApp.swift */,
 				265168332C74E3C200F069BC /* ContentView.swift */,
+				26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */,
 				265168352C74E3C400F069BC /* Assets.xcassets */,
 				2651683A2C74E3C400F069BC /* Info.plist */,
-				263EC8582C76417D00DFFA8E /* GoogleService-Info.plist */,
 				2651683B2C74E3C400F069BC /* DisposableClip.entitlements */,
 				265168372C74E3C400F069BC /* Preview Content */,
 			);
@@ -217,7 +203,7 @@
 			children = (
 				261B0E152C79CABA0026F4EC /* libFirebaseFirestore.a */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-dispo.a */,
+				4ADDDABF14B5FA5966C5447B /* libPods-dispo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -278,8 +264,8 @@
 		D65327D7A22EEC0BE12398D9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				6C2E3173556A471DD304B334 /* Pods-dispo.debug.xcconfig */,
-				7A4D352CD337FB3A3BF06240 /* Pods-dispo.release.xcconfig */,
+				A336A9DBFBB1E315624980A0 /* Pods-dispo.debug.xcconfig */,
+				E52FB9F805F33621DAA4794E /* Pods-dispo.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -299,15 +285,15 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "dispo" */;
 			buildPhases = (
-				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
+				F0AB8D6055BD472146D3636E /* [CP] Check Pods Manifest.lock */,
 				C88E48206BE216B31E513C76 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				15609DAD7A5E6B607DCA7181 /* [CP] Embed Pods Frameworks */,
 				265168552C74E3C400F069BC /* Embed App Clips */,
+				8A0BD8A959136EB8C73848F0 /* [CP] Embed Pods Frameworks */,
+				7E07DF69514550CE4D4BB660 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -333,15 +319,9 @@
 			);
 			name = DisposableClip;
 			packageProductDependencies = (
-				263EC85C2C76440500DFFA8E /* FirebaseDatabase */,
-				263EC85E2C76440500DFFA8E /* FirebaseFirestore */,
-				263EC8602C76440500DFFA8E /* FirebaseStorage */,
-				261B0E132C79C2C00026F4EC /* SDWebImageSwiftUI */,
-				261B0E172C79CE530026F4EC /* FirebaseAnalytics */,
-				261B0E192C79CE530026F4EC /* FirebaseAnalyticsOnDeviceConversion */,
-				261B0E1B2C79CE540026F4EC /* FirebaseAnalyticsWithoutAdIdSupport */,
-				261B0E1D2C79CE540026F4EC /* FirebaseAppCheck */,
-				261B0E1F2C79CE540026F4EC /* FirebaseAppDistribution-Beta */,
+				26E9A5632C79EC000057501C /* FirebaseFirestore */,
+				26E9A5652C79EC000057501C /* FirebaseStorage */,
+				26E9A5672C79EE200057501C /* SDWebImageSwiftUI */,
 			);
 			productName = DisposableClip;
 			productReference = 2651682F2C74E3C200F069BC /* DisposableClip.app */;
@@ -389,8 +369,9 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1530;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
 						LastSwiftMigration = 1250;
@@ -443,7 +424,6 @@
 				263EC8562C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				42B850059F2283811DE9FF24 /* PrivacyInfo.xcprivacy in Resources */,
-				263EC8592C76417D00DFFA8E /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,9 +432,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				265168392C74E3C400F069BC /* Preview Assets.xcassets in Resources */,
-				263EC85A2C76417D00DFFA8E /* GoogleService-Info.plist in Resources */,
 				265168362C74E3C400F069BC /* Assets.xcassets in Resources */,
-				263EC8572C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */,
+				26E9A56A2C79EF4F0057501C /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -490,47 +469,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"$PODS_ROOT/../.xcode.env\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env\"\nfi\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n# The project root by default is one level up from the ios directory\nexport PROJECT_ROOT=\"$PROJECT_DIR\"/..\n\nif [[ \"$CONFIGURATION\" = *Debug* ]]; then\n  export SKIP_BUNDLING=1\nfi\nif [[ -z \"$ENTRY_FILE\" ]]; then\n  # Set the entry JS file using the bundler's entry resolution.\n  export ENTRY_FILE=\"$(\"$NODE_BINARY\" -e \"require('expo/scripts/resolveAppEntry')\" \"$PROJECT_ROOT\" ios absolute | tail -n 1)\"\nfi\n\nif [[ -z \"$CLI_PATH\" ]]; then\n  # Use Expo CLI\n  export CLI_PATH=\"$(\"$NODE_BINARY\" --print \"require.resolve('@expo/cli', { paths: [require.resolve('expo/package.json')] })\")\"\nfi\nif [[ -z \"$BUNDLE_COMMAND\" ]]; then\n  # Default Expo CLI command for bundling\n  export BUNDLE_COMMAND=\"export:embed\"\nfi\n\n# Source .xcode.env.updates if it exists to allow\n# SKIP_BUNDLING to be unset if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.updates\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.updates\"\nfi\n# Source local changes to allow overrides\n# if needed\nif [[ -f \"$PODS_ROOT/../.xcode.env.local\" ]]; then\n  source \"$PODS_ROOT/../.xcode.env.local\"\nfi\n\n`\"$NODE_BINARY\" --print \"require('path').dirname(require.resolve('react-native/package.json')) + '/scripts/react-native-xcode.sh'\"`\n\n";
 		};
-		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-dispo-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		15609DAD7A5E6B607DCA7181 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-dispo/Pods-dispo-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-dispo/Pods-dispo-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
+		7E07DF69514550CE4D4BB660 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -592,6 +531,24 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-dispo/Pods-dispo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		8A0BD8A959136EB8C73848F0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-dispo/Pods-dispo-frameworks.sh",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-dispo/Pods-dispo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C88E48206BE216B31E513C76 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -610,6 +567,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-dispo/expo-configure-project.sh\"\n";
+		};
+		F0AB8D6055BD472146D3636E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-dispo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -674,9 +653,9 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6C2E3173556A471DD304B334 /* Pods-dispo.debug.xcconfig */;
+			baseConfigurationReference = A336A9DBFBB1E315624980A0 /* Pods-dispo.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = dispo/dispo.entitlements;
@@ -713,9 +692,9 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A4D352CD337FB3A3BF06240 /* Pods-dispo.release.xcconfig */;
+			baseConfigurationReference = E52FB9F805F33621DAA4794E /* Pods-dispo.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = dispo/dispo.entitlements;
@@ -990,6 +969,7 @@
 		83CBBA201A601CBA00E9B192 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1011,6 +991,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1056,6 +1037,7 @@
 		83CBBA211A601CBA00E9B192 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
@@ -1077,6 +1059,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1107,6 +1090,7 @@
 				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1182,50 +1166,20 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		261B0E132C79C2C00026F4EC /* SDWebImageSwiftUI */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 261B0E122C79C2C00026F4EC /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
-			productName = SDWebImageSwiftUI;
-		};
-		261B0E172C79CE530026F4EC /* FirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalytics;
-		};
-		261B0E192C79CE530026F4EC /* FirebaseAnalyticsOnDeviceConversion */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsOnDeviceConversion;
-		};
-		261B0E1B2C79CE540026F4EC /* FirebaseAnalyticsWithoutAdIdSupport */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAnalyticsWithoutAdIdSupport;
-		};
-		261B0E1D2C79CE540026F4EC /* FirebaseAppCheck */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseAppCheck;
-		};
-		261B0E1F2C79CE540026F4EC /* FirebaseAppDistribution-Beta */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = "FirebaseAppDistribution-Beta";
-		};
-		263EC85C2C76440500DFFA8E /* FirebaseDatabase */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabase;
-		};
-		263EC85E2C76440500DFFA8E /* FirebaseFirestore */ = {
+		26E9A5632C79EC000057501C /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
 		};
-		263EC8602C76440500DFFA8E /* FirebaseStorage */ = {
+		26E9A5652C79EC000057501C /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 263EC85B2C76440400DFFA8E /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseStorage;
+		};
+		26E9A5672C79EE200057501C /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 261B0E122C79C2C00026F4EC /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
