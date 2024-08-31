@@ -12,7 +12,7 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		261B0E162C79CABA0026F4EC /* libFirebaseFirestore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 261B0E152C79CABA0026F4EC /* libFirebaseFirestore.a */; };
-		263EC8562C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */; };
+		261EF60D2C7CED36003F94AE /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 261EF60C2C7CED36003F94AE /* SceneDelegate.swift */; };
 		265168322C74E3C200F069BC /* DisposableClipApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168312C74E3C200F069BC /* DisposableClipApp.swift */; };
 		265168342C74E3C200F069BC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168332C74E3C200F069BC /* ContentView.swift */; };
 		265168362C74E3C400F069BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 265168352C74E3C400F069BC /* Assets.xcassets */; };
@@ -78,7 +78,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = dispo/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = dispo/main.m; sourceTree = "<group>"; };
 		261B0E152C79CABA0026F4EC /* libFirebaseFirestore.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libFirebaseFirestore.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		261EF60C2C7CED36003F94AE /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		2651682F2C74E3C200F069BC /* DisposableClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisposableClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		265168312C74E3C200F069BC /* DisposableClipApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipApp.swift; sourceTree = "<group>"; };
 		265168332C74E3C200F069BC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -149,7 +149,6 @@
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
-				263EC8552C7640DE00DFFA8E /* GoogleService-Info.plist */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
 				F534A152BF494983A2D409FE /* noop-file.swift */,
@@ -169,6 +168,7 @@
 				2651683A2C74E3C400F069BC /* Info.plist */,
 				2651683B2C74E3C400F069BC /* DisposableClip.entitlements */,
 				265168372C74E3C400F069BC /* Preview Content */,
+				261EF60C2C7CED36003F94AE /* SceneDelegate.swift */,
 			);
 			path = DisposableClip;
 			sourceTree = "<group>";
@@ -421,7 +421,6 @@
 			files = (
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				263EC8562C7640DE00DFFA8E /* GoogleService-Info.plist in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
 				42B850059F2283811DE9FF24 /* PrivacyInfo.xcprivacy in Resources */,
 			);
@@ -608,6 +607,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				261EF60D2C7CED36003F94AE /* SceneDelegate.swift in Sources */,
 				265168342C74E3C200F069BC /* ContentView.swift in Sources */,
 				265168322C74E3C200F069BC /* DisposableClipApp.swift in Sources */,
 			);
@@ -660,6 +660,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = dispo/dispo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -699,6 +700,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = dispo/dispo.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
 				INFOPLIST_FILE = dispo/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Disposable Camera";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
@@ -741,6 +743,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_ASSET_PATHS = "\"DisposableClip/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -748,11 +751,9 @@
 				INFOPLIST_FILE = DisposableClip/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Disposable;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -792,6 +793,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"DisposableClip/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
@@ -799,11 +801,9 @@
 				INFOPLIST_FILE = DisposableClip/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Disposable;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.social-networking";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1027,7 +1027,10 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1087,7 +1090,10 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
