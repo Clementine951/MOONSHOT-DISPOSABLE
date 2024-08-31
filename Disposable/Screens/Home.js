@@ -121,7 +121,7 @@ function HomeScreen({ navigation }) {
       return;
     }
 
-    const url = `https://disposableapp.xyz/clip?eventId=${eventDetails.eventId}`;
+    const url = `https://appclip.disposableapp.xyz/clip?eventId=${eventDetails.eventId}`;
 
     // Save the QRCode to a temporary file
     qrCodeRef.current.toDataURL(async (data) => {
@@ -155,7 +155,7 @@ function HomeScreen({ navigation }) {
           <Text style={[styles.eventInfo, styles.count]}>{countdown}</Text>
           <View style={styles.qrContainer}>
             <QRCode
-              value={`https://disposableapp.xyz/clip?eventId=${eventDetails.eventId}`}
+              value={`https://appclip.disposableapp.xyz/clip?eventId=${eventDetails.eventId}`}
               size={250}
               color="black"
               backgroundColor="white"
