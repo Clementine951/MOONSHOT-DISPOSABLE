@@ -21,10 +21,10 @@
 		2651684F2C74E3C400F069BC /* DisposableClipUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2651684E2C74E3C400F069BC /* DisposableClipUITests.swift */; };
 		265168512C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 265168502C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift */; };
 		265168542C74E3C400F069BC /* DisposableClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 2651682F2C74E3C200F069BC /* DisposableClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		26E937022C86136500425AEC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26E937012C86136500425AEC /* GoogleService-Info.plist */; };
 		26E9A5642C79EC000057501C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5632C79EC000057501C /* FirebaseFirestore */; };
 		26E9A5662C79EC000057501C /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5652C79EC000057501C /* FirebaseStorage */; };
 		26E9A5682C79EE200057501C /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 26E9A5672C79EE200057501C /* SDWebImageSwiftUI */; };
-		26E9A56A2C79EF4F0057501C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		42B850059F2283811DE9FF24 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D35170193387CC45F79934A9 /* PrivacyInfo.xcprivacy */; };
 		B18059E884C0ABDD17F3DC3D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC715A2D49A985799AEE119 /* ExpoModulesProvider.swift */; };
@@ -91,7 +91,7 @@
 		2651684A2C74E3C400F069BC /* DisposableClipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableClipUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2651684E2C74E3C400F069BC /* DisposableClipUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipUITests.swift; sourceTree = "<group>"; };
 		265168502C74E3C400F069BC /* DisposableClipUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisposableClipUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		26E937012C86136500425AEC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		26F8D20EE1F74037A43B3C0F /* dispo-Bridging-Header.h */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 4; includeInIndex = 0; lastKnownFileType = sourcecode.c.h; name = "dispo-Bridging-Header.h"; path = "dispo/dispo-Bridging-Header.h"; sourceTree = "<group>"; };
 		4ADDDABF14B5FA5966C5447B /* libPods-dispo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-dispo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A336A9DBFBB1E315624980A0 /* Pods-dispo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-dispo.debug.xcconfig"; path = "Target Support Files/Pods-dispo/Pods-dispo.debug.xcconfig"; sourceTree = "<group>"; };
@@ -163,8 +163,8 @@
 			children = (
 				265168312C74E3C200F069BC /* DisposableClipApp.swift */,
 				265168332C74E3C200F069BC /* ContentView.swift */,
-				26E9A5692C79EF4F0057501C /* GoogleService-Info.plist */,
 				265168352C74E3C400F069BC /* Assets.xcassets */,
+				26E937012C86136500425AEC /* GoogleService-Info.plist */,
 				2651683A2C74E3C400F069BC /* Info.plist */,
 				2651683B2C74E3C400F069BC /* DisposableClip.entitlements */,
 				265168372C74E3C400F069BC /* Preview Content */,
@@ -432,7 +432,7 @@
 			files = (
 				265168392C74E3C400F069BC /* Preview Assets.xcassets in Resources */,
 				265168362C74E3C400F069BC /* Assets.xcassets in Resources */,
-				26E9A56A2C79EF4F0057501C /* GoogleService-Info.plist in Resources */,
+				26E937022C86136500425AEC /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1027,10 +1027,7 @@
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -1090,10 +1087,7 @@
 				);
 				LIBRARY_SEARCH_PATHS = "$(SDKROOT)/usr/lib/swift\"$(inherited)\"";
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
