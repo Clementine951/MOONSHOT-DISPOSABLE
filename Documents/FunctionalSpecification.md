@@ -1,749 +1,719 @@
-# Functional specification <img src="./Images/LogoTrans.png" style="width: 145px; float: right; margin-top: 27px">
+# Disposable Camera Application - Functional Specification
 
-<!-- 
-Questions
-- authentication for the V2
-- add if wrong QR code
-- when clicked on the button validate for create -> a go back?
-- Footer or header
-- if start to create an event but leave or close -> no save 
-- gallery -> start at personal
-- settings -> auto save or button
-- explain more the not downloadable thing
-- can join after the end of an event?
-- cross platform? 
-- settings -> general and event at the same place?
-- go back -> according to the stack or a dedicated place
-- qr code generation not sure what to do 
-- differentiate the original app from the clip one
-- qr code / nfc tags
-
-Technical
-- app clips are a light version of your app that allows users to try features of your app without downloading and installing
-- 50 MB size limit  
-- Ios 16 is less
-- ios 15 or earlier -> 10mb
-- app clip -> the main feature
-- website needed
-- from ios 16.4 -> app clip links  -->
+## Table of Contents
 
 <details>
-<summary>Table of contents</summary>
+<summary>Expand to view</summary>
 
-- [Functional specification ](#functional-specification-)
-- [Project Overview](#project-overview)
-  - [Report Issues](#report-issues)
-- [Project Definition](#project-definition)
-  - [Vision](#vision)
-  - [Objectives](#objectives)
-  - [Scope](#scope)
-    - [All Users (Both Admin and Participant)](#all-users-both-admin-and-participant)
-    - [Admin Users](#admin-users)
-    - [Participant Users](#participant-users)
-  - [Out of Scope](#out-of-scope)
-- [Project Organisation](#project-organisation)
-  - [Stakeholders](#stakeholders)
-  - [Timeline](#timeline)
-  - [Milestones](#milestones)
-  - [Risks and Assumptions](#risks-and-assumptions)
-    - [Risks](#risks)
-    - [Assumptions](#assumptions)
-  - [Constraints](#constraints)
-- [Functional Requirements](#functional-requirements)
-  - [Features Overview](#features-overview)
-  - [Features Breakdown](#features-breakdown)
-    - [Ubiquitous Requirements](#ubiquitous-requirements)
-    - [State-driven Requirements](#state-driven-requirements)
-    - [Event-driven Requirements](#event-driven-requirements)
-    - [Unwanted Behaviour Requirements](#unwanted-behaviour-requirements)
-    - [Complex Requirements](#complex-requirements)
-  - [User Interface and Design](#user-interface-and-design)
-- [Target Audience](#target-audience)
-  - [Personas](#personas)
-  - [Use Cases](#use-cases)
-    - [Use Case 1: Margaret's Baptism Photos](#use-case-1-margarets-baptism-photos)
-    - [Use Case 2: Sarah's Christmas Celebration](#use-case-2-sarahs-christmas-celebration)
-    - [Use Case 3: James's Wedding Engagement](#use-case-3-jamess-wedding-engagement)
-    - [Use Case 4: Emily's Anniversary Party](#use-case-4-emilys-anniversary-party)
-    - [Use Case 5: Alex's Party Planning](#use-case-5-alexs-party-planning)
+- [Disposable Camera Application - Functional Specification](#disposable-camera-application---functional-specification)
+  - [Table of Contents](#table-of-contents)
+  - [Project Overview](#project-overview)
+  - [Project Definition](#project-definition)
+    - [Vision](#vision)
+    - [Objectives](#objectives)
+    - [Scope](#scope)
+      - [All Users (Both Organizer and Participant)](#all-users-both-organizer-and-participant)
+      - [Admin Users (Organizer)](#admin-users-organizer)
+      - [Participant Users (Full App)](#participant-users-full-app)
+      - [Participant Users (App Clip)](#participant-users-app-clip)
+    - [Out of Scope](#out-of-scope)
+  - [Project Organisation](#project-organisation)
+    - [Stakeholders](#stakeholders)
+    - [Timeline](#timeline)
+    - [Milestones](#milestones)
+    - [Risks and Assumptions](#risks-and-assumptions)
+      - [Risks](#risks)
+      - [Assumptions](#assumptions)
+    - [Constraints](#constraints)
+  - [Functional Requirements](#functional-requirements)
+    - [Features Overview](#features-overview)
+    - [Features Breakdown](#features-breakdown)
+      - [1. **Download the App**](#1-download-the-app)
+      - [2. **Event Creation**](#2-event-creation)
+      - [3. **Event Parameter Definition**](#3-event-parameter-definition)
+      - [4. **QR Code Generation**](#4-qr-code-generation)
+      - [5. **QR Code Sharing**](#5-qr-code-sharing)
+      - [6. **General Gallery Access**](#6-general-gallery-access)
+      - [7. **General Gallery Saving**](#7-general-gallery-saving)
+      - [8. **Personal Gallery Access**](#8-personal-gallery-access)
+      - [9. **Personal Gallery Deletion**](#9-personal-gallery-deletion)
+      - [10. **Personal Gallery Saving**](#10-personal-gallery-saving)
+      - [11. **Photo Capture**](#11-photo-capture)
+      - [12. **Photo Sharing**](#12-photo-sharing)
+      - [13. **Photo Downloading**](#13-photo-downloading)
+      - [14. **App Access Without Download**](#14-app-access-without-download)
+      - [15. **Internet Connectivity Requirement**](#15-internet-connectivity-requirement)
+      - [16. **Real-Time Updates**](#16-real-time-updates)
+      - [17. **Customer Support Access**](#17-customer-support-access)
+      - [18. **Permission Prompting**](#18-permission-prompting)
+      - [19. **User Data Management**](#19-user-data-management)
+    - [User Roles and Permissions Matrix](#user-roles-and-permissions-matrix)
+    - [User Interface and Design](#user-interface-and-design)
+  - [Target Audience](#target-audience)
+    - [Personas](#personas)
+    - [Use Cases](#use-cases)
   - [Functional Analysis](#functional-analysis)
-- [Non-Functional Requirements](#non-functional-requirements)
-  - [Reliability](#reliability)
-  - [Operability](#operability)
-  - [Recovery](#recovery)
-  - [Delivery](#delivery)
-  - [Maintainability](#maintainability)
-  - [Security](#security)
-- [Glossary](#glossary)
+  - [Non-Functional Requirements](#non-functional-requirements)
+    - [Reliability](#reliability)
+    - [Performance](#performance)
+    - [Scalability](#scalability)
+    - [Security](#security)
+    - [Usability](#usability)
+    - [Operability](#operability)
+    - [Recovery](#recovery)
+    - [Delivery](#delivery)
+    - [Maintainability](#maintainability)
+  - [User Flows](#user-flows)
+    - [Onboarding Flow](#onboarding-flow)
+    - [App Clip Flow](#app-clip-flow)
+  - [Legal and Compliance Requirements](#legal-and-compliance-requirements)
+  - [Analytics and Reporting](#analytics-and-reporting)
+  - [Localization and Internationalization](#localization-and-internationalization)
+  - [Integration with Other Services](#integration-with-other-services)
+  - [User Testing and Feedback](#user-testing-and-feedback)
+  - [Future Enhancements and Roadmap](#future-enhancements-and-roadmap)
+  - [Glossary](#glossary)
 
 </details>
 
-<br>
+## Project Overview
 
+The Disposable Camera application aims to provide users with a nostalgic and communal experience of capturing and sharing moments at events. Inspired by traditional disposable cameras, the app offers a user-friendly interface that allows participants to take photos, share them with others, and create lasting memories.
 
+Participants can access the app through an App Clip, which allows them to join events and participate without downloading the full app. Each event has its own gallery where photos are automatically shared with all attendees, fostering a communal experience. Initially designed for iOS, the app is intended to be cross-platform compatible in future iterations.
 
-# Project Overview 
+## Project Definition
 
-The Disposable Camera application aims to provide users with a unique and nostalgic experience of capturing and sharing moments at events. Inspired by disposable cameras, the app offers a user-friendly interface for event participants to take photos, share them with others, and create lasting memories. Participants can access the app without downloading it fully, thanks to App Clips and Instant App features, making it easily accessible during events.
+### Vision
 
-Each event will have its own gallery where photos are automatically shared with all attendees, fostering a communal experience. The app is cross-platform compatible, ensuring all participants can engage with it regardless of their device. To promote engagement and reduce phone usage, the app limits the number of photos each participant can take, encouraging mindfulness and selectivity. By blending nostalgic charm with modern technology, the Disposable Camera application enhances the event experience and fosters greater interaction among attendees.
+The vision for the Disposable Camera application is to create a user-friendly mobile app that facilitates the capturing and sharing of memorable moments during events. By leveraging the nostalgic appeal of disposable cameras and combining it with modern technology, the app enhances event experiences, fostering greater interaction among attendees.
 
-## Report Issues
+The app is designed to be intuitive and accessible, catering to users of all ages, with a particular focus on simplifying the user experience for older individuals. By enabling access through an App Clip and limiting the number of photos each participant can take, the app encourages users to be more present and engaged during events.
 
-If you notice errors in this document, or would like to give feedback, please file a Doc Issue in the MOONSHOT-DISPOSABLE GitHub repository: https://github.com/Clementine951/MOONSHOT-DISPOSABLE/issues
+### Objectives
 
-# Project Definition
+1. **Enhance Accessibility**: Ensure the app is intuitive and user-friendly, making it accessible to users of all ages.
+2. **Seamless Access**: Utilize App Clips to allow participants to join events and share photos without needing to download the full app.
+3. **Foster Engagement**: Limit photo-taking to encourage mindfulness and selective capturing of moments.
+4. **Facilitate Instant Sharing**: Automatically share photos in a communal event gallery.
+5. **Cross-Platform Compatibility**: Start with iOS and expand to other platforms in future iterations.
+6. **Promote Inclusivity**: Create an inclusive app that fosters meaningful connections among attendees.
+7. **Enhance Event Experience**: Combine modern technology with nostalgic elements to enrich event experiences.
 
-## Vision
+### Scope
 
-The vision for the Disposable Camera application is to develop a user-friendly mobile app that effortlessly facilitates the capturing and sharing of memorable moments during events. Inspired by the nostalgic charm of disposable cameras, the app focuses on enhancing accessibility, particularly for older individuals, by prioritizing simplicity, intuitiveness, and inclusivity.
-
-Our goal is to bridge generational gaps and foster meaningful connections among attendees, ensuring that everyone can fully participate in capturing and reliving event experiences. By enabling access without the need for a full download and limiting the number of photos each participant can take, the app encourages users to be more present and engaged during events. The Disposable Camera application aims to transform event experiences by making them more interactive, inclusive, and memorable for all attendees, regardless of age or technical ability.
-
-## Objectives
-
-1. **Enhance Accessibility** 
-
-Develop the app with a focus on simplicity and intuitiveness to ensure it is accessible to users of all ages, particularly older individuals. This includes a user-friendly interface and easy-to-navigate features.
-
-2. **Seamless Access** 
-
-Implement App Clips and Instant App technologies to allow participants to access the app's features without needing a full download, reducing barriers to entry and enhancing user convenience.
-
-3. **Foster Engagement** 
- 
-Encourage event attendees to be more present and engaged by limiting the number of photos each participant can take, promoting mindfulness and selective capturing of moments.
-
-4. **Facilitate Instant Sharing** 
-
-Ensure that photos taken by participants are automatically shared in a communal event gallery, allowing all attendees to instantly access and relive shared memories.
-
-5. **Cross-Platform Compatibility** 
-
-Design the app to be compatible across various devices and platforms, ensuring a seamless experience for all users, regardless of their device.
-
-6. **Promote Inclusivity** 
-
-Create an app that bridges generational gaps and fosters meaningful connections among attendees, allowing everyone to participate fully in capturing and sharing event experiences.
-
-7. **Enhance Event Experience** 
-   
-Aim to transform event experiences by integrating modern technology with the nostalgic concept of disposable cameras, making events more interactive, inclusive, and memorable.
-
-## Scope
-The scope of the project encompasses a set of features designed to facilitate the seamless creation, management, and participation in events through the Disposable Camera App. It's important to note that the scope features outlined below may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences, as detailed in the functional requirements section.
-
-### All Users (Both Admin and Participant)
+#### All Users (Both Organizer and Participant)
 
 Taking photos:
-- Capture photos using the app's camera interface during the event
-- Change camera side
-- Use the flash
+-   Capture photos using the app's camera interface during the event (Full App only).
+-   Change camera side.
+-   Use the flash.
 
 Access to the general gallery:
-- Share photos taken during the event with other participants and admin users.
-- View and browse photos shared by all participants in the event's general gallery.
-- Download event photos shared by other participants or admin users for personal use.
-
-Secure and safe:
-- Ensure that user data and interactions within the app are protected through robust security measures, such as encryption and secure authentication protocols.
+-   Share photos taken during the event with other participants and admin users.
+-   View and browse photos shared by all participants in the event's general gallery.
+-   Download event photos shared by other participants or admin users for personal use.
 
 Connected to the internet:
-- Require an active internet connection for users to access the app's features and functionalities, such as event participation and photo sharing.
+-   Require an active internet connection for users to access the app's features and functionalities, such as event participation and photo sharing.
 
 Constant refresh:
-- Implement real-time updates and automatic refresh functionalities to ensure that users have access to the latest event information, shared photos, and notifications.
+-   Implement real-time updates and automatic refresh functionalities to ensure that users have access to the latest event information and shared photos.
 
 Customer support:
-- Provide access to customer support resources within the app, such as FAQs, help guides, and contact information, to assist users with any issues or inquiries.
+-   Provide access to customer support resources within the app, such as FAQs, help guides, and contact information, to assist users with any issues or inquiries.
 
 Asking for permission from users:
-- Prompt users for permission before accessing sensitive device features or personal data, such as camera access, location information, and contact details.
-
-Sending notifications:
-- Send push notifications to users to provide updates on event activities, new photo uploads, or important announcements related to their participation.
+-   Prompt users for permission before accessing sensitive device features or personal data, such as camera access, location information, and contact details.
 
 Giving users access to their data:
-- Enable users to access and manage their data stored within the app, such as profile information, event history, and shared photos.
+-   Enable users to access and manage their data stored within the app, such as profile information, event history, and shared photos.
 
-### Admin Users
-
-Account creation:
-- Provide admin users with the option to create an account within the app.
-- Collect user information such as name, email, and password for account registration.
+#### Admin Users (Organizer)
 
 Creation of an event:
-- Ability to create new events within the app.
-- Define event parameters and settings, including maximum photo limits and event duration.
+-   Ability to create new events within the app.
+-   Define event parameters and settings, including maximum photo limits and event duration.
 
 Sharing a QR code:
-- Generate a unique QR code linked to each event for participant access.
-- Allow admin users to share the QR code via various channels (e.g., email, messaging) to invite participants.
+-   Generate a unique QR code linked to each event for participant access.
+-   Allow admin users to share the QR code via various channels (e.g., email, messaging) to invite participants.
 
 Access to the general and personal galleries:
-- Manage all photos shared within the app's general gallery.
+-   Going through all photos shared within the app's general gallery.
 
-### Participant Users
+#### Participant Users (Full App)
 
-Scanning a valid QR code:
-- Scan the QR code associated with the event to gain access.
-- Authenticate participant identity and grant event entry upon successful QR code scan.
+Joining an event:
+-   Participants can join an event by clicking the "Join Event" button and entering the event ID.
+-   Participants must refer their name when joining an event.
 
-Access to the personal gallery:
-- Manage all photos shared within the app's gallery.
-- Delete photos uploaded by the participant if needed.
+Event participation:
+-   Participants can take photos during the event, download photos, or leave the event.
+-   Participants have access to both their personal gallery and the general gallery of the event.
 
-No application download requirement:
-- Allow participants to access event features without downloading the app.
-- Enable participation and photo sharing via QR code scan without the need for app installation.
+Leaving an event:
+-   Participants can choose to leave the event at any time.
 
-## Out of Scope
+#### Participant Users (App Clip)
 
-The out-of-scope features listed below represent functionalities that are not included in the current version of the Disposable Camera App. However, it's important to note that these features may be subject to revision based on user feedback and iterations following the completion of the first version of the app. This flexibility allows for continuous improvement and adaptation to user needs and preferences.
+Joining an event:
+-   Participants can join an event by scanning a QR code using their device’s camera, which will open the App Clip.
+-   Participants must refer their name when accessing the event through the App Clip.
 
-1. **Duration of Event Uneditable**:
-   - The duration of events cannot be edited once they are created.
+Event participation:
+-   Participants can only download and upload photos within the event.
+-   The App Clip does not require the participant to download the full app, and it provides access to the general event gallery only.
 
-2. **Non-customizable Number of Photos per User**:
-   - The number of photos per user, decided by the admin, cannot be customized or edited after the creation of the event.
 
-3. **Fixed Release of Photos**:
-   - The release of photos for users cannot be modified after the creation of the event.
+### Out of Scope
 
-4. **No Link with All Photos**:
-   - There is no direct link provided for accessing all event photos.
+The following features are not included in the current version of the Disposable Camera app but may be considered for future releases:
 
-5. **No Video Capture**:
-   - Users cannot capture videos within the app.
+-   **Editable Event Duration**: The duration of events cannot be modified once created.
+-   **Customizable Number of Photos per User**: The number of photos each user can take is fixed.
+-   **Adjustable Photo Release Timing**: The timing for releasing photos cannot be altered after the event is created.
+-   **Video Capture**: The app does not support video recording.
+-   **Photo Filters**: Users cannot apply filters to photos.
+-   **Location Tracking**: The app does not collect or display location information.
+-   **Instagram Integration**: Users cannot share photos directly to Instagram from the app.
+-   **Event Templates**: There are no predefined templates for creating events.
+-   **Multiple Admin Roles**: Each event is managed by a single admin.
+-   **Pre-scheduled Events**: Events cannot be scheduled in advance.
+-   **Live Streaming**: The app does not support live streaming of events.
+-   **Virtual Reality Integration**: VR features are not included.
+-   **Reward System**: The app does not offer rewards or badges for users.
 
-6. **No Photo Filters**:
-   - The app does not support applying filters to photos.
+## Project Organisation
 
-7. **No Live Filters**:
-   - Live filters cannot be applied during photo capture.
+### Stakeholders
 
-8. **No Cover Screen Application**:
-   - Cover screens cannot be applied to photos.
+| Stakeholder       | Role                                  |
+|-------------------|---------------------------------------|
+| Clémentine CUREL  | Lead and manage the project           |
+| ALGOSUP           | Provides academic guidance            |
+| Reviewers         | Evaluate the project for grading      |
 
-9. **No Location Tracking**:
-   - The app does not collect or display location information.
-
-10. **No User Account Requirement**:
-    - Participants do not need to create an account to use the app.
-
-11. **No Instagram Photo Integration**:
-    - Photos cannot be sourced directly from Instagram.
-
-12. **Internet Connection Requirement**:
-    - The app requires an internet connection to function.
-
-13. **No Event Templates**:
-    - There are no pre-defined event templates available.
-
-14. **No Event History Tracking**:
-    - The app does not provide a history of past events.
-
-15. **Single Admin Role**:
-    - Each event has a single admin; multiple admin roles are not supported.
-
-16. **No Pre-scheduled Events**:
-    - Events cannot be scheduled in advance.
-
-17. **No Event Choice Options**:
-    - Users cannot choose specific events to participate in.
-
-18. **No Simultaneous Multiple Events**:
-    - Users cannot create or participate in multiple events simultaneously.
-
-19. **No Live Streaming Functionality**:
-    - Live streaming of events is not supported.
-
-20. **No Virtual Reality Integration**:
-    - The app does not integrate with virtual reality technology.
-
-21. **No Reward or Badge System**:
-    - There are no rewards or badges awarded to users.
-
-22. **No Guest Book Feature**:
-    - The app does not include a guest book feature for event interactions.
-
-23. **No Insights or Analytics**:
-    - Insights or analytics on participant contributions and interactions with event photos are not available.
-
-24. **No Deep Settings**:
-    - Features such as blocking a user, changing the number of photos, changing release time, and accessibility options like font size, screen readers, and high contrast are not available.
-    - Permissions management regarding who can access what features is not included.
-
-<br>
-
-# Project Organisation
-
-## Stakeholders
-
-| Stakeholders     | Role                                            |
-|------------------|-------------------------------------------------|
-| Clémentine CUREL | Lead and manage the project                     |
-| ALGOSUP          | Provides academic guidance and requirements     |
-| Reviewers        | Evaluate the project for grading                |
-
-## Timeline
-
-Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary). For detailed information on tasks and deadlines, please refer to our JIRA board.
-
-// todo modify where I put the management
-
-## Milestones 
-// todo review
-
-| Milestone      | Description                                              |
-|----------------|----------------------------------------------------------|
-| Functional     | Completion of functional requirements and feature set    |
-| Technical      | Implementation of technical architecture and framework   |
-| Roadmap        | Development plan for future iterations and enhancements  |
-| V1             | Release of the first version of the application          |
-| Jury 1         | Presentation and evaluation by the first jury panel      |
-| User Testing   | Conducting user testing and gathering feedback           |
-| V2             | Release of the second version of the application         |
-| Jury 2         | Presentation and evaluation by the final jury panel      |
-
-
-
-
-## Risks and Assumptions
-
-### Risks 
-
-|| Technical issues                                                                                                                                                        |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Potential technical challenges or bugs in the app development process may delay project progress or affect the functionality of the final product.                 |
-| **Solution**    | Conduct thorough testing at each stage of development, employ experienced developers, and have contingency plans in place to address technical issues promptly. |
-
-|| Scope creep                                                                                                                                                             |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | There's a risk of the project scope expanding beyond initial expectations, leading to increased workload and potential delays in project completion.                 |
-| **Solution**    | Define clear project objectives and scope boundaries from the outset, regularly review and prioritise project requirements, and communicate any scope changes effectively. |
-
-|| Resource constraints                                                                                                                                                   |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Limited availability of resources such as time, budget, or expertise may impact the project's ability to meet deadlines or deliver desired outcomes.                     |
-| **Solution**    | Allocate resources efficiently, consider outsourcing non-critical tasks, and explore alternative solutions or technologies to mitigate resource limitations.          |
-
-|| Compatibility issues                                                                                                                                                  |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Ensuring cross-platform compatibility may present challenges, particularly in integrating app features across different operating systems and devices.                     |
-| **Solution**    | Use platform-agnostic development frameworks, conduct thorough compatibility testing, and collaborate closely with platform providers to address compatibility issues. |
-
-|| User adoption                                                                                                                                                          |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | There's a risk that users may not fully adopt or engage with the app as intended, impacting its effectiveness and success in meeting project objectives.                 |
-| **Solution**    | Prioritise user feedback, conduct usability testing, and implement user-friendly design principles to enhance user experience and encourage adoption of the app.        |
-
-|| Data security breaches                                                                                                                                                 |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Potential vulnerabilities in data security measures could lead to unauthorised access or breaches, compromising user data and damaging trust in the app.               |
-| **Solution**    | Implement robust encryption protocols, adhere to industry best practices for data security, and regularly audit and update security measures to protect user data.   |
-
-|| Regulatory compliance                                                                                                                                                  |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Failure to comply with relevant laws and regulations, such as data protection or privacy requirements, could result in legal issues or fines for the project.           |
-| **Solution**    | Conduct thorough research on applicable regulations, seek legal guidance when necessary, and implement compliance measures throughout the development process.         |
-
-|| External dependencies                                                                                                                                                 |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Reliance on external factors or third-party services may introduce risks related to their availability, reliability, or compatibility with the project.                   |
-| **Solution**    | Identify and assess potential dependencies early, establish communication channels with third-party providers, and have contingency plans in place to mitigate dependency risks. |
-
-|| Change in project requirements                                                                                                                                         |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Changes in project requirements or stakeholder expectations could disrupt project plans and require adjustments in resource allocation or development efforts.            |
-| **Solution**    | Maintain open communication with stakeholders, document project requirements comprehensively, and regularly review and update project plans to accommodate changes as needed. |
-
-|| Technology obsolescence                                                                                                                                               |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Rapid advancements in technology may render certain tools or frameworks obsolete during the project lifecycle, requiring adaptation or redevelopment efforts.            |
-| **Solution**    | Stay informed about emerging technologies, plan for future scalability and adaptability, and incorporate modular design principles to facilitate technology updates as needed. |
-
-|| Intellectual property infringement                                                                                                                                     |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | There's a risk of unintentional infringement of intellectual property rights, such as copyright or patent violations, which could result in legal consequences.         |
-| **Solution**    | Conduct thorough research on existing patents and copyrights, obtain necessary permissions or licenses, and ensure that all development work complies with applicable intellectual property laws. |
-
-|| Scalability and performance issues                                                                                                                                     |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Inadequate scalability or performance of the app under high user loads or increased data volume may lead to slowdowns, crashes, or degraded user experience.           |
-| **Solution**    | Implement scalable architecture and performance optimisation techniques, conduct load testing and performance tuning, and regularly monitor system performance to address scalability and performance concerns proactively. |
-
-|| Project management challenges                                                                                                                                          |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Challenges in project management, such as inadequate planning, lack of clarity in roles and responsibilities, or ineffective decision-making, could hinder progress.       |
-| **Solution**    | Establish clear project objectives and timelines, define roles and responsibilities, and use project management tools and methodologies to streamline workflows and improve decision-making processes. |
-
-|| Dependencies on key personnel                                                                                                                                          |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Reliance on specific individuals for critical tasks or expertise may pose risks if they become unavailable due to illness, departure, or other unforeseen circumstances. |
-| **Solution**    | Cross-train team members, document critical processes and knowledge, and establish backup plans or contingencies to mitigate the impact of key personnel unavailability. |
-
-|| Reputation damage                                                                                                                                                      |
-|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Description** | Negative publicity, poor user reviews, or public perception issues related to the app's functionality, security, or ethical concerns could damage the project's reputation. |
-| **Solution**    | Prioritise quality assurance and user experience, address user feedback and concerns promptly, and maintain transparent communication to build and preserve trust in the project. |
-
-### Assumptions
-
-| **Assumption**                                             | **Description**                                                                                               |
-|------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------|
-| Users' availability                                       | Users will have access to smartphones or mobile devices with compatible operating systems (iOS or Android).   |
-| Internet connectivity                                    | Users will have access to a stable internet connection to download the app and share photos during events.    |
-| User familiarity with mobile applications                   | Users will possess basic familiarity with mobile applications and digital photo-sharing platforms.             |
-| Event participation                                      | Users will actively participate in events where the app is utilised, engaging in photo capture and sharing.  |
-| User privacy and consent                                 | Users will provide consent for their photos to be shared within the app's galleries.                           |
-| App performance and stability                           | The app will perform reliably on users' devices, with minimal crashes or technical issues.                    |
-| Administrator engagement                                 | Administrators will actively manage events within the app, including event creation and gallery management.   |
-| Event attendance and duration                            | Events facilitated through the app will have sufficient attendance and duration to justify its use.          |
-| User feedback and iterative improvement                 | Users will provide feedback for iterative improvements and updates to enhance the user experience.           |
-| Compliance with data protection regulations              | The app will comply with relevant data protection regulations and privacy laws.                               |
-
-## Constraints
-
-**Resource Constraints:**
-- Limited budget allocated for the project, affecting procurement of software licences and hardware resources.
-- Availability of skilled personnel for development and testing may be limited.
-  
-**Time Constraints:**
-- Strict project deadlines imposed by the academic institution, requiring timely completion of deliverables.
-  
-**Legal and Regulatory Constraints:**
-- Compliance with data protection regulations (e.g., GDPR) impacting data handling and storage practices.
-- Intellectual property rights and licensing agreements affecting the use of third-party software or libraries.
-
-# Functional Requirements 
-
-## Features Overview
-
-1. **Download the app:**
-   - Allow users to download the app from their respective app stores.
-
-2. **Account creation:**
-   - Admin users can create accounts within the app.
-   
-3. **User registration:**
-   - Collect user information such as name, email, and password for account registration.
-
-4. **Password recreation:**
-   - Provide functionality for users to recreate their password.
-
-5. **Forgot password:**
-   - Offer users the option to reset their password if forgotten.
-
-6. **Event creation:**
-   - Admin users can create new events within the app.
-   
-7. **Event parameter definition:**
-   - Define event parameters such as duration, maximum photo limits, and other settings.
-
-8. **QR code generation:**
-   - Admin users can generate unique QR codes for each event.
-   
-9. **QR code sharing:**
-   - Admin users can share the QR code via various channels (e.g., email, messaging) to invite participants.
-
-10. **General gallery access:**
-    - Users can access the general gallery to view shared photos.
-
-11. **General gallery deletion:**
-    - Users can delete photos from the general gallery.
-
-12. **General gallery saving:**
-    - Users can save photos from the general gallery to their devices.
-
-13. **Personal gallery access:**
-    - Users can access their gallery to view their own shared photos.
-
-14. **Personal gallery deletion:**
-    - Users can delete photos from their gallery.
-
-15. **Personal gallery saving:**
-    - Users can save photos from their gallery to their devices.
-
-16. **Photo capture:**
-    - Users can capture photos using the app's camera interface.
-
-17. **Photo sharing:**
-    - Participants and admin users can share event photos within the app.
-
-18. **Photo downloading:**
-    - Users can download event photos shared by others.
-
-19. **App access without download:**
-    - Participants can access event features without downloading the app.
-  
-20. **Security measures:**
-    - Implement robust security measures to ensure user data and interactions are secure.
-
-21. **Internet connectivity requirement:**
-    - Require an active internet connection for users to access app features.
-
-22. **Real-time updates:**
-    - Provide real-time updates and automatic refreshments for the latest event information.
-
-23. **Customer support access:**
-    - Offer access to customer support resources within the app.
-
-24. **Permission prompting:**
-    - Prompt users for permission before accessing sensitive device features or personal data.
-
-25. **Push notifications:**
-    - Send push notifications to provide updates on event activities and announcements.
-
-26. **User data management:**
-    - Enable users to access and manage their personal data stored within the app.
-
-## Features Breakdown
-
+### Timeline
 // todo
+Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary).
+
+### Milestones
+
+| Milestone        | Description                                       |
+|------------------|---------------------------------------------------|
+| Functional       | Completion of functional requirements and features|
+| Technical        | Implementation of technical architecture          |
+| Roadmap          | Development plan for future iterations            |
+| V1               | Release of the first version of the application   |
+| Jury 1           | Presentation and evaluation by the first jury     |
+| User Testing     | Conducting user testing and gathering feedback    |
+| V2               | Release of the second version of the application  |
+| Jury 2           | Presentation and evaluation by the final jury     |
+
+### Risks and Assumptions
+
+#### Risks
+
+- **Technical Issues**: Potential bugs may delay progress or affect functionality.
+- **Scope Creep**: Expanding scope may increase workload and delay completion.
+- **Resource Constraints**: Limited budget and expertise could impact deadlines.
+- **Compatibility Issues**: Cross-platform compatibility might present challenges.
+- **User Adoption**: Low engagement could impact the app’s success.
+- **Data Security Breaches**: Security vulnerabilities could compromise user data.
+- **Regulatory Compliance**: Failure to comply with laws could result in legal issues.
+- **External Dependencies**: Reliance on third-party services may introduce risks.
+
+#### Assumptions
+
+- Users have access to smartphones with compatible operating systems.
+- Users have a stable internet connection.
+- Users are familiar with mobile applications.
+- Event participants actively engage with the app.
+- Users consent to sharing their photos within the app.
+
+### Constraints
+
+**Resource Constraints**: Limited budget for software licenses.
+
+**Time Constraints**: Strict deadlines imposed by academic institutions.
+
+**Legal and Regulatory Constraints**: Compliance with GDPR and other regulations.
+
+## Functional Requirements
+
+### Features Overview
+
+1. **Download the App**: Available initially on iOS, downloadable from the App Store.
+2. **Event Creation**: Create events and define the parameters; event is created immediately upon validation.
+3. **Event Parameter Definition**: Define event parameters such as duration, maximum photo limits, and other settings.
+4. **QR Code Generation**: Generate a unique QR code linking to the event’s App Clip.
+5. **QR Code Sharing**: Admin users can share the QR code via various channels (e.g., email, messaging) to invite participants.
+6. **General Gallery Access**: Users can access the general gallery to view shared photos.
+7. **General Gallery Saving**: Users can save photos from the general gallery to their devices.
+8. **Personal Gallery Access**: Users can access their gallery to view their own shared photos.
+9. **Personal Gallery Deletion**: Users can delete photos from their gallery.
+10. **Personal Gallery Saving**: Users can save photos from their gallery to their devices.
+11. **Photo Capture**: Users can capture photos using the app's camera interface.
+12. **Photo Sharing**: Participants and organizer users can share event photos within the app.
+13. **Photo Downloading**: Users can download event photos shared by others.
+14. **App Access Without Download**: Participants can access event features without downloading the app.
+15. **Internet Connectivity Requirement**: Require an active internet connection for users to access app features.
+16. **Real-Time Updates**: Provide real-time updates and automatic refreshes for the latest event information.
+17. **Customer Support Access**: Offer access to customer support resources within the app.
+18. **Permission Prompting**: Prompt users for permission before accessing sensitive device features or personal data.
+19. **User Data Management**: Enable users to access and manage their personal data.
 
 
-### Ubiquitous Requirements
+### Features Breakdown
 
-Ubiquitous functional requirements are always active. They are not invoked by an event or input, nor are they limited to a subset of the system’s operating states.
+#### 1. **Download the App**
 
-Template:   The shall .
+-   **Description**: Users can download the app from the App Store. Initially, the app is available only on iOS.
+-   **Requirements**:
+    -   App Store listing must be created with accurate descriptions, screenshots, and metadata.
+    -   Ensure the app meets all App Store guidelines.
 
-Example:     The control system shall prevent engine over speed.
+#### 2. **Event Creation**
 
-### State-driven Requirements
+-   **Description**: Admin users can create new events within the app. Events are created immediately upon clicking the validation button.
+-   **Requirements**:
+    -   Event creation interface must allow users to define parameters like duration, maximum photo limits, etc.
+    -   Once created, events should generate a unique identifier (Event ID).
 
-State-driven functional requirements are active throughout the time a defined state remains true. In Mavis EARS method, state-driven requirements are identified with the keyword WHILE.
+#### 3. **Event Parameter Definition**
 
-Template:   WHILE the shall .
+-   **Description**: Admin users can define specific parameters for each event, such as duration, maximum number of photos per participant, and other customizable settings.
+-   **Requirements**:
+    -   Interface should allow for easy input of event parameters.
+    -   Parameters should be editable until the event is finalized.
 
-Example:     While the aircraft is in-flight and the engine is running, the control system shall maintain engine fuel flow above ?? lbs/sec.
+#### 4. **QR Code Generation**
 
-### Event-driven Requirements
+-   **Description**: The app generates a unique QR code for each event, linking directly to the event’s App Clip.
+-   **Requirements**:
+    -   QR codes must be dynamically generated and linked to specific event IDs.
+    -   QR codes should be compatible with standard QR code readers.
 
-Event-driven functional requirements require a response only when an event is detected at the system boundary. In other words, they are triggered by a specific event. The EARS method identifies event-driven requirements with the keyword WHEN.
+#### 5. **QR Code Sharing**
 
-Template:   WHEN the shall .
+-   **Description**: Admin users can share the event QR code through various communication channels, such as email or messaging apps.
+-   **Requirements**:
+    -   Integration with device sharing features (e.g., iOS Share Sheet).
+    -   Ensure QR codes are accessible and can be scanned by participants.
 
-Example:     When continuous ignition is commanded by the aircraft, the control system shall switch on continuous ignition.
+#### 6. **General Gallery Access**
 
-### Unwanted Behaviour Requirements
+-   **Description**: Participants can view all photos shared in the event's general gallery.
+-   **Requirements**:
+    -   Gallery interface should display photos in a grid format.
+    -   Implement scrollable or paginated views for easy navigation.
 
-Unwanted behaviour functional requirements cover all undesirable situations. Good systems engineering (SE) practice anticipates undesirable situations and imposes requirements to mitigate them.
+#### 7. **General Gallery Saving**
 
-Unwanted behaviour requirements are often imposed when the system must respond to a trigger under less than optimum conditions. The EARS method uses the keyword combination IF/THEN to identify requirements aimed at mitigating unwanted behaviour.
+-   **Description**: Users can save photos from the general gallery directly to their devices.
+-   **Requirements**:
+    -   Implement photo-saving functionality with appropriate permissions.
+    -   Ensure photos are saved in a standard format (e.g., JPEG).
 
-Template:   IF, THEN the shall.
+#### 8. **Personal Gallery Access**
 
-Example:     If the computed airspeed is unavailable, then the control system shall use the modelled airspeed.
+-   **Description**: Users can access their personal gallery to view photos they have uploaded or taken during the event.
+-   **Requirements**:
+    -   Personal gallery should be accessible from the user’s profile or a dedicated section within the app.
+    -   Photos should be organized by event.
 
-### Complex Requirements
+#### 9. **Personal Gallery Deletion**
 
-Often, a specific set of one or more preconditions (states or optional features) must be present before the occurrence a specific event for that event to trigger a required system response. In such cases, the EARS templates may be combined, using a combination of the keywords.
+-   **Description**: Users can delete photos from their personal gallery.
+-   **Requirements**:
+    -   Implement a confirmation prompt before deletion.
+    -   Ensure that deleted photos are removed from the app’s storage and not recoverable.
 
-Complex requirements can be composed for desired behaviour or for unwanted behaviour. The EARS method provides a template for each.
+#### 10. **Personal Gallery Saving**
 
-Template:   (Desired behaviour) Where, while , when the shall .
+-   **Description**: Users can save photos from their personal gallery to their devices.
+-   **Requirements**:
+    -   Provide a straightforward option to download and save images.
+    -   Ensure images retain their original quality during the saving process.
 
-Template:   (Unwanted behaviour) Where, while , if then the shall .
+#### 11. **Photo Capture**
 
-Example:     While the aircraft is on the ground, when reverse thrust is commanded, the control system shall enable deployment of the thrust reverser.
+-   **Description**: Users can take photos using the app’s built-in camera interface during an event.
+-   **Requirements**:
+    -   The camera interface must include essential features such as shutter control, switching between front and rear cameras, and enabling/disabling the flash.
+    -   Ensure the captured photos are automatically saved to the event’s gallery.
 
-## User Interface and Design
+#### 12. **Photo Sharing**
 
-To explore the mock-up of the Disposable Camera App on figma, you can click on this [figma link](https://www.figma.com/file/Y0JWQtRMokJs5hnwLF1sDu/Untitled?type=design&node-id=0%3A1&mode=design&t=ZZyTovJGYghNWaxW-1).
+-   **Description**: Both participants and organizers can share photos within the event, making them accessible in the general gallery.
+-   **Requirements**:
+    -   Implement an easy-to-use photo sharing feature.
+    -   Photos should be instantly available to other participants in the general gallery.
+
+#### 13. **Photo Downloading**
+
+-   **Description**: Users can download photos shared by others within the event.
+-   **Requirements**:
+    -   Allow users to select and download multiple photos at once.
+    -   Ensure that downloading photos respects the event’s privacy settings.
+
+#### 14. **App Access Without Download**
+
+-   **Description**: Participants can join events and access basic features without downloading the full app, using the App Clip.
+-   **Requirements**:
+    -   App Clip should offer essential features such as viewing the general gallery, uploading, and downloading photos.
+    -   Ensure the App Clip is lightweight and complies with size limitations.
+
+#### 15. **Internet Connectivity Requirement**
+
+-   **Description**: An active internet connection is required to access most features of the app, including event participation, photo sharing, and gallery access.
+-   **Requirements**:
+    -   Implement checks for active internet connectivity.
+    -   Provide user-friendly error messages or offline prompts when the internet is unavailable.
+
+#### 16. **Real-Time Updates**
+
+-   **Description**: The app provides real-time updates for the latest event information, such as newly shared photos.
+-   **Requirements**:
+    -   Ensure the app’s UI automatically refreshes to display new content.
+
+#### 17. **Customer Support Access**
+
+-   **Description**: Users can access customer support resources directly within the app.
+-   **Requirements**:
+    -   Include a dedicated support section with FAQs, a help guide, and contact options.
+    -   Consider integrating live chat or a ticketing system for direct user support.
+
+#### 18. **Permission Prompting**
+
+-   **Description**: The app prompts users for permission before accessing sensitive device features or personal data, such as the camera or photo gallery.
+-   **Requirements**:
+    -   Permissions must be requested at appropriate times (e.g., when first using the camera).
+    -   Provide clear explanations for why permissions are needed and how they will be used.
+
+#### 19. **User Data Management**
+
+-   **Description**: Users can access and manage their personal data within the app, including photos and event participation history.
+-   **Requirements**:
+    -   Provide a user-friendly interface for managing personal data.
+    -   Include options for users to delete their data, including account deactivation or deletion.
+
+### User Roles and Permissions Matrix
+
+This matrix outlines what each user role can do within the Disposable Camera application, both in the full app and the App Clip version.
+
+| **Feature/Functionality**            | **Organizer (Full App)** | **Participant (Full App)** | **App Clip User**     |
+|--------------------------------------|--------------------------|----------------------------|-----------------------|
+| **Event Creation**                   | Yes                      | No                         | No                    |
+| **QR Code Generation**               | Yes                      | No                         | No                    |
+| **Photo Capture (Camera Access)**    | Yes                      | Yes                        | No                    |
+| **Photo Upload (Gallery Access)**    | Yes                      | Yes                        | Yes                   |
+| **Photo Download**                   | Yes                      | Yes                        | Yes                   |
+| **View Personal Gallery**            | Yes                      | Yes                        | No                    |
+| **View General Event Gallery**       | Yes                      | Yes                        | Yes                   |
+| **Manage Photos (Delete/Edit)**      | Yes (Own Photos)         | Yes (Own Photos)           | No                    |                |
+| **Settings Access**                  | Yes                      | Yes                        | No                    |
+| **Name/Pseudo Prompt**               | No                       | Yes                        | Yes                   |
+| **Post-Event Access (30 Days)**      | Yes                      | Yes                        | Yes                   |
+
+### User Interface and Design
+
+To explore the mock-up of the Disposable Camera App, you can click on this [Figma link](https://www.figma.com/design/Y0JWQtRMokJs5hnwLF1sDu/DISPOSABLE-MOCK-UP?node-id=0-1&t=uNiJCGJkkmKKLWKL-1).
 
 Graphic charter:
 
 <img src="./Images/GraphCharter.png" style="width: 60%">
 
-// todo each page
 
-# Target Audience
+## Target Audience
 
-## Personas
+### Personas
 
-<img src="./Images/1.png" style="width: 60%">
-<img src="./Images/2.png" style="width: 60%">
-<img src="./Images/3.png" style="width: 60%">
-<img src="./Images/4.png" style="width: 60%">
-<img src="./Images/5.png" style="width: 60%">
+1. **Margaret**: An elderly woman who wants to collect photos from her grandson’s baptism.
 
+<img src="./Images/1.png" style="width: 50%">
 
-## Use Cases
+2. **Sarah**: A young mother capturing candid moments during Christmas.
 
+<img src="./Images/2.png" style="width: 50%">
 
-### Use Case 1: Margaret's Baptism Photos
+3. **James**: A groom wanting to enhance guest engagement at his wedding.
 
-**Actor**: Margaret
+<img src="./Images/3.png" style="width: 50%">
 
-- **Description**: Margaret desires to receive photos of all participants at her grandson's baptism, as she lacks photography skills and financial resources to hire a professional. She aims to ensure comprehensive coverage of the event by obtaining photos taken by others.
-- **Preconditions**: Margaret has access to a disposable camera.
-- **Postconditions**: Margaret successfully collects photos from other participants, enhancing the coverage of her grandson's baptism.
+4. **Emily**: A social media-savvy individual capturing her anniversary party.
 
-- **Flow:** 
-  - Margaret attends her grandson's baptism, equipped with the Disposable Camera app
-  - Aware of her limitations in capturing photos, Margaret interacts with other attendees and encourages them to take photos with the app during the event
-  - Throughout the ceremony, Margaret communicates her desire to receive copies of photos taken by other participants
-  - As a result, Margaret receives a variety of photos taken by different individuals, enriching the coverage of her grandson's baptism and ensuring she has memories captured from various perspectives
+<img src="./Images/4.png" style="width: 50%">
 
-### Use Case 2: Sarah's Christmas Celebration
-- **Actor**: Sarah
-- **Description**: Sarah aims to capture candid moments during her family's Christmas celebration using the Disposable Camera app.
-- **Preconditions**: Sarah has shared the QR code of the Disposable Camera app with family members.
-- **Postconditions**: Sarah collects digital photos taken during the celebration via the Disposable Camera app and will compiles them for a family album.
-- **Flow**:
-  1. Before the Christmas celebration, Sarah shares the QR code of the Disposable Camera app with family members, warning them that they don't have to download the app
-  2. Throughout the event, family members use the Disposable Camera app to capture candid moments, such as opening presents, sharing meals, and playing games
-  3. After the celebration, Sarah collects the digital photos taken by family members using the Disposable Camera app
-  4. Sarah compiles the digital photos into a digital or printed family album, preserving the memories of the Christmas celebration captured through the app
+5. **Alex**: A meticulous planner organizing a successful party.
 
-### Use Case 3: James's Wedding Engagement
-- **Actor**: James
-- **Description**: James aims to enhance guest engagement at his wedding by providing a virtual disposable camera experience through the Disposable Camera app.
-- **Preconditions**: James has created an event on the Disposable Camera app and shared the event QR code with wedding guests.
-- **Postconditions**: James collects digital photos taken during the wedding celebration via the Disposable Camera app and compiles them for a keepsake album.
-- **Flow**:
-  1. Before the wedding ceremony, James creates an event on the Disposable Camera app and shares the event QR code with wedding guests via email, text message, or printed cards.
-  2. Guests attend the wedding reception and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
-  3. Throughout the wedding festivities, guests use the Disposable Camera app to capture candid photos of themselves, the bride and groom, and other guests.
-  4. After the wedding, James collects the digital photos taken by guests using the Disposable Camera app.
-  5. James compiles the digital photos into a keepsake album, preserving the memories of his special day captured through the app.
+<img src="./Images/5.png" style="width: 50%">
 
-### Use Case 4: Emily's Anniversary Party
-- **Actor**: Emily
-- **Description**: Emily wants to capture fun moments during her anniversary party using the Disposable Camera app and share them on Instagram.
-- **Preconditions**: Emily has created an event on the Disposable Camera app and shared the event QR code with party attendees. Emily has an Instagram account.
-- **Postconditions**: Emily posts digital photos taken during the anniversary party via the Disposable Camera app on her Instagram profile.
-- **Flow**:
-  1. Before the anniversary party, Emily creates an event on the Disposable Camera app and shares the event QR code with party attendees.
-  2. Guests attend the anniversary party and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
-  3. Throughout the party, Emily and her friends use the Disposable Camera app to capture photos of themselves, their activities, and the decorations.
-  4. After the party, Emily collects the digital photos taken by guests using the Disposable Camera app.
-  5. Emily selects the best photos from the event and edits them if necessary(on an other app).
-  6. Emily posts the edited photos on her Instagram profile, adding captions and hashtags to share the memories of her anniversary celebration with her followers.
+### Use Cases
 
-### Use Case 5: Alex's Party Planning
-- **Actor**: Alex
-- **Description**: Alex wants to ensure a successful party by coordinating various aspects of planning and execution using the Disposable Camera app.
-- **Preconditions**: Alex has access to resources for party planning and coordination.
-- **Postconditions**: The party is executed smoothly, and attendees have an enjoyable experience.
-- **Flow**:
-  1. Alex begins by setting a date and theme for the party and creates an event on the Disposable Camera app.
-  2. Alex shares the event QR code with invited guests, allowing them to access the Disposable Camera app without downloading it.
-  3. Alex organises logistics such as decorations, food and drinks, and entertainment, updating the event details on the Disposable Camera app.
-  4. On the day of the party, Alex uses the Disposable Camera app to capture photos of the setup, guests, and activities, contributing to the event's digital album.
-  5. Throughout the party, Alex encourages guests to use the Disposable Camera app to capture their own photos and share them within the event album.
-  6. After the party, Alex reviews the photos collected through the Disposable Camera app, sharing highlights with attendees and preserving memories of the event digitally.
+1. **Margaret's Baptism Photos**
+   - **Actor**: Margaret
+   - **Description**: Margaret desires to receive photos of all participants at her grandson's baptism, as she lacks photography skills and financial resources to hire a professional. She aims to ensure comprehensive coverage of the event by obtaining photos taken by others.
+   - **Preconditions**: Margaret has access to the app through the App Clip or full app.
+   - **Postconditions**: Margaret successfully collects photos from other participants, enhancing the coverage of her grandson's baptism.
+   - **Flow**: 
+     - Margaret attends her grandson's baptism, equipped with the Disposable Camera app.
+     - Aware of her limitations in capturing photos, Margaret interacts with other attendees and encourages them to take photos with the app during the event.
+     - Throughout the ceremony, Margaret communicates her desire to receive copies of photos taken by other participants.
+     - As a result, Margaret receives a variety of photos taken by different individuals, enriching the coverage of her grandson's baptism and ensuring she has memories captured from various perspectives.
+
+2. **Sarah's Christmas Celebration**
+   - **Actor**: Sarah
+   - **Description**: Sarah aims to capture candid moments during her family's Christmas celebration using the Disposable Camera app.
+   - **Preconditions**: Sarah has shared the QR code of the Disposable Camera app with family members.
+   - **Postconditions**: Sarah collects digital photos
+
+ taken during the celebration via the Disposable Camera app and compiles them for a family album.
+   - **Flow**:
+     1. Before the Christmas celebration, Sarah shares the QR code of the Disposable Camera app with family members, warning them that they don't have to download the app.
+     2. Throughout the event, family members use the Disposable Camera app to capture candid moments, such as opening presents, sharing meals, and playing games.
+     3. After the celebration, Sarah collects the digital photos taken by family members using the Disposable Camera app.
+     4. Sarah compiles the digital photos into a digital or printed family album, preserving the memories of the Christmas celebration captured through the app.
+
+3. **James's Wedding Engagement**
+   - **Actor**: James
+   - **Description**: James aims to enhance guest engagement at his wedding by providing a virtual disposable camera experience through the Disposable Camera app.
+   - **Preconditions**: James has created an event on the Disposable Camera app and shared the event QR code with wedding guests.
+   - **Postconditions**: James collects digital photos taken during the wedding celebration via the Disposable Camera app and compiles them for a keepsake album.
+   - **Flow**:
+     1. Before the wedding ceremony, James creates an event on the Disposable Camera app and shares the event QR code with wedding guests via email, text message, or printed cards.
+     2. Guests attend the wedding reception and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+     3. Throughout the wedding festivities, guests use the Disposable Camera app to capture candid photos of themselves, the bride and groom, and other guests.
+     4. After the wedding, James collects the digital photos taken by guests using the Disposable Camera app.
+     5. James compiles the digital photos into a keepsake album, preserving the memories of his special day captured through the app.
+
+4. **Emily's Anniversary Party**
+   - **Actor**: Emily
+   - **Description**: Emily wants to capture fun moments during her anniversary party using the Disposable Camera app and share them on Instagram.
+   - **Preconditions**: Emily has created an event on the Disposable Camera app and shared the event QR code with party attendees. Emily has an Instagram account.
+   - **Postconditions**: Emily posts digital photos taken during the anniversary party via the Disposable Camera app on her Instagram profile.
+   - **Flow**:
+     1. Before the anniversary party, Emily creates an event on the Disposable Camera app and shares the event QR code with party attendees.
+     2. Guests attend the anniversary party and use their smartphones to scan the event QR code and access the Disposable Camera app without downloading it.
+     3. Throughout the party, Emily and her friends use the Disposable Camera app to capture photos of themselves, their activities, and the decorations.
+     4. After the party, Emily collects the digital photos taken by guests using the Disposable Camera app.
+     5. Emily selects the best photos from the event and edits them if necessary (on another app).
+     6. Emily posts the edited photos on her Instagram profile, adding captions and hashtags to share the memories of her anniversary celebration with her followers.
+
+5. **Alex's Party Planning**
+   - **Actor**: Alex
+   - **Description**: Alex wants to ensure a successful party by coordinating various aspects of planning and execution using the Disposable Camera app.
+   - **Preconditions**: Alex has access to resources for party planning and coordination.
+   - **Postconditions**: The party is executed smoothly, and attendees have an enjoyable experience.
+   - **Flow**:
+     1. Alex begins by setting a date and theme for the party and creates an event on the Disposable Camera app.
+     2. Alex shares the event QR code with invited guests, allowing them to access the Disposable Camera app without downloading it.
+     3. Alex organizes logistics such as decorations, food and drinks, and entertainment, updating the event details on the Disposable Camera app.
+     4. On the day of the party, Alex uses the Disposable Camera app to capture photos of the setup, guests, and activities, contributing to the event's digital album.
+     5. Throughout the party, Alex encourages guests to use the Disposable Camera app to capture their own photos and share them within the event album.
+     6. After the party, Alex reviews the photos collected through the Disposable Camera app, sharing highlights with attendees and preserving memories of the event digitally.
 
 ## Functional Analysis
 
-// todo resize images
-
 **Legend:** 
 
-<img src="./Images/Legend.png">
+<img src="./Images/Legend.png" style="width: 50%">
 
 <br>
 
 **Authentication:**
 
-<img src="./Images/Authentication.png">
+<img src="./Images/Authentication.png" style="width: 50%">
 
 <br>
 
 **Home screen:**
 
-<img src="./Images/Home.png">
+<img src="./Images/Home.png" style="width: 50%">
 
 <br>
 
 **Camera:**
 
-<img src="./Images/Camera.png">
+<img src="./Images/Camera.png" style="width: 50%">
 
 <br>
 
 **Personal gallery:**
 
-<img src="./Images/Personal.png">
+<img src="./Images/Personal.png" style="width: 50%">
 
 <br>
 
 **Personal settings:**
 
-<img src="./Images/SettingsPerso.png">
+<img src="./Images/SettingsPerso.png" style="width: 50%">
 
 <br>
 
 **General gallery:**
 
-<img src="./Images/General.png">
+<img src="./Images/General.png" style="width: 50%">
 
 <br>
 
 **Create event:**
 
-<img src="./Images/Create.png">
+<img src="./Images/Create.png" style="width: 50%">
 
 <br>
 
 **Event Settings:**
 
-<img src="./Images/SettingsEvent.png">
+<img src="./Images/SettingsEvent.png" style="width: 50%">
 
 <br>
 
-# Non-Functional Requirements
-// todo till the end
-## Reliability
 
-should not crash 
+## Non-Functional Requirements
 
-...
+### Reliability
+- **Uptime**: The app should have an uptime of 99.9%, ensuring minimal downtime.
+- **Error Handling**: Gracefully handle errors, providing user-friendly messages and avoiding crashes.
+- **Data Consistency**: Ensure consistency in photo uploads and downloads, even under network interruptions.
 
-## Operability
+### Performance
+- **Loading Times**: The app must load quickly, with initial launch times under 3 seconds.
+- **Real-Time Updates**: Ensure real-time updates for new photos and event information.
 
-cross platform ios android
+### Scalability
+- **User Capacity**: Support a large number of simultaneous users, especially during large events.
+- **Event Data Handling**: Efficiently manage a large volume of photos without performance degradation.
 
-## Recovery
+### Security
+- **Data Encryption**: Use industry-standard encryption for data at rest and in transit.
+- **GDPR Compliance**: Ensure compliance with GDPR for user data privacy.
+- **Access Control**: Restrict access to photos and data based on user roles.
 
-in case of crash 
+### Usability
+- **User Interface**: Design an intuitive UI that is easy to navigate.
+- **Accessibility**: Include basic accessibility features for users with disabilities.
 
-not closing the event 
+### Operability
+- **Cross-Platform Consistency**: Ensure the design is adaptable for future cross-platform support.
+- **Ease of Maintenance**: Maintain a well-documented codebase for easy updates.
 
-not losing data and photos
+### Recovery
+- **Data Integrity**: Ensure no data is lost in case of crashes; use automatic backups.
+- **Crash Recovery**: The app should restart and recover to a stable state after a crash.
 
-## Delivery
+### Delivery
+- **App Store Compliance**: Ensure the app complies with Apple App Store guidelines.
+- **Update Process**: Support over-the-air updates with minimal user disruption.
 
+### Maintainability
+- **Code Documentation**: Ensure all code is well-documented.
+- **Version Control**: Use GitHub for version control to track and manage changes.
 
-As a free software with no commercial purpose, available to download from app store and play store
+## User Flows
 
-## Maintainability
+### Onboarding Flow
 
-Commented and documented code
+1. **Download the App**:
+   - User downloads the app from the App Store.
+   - On first launch, the user is greeted with a brief introduction to the app’s features.
+   - The user is asked to allow access to the camera and photo library.
+   - For organizers, a quick tutorial on how to create an event is provided.
 
-## Security
+2. **Event Creation (Organizer)**:
+   - Organizer selects "Create Event" from the home screen.
+   - Fills out event details (name, photo limit, duration).
+   - The app generates a unique QR code for the event.
+   - The QR code is displayed and can be shared with participants.
 
-GDPR
+3. **Event Participation (Participant)**:
+   - Participant scans the event QR code using their phone’s camera.
+   - If using the full app, they are directed to the event gallery.
+   - If using the App Clip, they are prompted to enter their name/pseudo before accessing the gallery.
 
-privacy
+### App Clip Flow
 
-# Glossary
+1. **Scanning the QR Code**:
+   - User scans the event QR code using their phone’s native camera.
+   - The App Clip is launched immediately without the need for a full download.
 
-Academic Institution
-Cross-Platform
-Data Security
-Disposable Camera
-GDPR
-Intellectual Property
-Milestones
-Non-Functional Requirements
-Personal Data
-Regulatory Compliance
-Reviewers
-Risks and Assumptions
-Scope
-Stakeholders
-Timeline
-User Interface
+2. **Entering Name/Pseudo**:
+   - Upon first use, the App Clip prompts the user to enter their name or pseudo.
+   - This information is used to personalize their experience during the event.
+
+3. **Accessing the Event Gallery**:
+   - The user is presented with a unified gallery view showing all event photos.
+   - The user can browse existing photos and choose to download them.
+
+4. **Uploading Photos**:
+   - The user can upload photos directly from their device’s gallery.
+   - The App Clip will request access to the user’s photo library for this purpose.
+
+5. **Exiting the App Clip**:
+   - The user can exit the App Clip at any time by closing it.
+   - Data (such as name/pseudo) is retained only for the session unless saved by the full app.
+
+## Legal and Compliance Requirements
+
+- **GDPR Compliance**: Ensure the app adheres to GDPR regulations, including user consent for data collection and the right to access, rectify, and delete personal data.
+- **Terms of Service and Privacy Policy**: Users must agree to the app’s terms of service and privacy policy upon first use. The policies should be accessible at any time within the app.
+- **Data Retention Policy**: Specify that event data will be retained for 30 days post-event, after which it will be permanently deleted.
+
+## Analytics and Reporting
+
+- **User Engagement**: Track how users interact with the app, including time spent on different screens, the number of photos uploaded/downloaded, and participation rates.
+- **Event Metrics**: Provide organizers with basic analytics, such as the number of photos uploaded and the number of active participants.
+- **Crash Reports**: Collect and analyze crash reports to identify and address stability issues.
+
+## Localization and Internationalization
+
+- **Language Support**: Initially, the app will support English,
+
+ with plans to add additional languages based on user demand.
+- **Date/Time Formats**: Ensure that date and time formats are localized based on the user’s region.
+- **Cultural Sensitivity**: Ensure that the app’s content, including icons and color schemes, is culturally appropriate for different regions.
+
+## Integration with Other Services
+
+- **Cloud Storage**: Use cloud storage for storing event photos, ensuring scalability and reliability.
+- **Social Media Sharing**: In future iterations, consider integrating social media sharing directly from the app.
+- **Analytics Platforms**: Integrate with analytics platforms to track user behavior and app performance.
+
+## User Testing and Feedback
+
+- **User Testing Plan**: Conduct user testing with a diverse group of participants, including those with different levels of tech-savviness.
+- **Feedback Collection**: Provide in-app mechanisms for users to submit feedback and report issues.
+- **Iteration and Improvement**: Use the collected feedback to prioritize improvements in future updates.
+
+## Future Enhancements and Roadmap
+
+- **Cross-Platform Expansion**: Expand the app to Android and potentially other platforms based on demand.
+- **Video Capture**: Consider adding video capture functionality in a future version.
+- **Event Templates**: Introduce pre-defined event templates to simplify event creation.
+- **Multiple Admin Roles**: Allow for multiple organizers to manage a single event.
+- **Rewards/Badge System**: Introduce a reward system for users who participate in multiple events.
+
+## Glossary
+
+- **Academic Institution**: An organization dedicated to education and research, providing guidance and assessment for the project.
+- **App Clip**: A lightweight version of the app that provides key functionality without requiring a full download.
+- **Cross-Platform**: The ability for software to run on multiple platforms, such as iOS and Android.
+- **Data Security**: The protection of data against unauthorized access, corruption, or theft, using encryption and other measures.
+- **Disposable Camera**: A traditional single-use camera that inspired the app’s design and functionality.
+- **Event**: A specific occasion where participants can join, take photos, and share them through the app.
+- **GDPR (General Data Protection Regulation)**: A regulation in EU law on data protection and privacy.
+- **Intellectual Property**: Legal rights concerning the ownership of creations of the mind, such as software and content.
+- **Milestones**: Key points in the project timeline marking significant progress.
+- **Non-Functional Requirements**: Criteria used to judge the operation of a system, such as performance and reliability.
+- **Personal Data**: Information relating to an identifiable person, such as photos and event participation data.
+- **Project Management**: The process of planning and overseeing the development of the app.
+- **QR Code**: A machine-readable code used for storing URLs or other information, scannable by smartphone cameras.
+- **Regulatory Compliance**: Adherence to laws and regulations relevant to the app’s development and use.
+- **Reviewers**: Individuals or groups responsible for evaluating the project’s compliance with required standards.
+- **Risks and Assumptions**: Considerations regarding potential issues (risks) and conditions assumed to be true (assumptions) during project planning.
+- **Scope**: The boundaries of the project, including what will be developed and what will be excluded.
+- **Stakeholders**: Individuals or organizations with an interest in the project’s outcome.
+- **Timeline**: The schedule for the project, including key dates and milestones.
+- **User Interface (UI)**: The part of the app that users interact with, including design and navigation elements.
+
