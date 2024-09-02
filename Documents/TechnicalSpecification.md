@@ -1,5 +1,50 @@
 # Disposable Camera Application - Technical Specification
 
+<details>
+<summary>Table of Contents</summary>
+
+- [Disposable Camera Application - Technical Specification](#disposable-camera-application---technical-specification)
+  - [1. **Introduction**](#1-introduction)
+  - [2. **Technologies Used**](#2-technologies-used)
+    - [2.1 **Frontend**](#21-frontend)
+    - [2.2 **Backend**](#22-backend)
+    - [2.3 **iOS-Specific Technologies**](#23-ios-specific-technologies)
+    - [2.4 **Database \& Storage Management**](#24-database--storage-management)
+    - [2.5 **Web and Domain Management**](#25-web-and-domain-management)
+    - [2.6 **Development Tools**](#26-development-tools)
+    - [2.7 **Other Considerations**](#27-other-considerations)
+  - [3. **Architecture Overview**](#3-architecture-overview)
+    - [3.1 **System Architecture**](#31-system-architecture)
+    - [3.2 **Component Diagram**](#32-component-diagram)
+  - [4. **Data Flow**](#4-data-flow)
+    - [4.1 **Event Creation**](#41-event-creation)
+    - [4.2 **Image Handling**](#42-image-handling)
+    - [4.3 **App Clip Interaction**](#43-app-clip-interaction)
+  - [5. **Database Structure**](#5-database-structure)
+    - [5.1 **Firestore Collections and Documents**](#51-firestore-collections-and-documents)
+    - [5.2 **Firebase Storage Structure**](#52-firebase-storage-structure)
+  - [6. **App Clips Setup**](#6-app-clips-setup)
+    - [6.1 **Associated Domains**](#61-associated-domains)
+    - [6.2 **AASA File Configuration**](#62-aasa-file-configuration)
+  - [7. **Security Considerations**](#7-security-considerations)
+  - [8. **Performance and Scalability**](#8-performance-and-scalability)
+    - [8.1 **Performance**](#81-performance)
+    - [8.2 **Scalability**](#82-scalability)
+  - [9. **Deployment**](#9-deployment)
+    - [9.1 **Deployment Process**](#91-deployment-process)
+    - [9.2 **Continuous Integration/Continuous Deployment (CI/CD)**](#92-continuous-integrationcontinuous-deployment-cicd)
+  - [10. **Testing and Quality Assurance**](#10-testing-and-quality-assurance)
+    - [10.1 **Unit Testing**](#101-unit-testing)
+    - [10.2 **Integration Testing**](#102-integration-testing)
+    - [10.3 **User Acceptance Testing (UAT)**](#103-user-acceptance-testing-uat)
+  - [11. **Documentation and Maintenance**](#11-documentation-and-maintenance)
+    - [11.1 **Code Documentation**](#111-code-documentation)
+    - [11.2 **User Documentation**](#112-user-documentation)
+    - [11.3 **Maintenance**](#113-maintenance)
+- [Glossary](#glossary)
+
+</details>
+
 ## 1. **Introduction**
 
 The Disposable Camera application is a mobile app designed to provide users with a nostalgic and communal experience of capturing and sharing moments at events. This technical specification document outlines the architecture, technologies, and processes used to develop and maintain the application. The app is initially targeted for iOS, with plans for cross-platform support in the future.
@@ -329,3 +374,53 @@ The following diagram outlines the major components of the Disposable Camera app
 - **Process**: 
   - Regular updates will be released to fix bugs, improve performance, and introduce new features based on user feedback.
   - Maintenance cycles will be managed via GitHub and communicated to users through release notes.
+
+# Glossary
+
+- **AASA (Apple App Site Association) File**: A JSON file hosted on a web server that iOS uses to associate domain names with apps, enabling features like Universal Links and App Clips.
+
+- **App Clip**: A lightweight version of an iOS app that allows users to access key functionalities without downloading the full app, typically launched via URLs, NFC tags, or QR codes.
+
+- **Associated Domains**: A feature in iOS that allows apps to associate with specific domain names, enabling functionalities such as Universal Links and App Clips.
+
+- **Backend**: The server-side component of an application responsible for business logic, database management, and integration with other services.
+
+- **CI/CD (Continuous Integration/Continuous Deployment)**: A set of practices that automate testing and deployment processes, ensuring that code changes are rapidly and reliably deployed to production environments.
+
+- **Cloudflare**: A web infrastructure and security company providing services such as content delivery networks, DDoS mitigation, internet security, and domain name management.
+
+- **Cloudflare Workers**: A serverless platform offered by Cloudflare that allows developers to run JavaScript applications at the network edge, used here to serve the AASA file.
+
+- **Expo**: A framework and platform for developing React Native applications, providing tools and services for simplifying development, testing, and deployment processes.
+
+- **Firebase**: A platform developed by Google that provides backend services like Firestore, a NoSQL database, and Firebase Storage for media storage, used in this project.
+
+- **Firestore**: A NoSQL document database provided by Firebase, used to store and sync data in real-time for mobile and web applications.
+
+- **Firestore Collections**: A method of organizing and storing groups of documents in Firestore, each collection containing multiple documents.
+
+- **Firestore Documents**: Individual records within a Firestore collection, containing data as key-value pairs.
+
+- **Firestore Sub-collections**: Collections within a document in Firestore, allowing for hierarchical organization of data.
+
+- **GitHub**: A platform for version control and collaboration, enabling developers to manage and track changes in source code while supporting collaborative development.
+
+- **GoDaddy**: A domain registrar and web hosting service used to manage the domain `disposableapp.xyz`.
+
+- **Jest**: A JavaScript testing framework used for unit testing, primarily focused on testing React components and other JavaScript logic.
+
+- **React Native**: A framework for building mobile applications that render natively on iOS and Android, using JavaScript and React.
+
+- **Swift**: A programming language developed by Apple for building software across Apple’s ecosystem, including iOS, macOS, watchOS, and tvOS.
+
+- **SwiftUI**: A framework by Apple for building user interfaces across Apple platforms using Swift, focusing on declarative syntax.
+
+- **TLS/SSL (Transport Layer Security/Secure Sockets Layer)**: Protocols for encrypting data sent over the internet, ensuring secure communication between clients and servers.
+
+- **UAT (User Acceptance Testing)**: The process where end-users test the application to ensure it meets business requirements and is ready for production.
+
+- **URL (Uniform Resource Locator)**: The address used to access resources on the internet, such as web pages or App Clips.
+
+- **Visual Studio Code**: A code editor optimized for building and debugging modern web and cloud applications, widely used for developing React Native apps.
+
+- **Xcode**: Apple’s integrated development environment (IDE) for developing software for macOS, iOS, watchOS, and tvOS, including tools for testing and deployment.
