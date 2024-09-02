@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyBmCm2ozAR0i77VJ90D-N55CRTuUilK4yg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>181466114591</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.moonshot.disposable.Clip</string>
+	<key>PROJECT_ID</key>
+	<string>disposablecamera-5c3fa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>disposablecamera-5c3fa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:181466114591:ios:5ad0ab36c5e95c3849032a</string>
+</dict>
+</plist>
