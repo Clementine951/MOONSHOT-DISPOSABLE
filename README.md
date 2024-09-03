@@ -12,6 +12,7 @@ For detailed documentation on the project, including functional specifications, 
 - [Gantt Chart Timeline](./Documents/Images/timeline.png)
 - [Functional Specification](./Documents/FunctionalSpecification.md)
 - [Technical Specification](./Documents/TechnicalSpecification.md)
+- [Presentation PDF](./Documents/Presentation.pdf)
 
 ## Prerequisites
 
