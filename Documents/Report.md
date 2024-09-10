@@ -1021,6 +1021,8 @@ The following diagram outlines the major components of the Disposable Camera app
     - Photos are stored as `userNameX.jpg` where `X` is the sequence number (e.g., `Frfe1.jpg`).
     - Each file is stored with metadata linking it to the participant who took the photo.
 
+<img src="./Images/Class Diagram.png" style="width:50%">
+
 ## 6. **App Clips Setup**
 
 ### 6.1 **Associated Domains**
