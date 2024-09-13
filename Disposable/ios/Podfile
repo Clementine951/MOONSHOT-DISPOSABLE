@@ -49,11 +49,7 @@ target 'dispo' do
     :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
   )
 
-  pod 'Firebase/Core', 
-  pod 'Firebase/Firestore', 
-  pod 'Firebase/Storage', 
-  pod 'SDWebImageSwiftUI', 
-  pod 'gRPC-C++', 
+
 
   post_install do |installer|
     installer.pods_project.targets.each do |target|

@@ -1,12 +1,24 @@
-# Disposable Camera Application - Functional Specification
+# Moonshot Report - Disposable Camera Application
 
-## Table of Contents
+## Report Introduction
+
+The Disposable Camera Application represents a significant milestone in my professional journey in mobile application development. Designed to offer users a nostalgic yet modern way to capture and share moments at events, this project blends traditional disposable camera concepts with cutting-edge mobile technology to create a communal, event-based photo-sharing experience.
+
+My professional journey has focused on mastering mobile and web technologies, particularly in creating user-friendly and accessible application designs. This project was developed as an MVP, challenging my skills in full-stack development, from front-end UI/UX design using React Native to back-end integration with Firebase for real-time data handling.
+
+Through this MVP, I aimed to explore and refine various technologies, including iOS-specific features like App Clips and cloud services like Cloudflare for domain and content management. Initially targeted at iOS, the application is designed with future cross-platform expansion in mind.
+
+During the development process, I encountered and overcame challenges such as compatibility issues between Firebase and iOS. These experiences provided valuable learning opportunities in troubleshooting and adapting to evolving technical environments. The Disposable Camera Application is not just a technical achievement but also a reflection of my commitment to creating meaningful, user-focused digital experiences.
+
+Looking ahead, this MVP serves as the foundation for future enhancements and iterations planned for the next year, aiming to expand functionality, improve user experience, and reach a broader audience.
 
 <details>
-<summary>Expand to view</summary>
+<summary>Table of content</summary>
 
-- [Disposable Camera Application - Functional Specification](#disposable-camera-application---functional-specification)
-  - [Table of Contents](#table-of-contents)
+- [Moonshot Report - Disposable Camera Application](#moonshot-report---disposable-camera-application)
+  - [Report Introduction](#report-introduction)
+- [Glossary](#glossary)
+- [Functional Specification](#functional-specification)
   - [Project Overview](#project-overview)
   - [Project Definition](#project-definition)
     - [Vision](#vision)
@@ -72,9 +84,103 @@
   - [Integration with Other Services](#integration-with-other-services)
   - [User Testing and Feedback](#user-testing-and-feedback)
   - [Future Enhancements and Roadmap](#future-enhancements-and-roadmap)
-  - [Glossary](#glossary)
+- [Technical Specification](#technical-specification)
+  - [1. **Introduction**](#1-introduction)
+  - [2. **Technologies Used**](#2-technologies-used)
+    - [2.1 **Frontend**](#21-frontend)
+    - [2.2 **Backend**](#22-backend)
+    - [2.3 **iOS-Specific Technologies**](#23-ios-specific-technologies)
+    - [2.4 **Database \& Storage Management**](#24-database--storage-management)
+    - [2.5 **Web and Domain Management**](#25-web-and-domain-management)
+    - [2.6 **Development Tools**](#26-development-tools)
+    - [2.7 **Other Considerations**](#27-other-considerations)
+  - [3. **Architecture Overview**](#3-architecture-overview)
+    - [3.1 **System Architecture**](#31-system-architecture)
+    - [3.2 **Component Diagram**](#32-component-diagram)
+  - [4. **Data Flow**](#4-data-flow)
+    - [4.1 **Event Creation**](#41-event-creation)
+    - [4.2 **Image Handling**](#42-image-handling)
+    - [4.3 **App Clip Interaction**](#43-app-clip-interaction)
+  - [5. **Database Structure**](#5-database-structure)
+    - [5.1 **Firestore Collections and Documents**](#51-firestore-collections-and-documents)
+    - [5.2 **Firebase Storage Structure**](#52-firebase-storage-structure)
+  - [6. **App Clips Setup**](#6-app-clips-setup)
+    - [6.1 **Associated Domains**](#61-associated-domains)
+    - [6.2 **AASA File Configuration**](#62-aasa-file-configuration)
+  - [7. **Security Considerations**](#7-security-considerations)
+  - [8. **Performance and Scalability**](#8-performance-and-scalability)
+    - [8.1 **Performance**](#81-performance)
+    - [8.2 **Scalability**](#82-scalability)
+  - [9. **Deployment**](#9-deployment)
+    - [9.1 **Deployment Process**](#91-deployment-process)
+    - [9.2 **Continuous Integration/Continuous Deployment (CI/CD)**](#92-continuous-integrationcontinuous-deployment-cicd)
+  - [10. **Testing and Quality Assurance**](#10-testing-and-quality-assurance)
+    - [10.1 **Unit Testing**](#101-unit-testing)
+    - [10.2 **Integration Testing**](#102-integration-testing)
+    - [10.3 **User Acceptance Testing (UAT)**](#103-user-acceptance-testing-uat)
+  - [11. **Documentation and Maintenance**](#11-documentation-and-maintenance)
+    - [11.1 **Code Documentation**](#111-code-documentation)
+    - [11.2 **User Documentation**](#112-user-documentation)
+    - [11.3 **Maintenance**](#113-maintenance)
+- [Analysis and Specifications of the Software Project](#analysis-and-specifications-of-the-software-project)
+      - [Technology Choices](#technology-choices)
+      - [Project Constraints](#project-constraints)
+- [Software Architecture Choices](#software-architecture-choices)
+- [Argumentation on the Choice of Algorithms and Their Relevance](#argumentation-on-the-choice-of-algorithms-and-their-relevance)
+- [Presentation of the Tests and Deployment](#presentation-of-the-tests-and-deployment)
+- [Evolutions Made or Planned for the Software Solution](#evolutions-made-or-planned-for-the-software-solution)
+- [Analysis of Project Management and Leadership](#analysis-of-project-management-and-leadership)
 
 </details>
+
+
+# Glossary
+
+- **AASA (Apple App Site Association) File**: A JSON file hosted on a web server that iOS uses to associate domain names with apps, enabling features like Universal Links and App Clips.
+- **App Clip**: A lightweight version of an iOS app that allows users to access key functionalities without downloading the full app, typically launched via URLs, NFC tags, or QR codes.
+- **Associated Domains**: A feature in iOS that allows apps to associate with specific domain names, enabling functionalities such as Universal Links and App Clips.
+- **Backend**: The server-side component of an application responsible for business logic, database management, and integration with other services.
+- **CI/CD (Continuous Integration/Continuous Deployment)**: A set of practices that automate testing and deployment processes, ensuring that code changes are rapidly and reliably deployed to production environments.
+- **Cloudflare**: A web infrastructure and security company providing services such as content delivery networks, DDoS mitigation, internet security, and domain name management.
+- **Cloudflare Workers**: A serverless platform offered by Cloudflare that allows developers to run JavaScript applications at the network edge, used here to serve the AASA file.
+- **Cross-Platform**: The ability for software to run on multiple platforms, such as iOS and Android.
+- **Data Security**: The protection of data against unauthorized access, corruption, or theft, using encryption and other measures.
+- **Disposable Camera**: A traditional single-use camera that inspired the app’s design and functionality.
+- **Event**: A specific occasion where participants can join, take photos, and share them through the app.
+- **Expo**: A framework and platform for developing React Native applications, providing tools and services for simplifying development, testing, and deployment processes.
+- **Firebase**: A platform developed by Google that provides backend services like Firestore, a NoSQL database, and Firebase Storage for media storage, used in this project.
+- **Firestore**: A NoSQL document database provided by Firebase, used to store and sync data in real-time for mobile and web applications.
+- **Firestore Collections**: A method of organizing and storing groups of documents in Firestore, each collection containing multiple documents.
+- **Firestore Documents**: Individual records within a Firestore collection, containing data as key-value pairs.
+- **Firestore Sub-collections**: Collections within a document in Firestore, allowing for hierarchical organization of data.
+- **GitHub**: A platform for version control and collaboration, enabling developers to manage and track changes in source code while supporting collaborative development.
+- **GoDaddy**: A domain registrar and web hosting service used to manage the domain `disposableapp.xyz`.
+- **GDPR (General Data Protection Regulation)**: A regulation in EU law on data protection and privacy.
+- **Intellectual Property**: Legal rights concerning the ownership of creations of the mind, such as software and content.
+- **Jest**: A JavaScript testing framework used for unit testing, primarily focused on testing React components and other JavaScript logic.
+- **Milestones**: Key points in the project timeline marking significant progress.
+- **Non-Functional Requirements**: Criteria used to judge the operation of a system, such as performance and reliability.
+- **Personal Data**: Information relating to an identifiable person, such as photos and event participation data.
+- **Project Management**: The process of planning and overseeing the development of the app.
+- **QR Code**: A machine-readable code used for storing URLs or other information, scannable by smartphone cameras.
+- **React Native**: A framework for building mobile applications that render natively on iOS and Android, using JavaScript and React.
+- **Regulatory Compliance**: Adherence to laws and regulations relevant to the app’s development and use.
+- **Reviewers**: Individuals or groups responsible for evaluating the project’s compliance with required standards.
+- **Risks and Assumptions**: Considerations regarding potential issues (risks) and conditions assumed to be true (assumptions) during project planning.
+- **Scope**: The boundaries of the project, including what will be developed and what will be excluded.
+- **Stakeholders**: Individuals or organizations with an interest in the project’s outcome.
+- **Swift**: A programming language developed by Apple for building software across Apple’s ecosystem, including iOS, macOS, watchOS, and tvOS.
+- **SwiftUI**: A framework by Apple for building user interfaces across Apple platforms using Swift, focusing on declarative syntax.
+- **TLS/SSL (Transport Layer Security/Secure Sockets Layer)**: Protocols for encrypting data sent over the internet, ensuring secure communication between clients and servers.
+- **Timeline**: The schedule for the project, including key dates and milestones.
+- **UAT (User Acceptance Testing)**: The process where end-users test the application to ensure it meets business requirements and is ready for production.
+- **URL (Uniform Resource Locator)**: The address used to access resources on the internet, such as web pages or App Clips.
+- **User Interface (UI)**: The part of the app that users interact with, including design and navigation elements.
+- **Visual Studio Code**: A code editor optimized for building and debugging modern web and cloud applications, widely used for developing React Native apps.
+- **Xcode**: Apple’s integrated development environment (IDE) for developing software for macOS, iOS, watchOS, and tvOS, including tools for testing and deployment.
+
+
+# Functional Specification
 
 ## Project Overview
 
@@ -195,8 +301,12 @@ The following features are not included in the current version of the Disposable
 | Reviewers         | Evaluate the project for grading      |
 
 ### Timeline
-// todo
-Project management, task allocation, and progress tracking are coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/summary).
+
+Project management, task allocation, and progress tracking were initially coordinated using [JIRA](https://virtual-processor.atlassian.net/jira/core/projects/MS/timeline). However, JIRA was quickly abandoned due to its lack of suitability for my working style, particularly as a solo developer. Instead, I transitioned to using a more flexible and immediate approach, relying on GitHub commit messages and a physical whiteboard for task management.
+
+The project timeline is represented in the Gantt chart below:
+
+<img src="./Images/timeline.png">
 
 ### Milestones
 
@@ -694,26 +804,416 @@ Graphic charter:
 - **Multiple Admin Roles**: Allow for multiple organizers to manage a single event.
 - **Rewards/Badge System**: Introduce a reward system for users who participate in multiple events.
 
-## Glossary
+---
 
-- **Academic Institution**: An organization dedicated to education and research, providing guidance and assessment for the project.
-- **App Clip**: A lightweight version of the app that provides key functionality without requiring a full download.
-- **Cross-Platform**: The ability for software to run on multiple platforms, such as iOS and Android.
-- **Data Security**: The protection of data against unauthorized access, corruption, or theft, using encryption and other measures.
-- **Disposable Camera**: A traditional single-use camera that inspired the app’s design and functionality.
-- **Event**: A specific occasion where participants can join, take photos, and share them through the app.
-- **GDPR (General Data Protection Regulation)**: A regulation in EU law on data protection and privacy.
-- **Intellectual Property**: Legal rights concerning the ownership of creations of the mind, such as software and content.
-- **Milestones**: Key points in the project timeline marking significant progress.
-- **Non-Functional Requirements**: Criteria used to judge the operation of a system, such as performance and reliability.
-- **Personal Data**: Information relating to an identifiable person, such as photos and event participation data.
-- **Project Management**: The process of planning and overseeing the development of the app.
-- **QR Code**: A machine-readable code used for storing URLs or other information, scannable by smartphone cameras.
-- **Regulatory Compliance**: Adherence to laws and regulations relevant to the app’s development and use.
-- **Reviewers**: Individuals or groups responsible for evaluating the project’s compliance with required standards.
-- **Risks and Assumptions**: Considerations regarding potential issues (risks) and conditions assumed to be true (assumptions) during project planning.
-- **Scope**: The boundaries of the project, including what will be developed and what will be excluded.
-- **Stakeholders**: Individuals or organizations with an interest in the project’s outcome.
-- **Timeline**: The schedule for the project, including key dates and milestones.
-- **User Interface (UI)**: The part of the app that users interact with, including design and navigation elements.
+---
+
+# Technical Specification
+
+## 1. **Introduction**
+
+The Disposable Camera application is a mobile app designed to provide users with a nostalgic and communal experience of capturing and sharing moments at events. This technical specification document outlines the architecture, technologies, and processes used to develop and maintain the application. The app is initially targeted for iOS, with plans for cross-platform support in the future.
+
+## 2. **Technologies Used**
+
+### 2.1 **Frontend**
+
+- **React Native (Expo)**
+  - **Purpose**: To build the mobile application for both iOS and, in the future, Android platforms.
+  - **Details**: 
+    - **Expo**: A framework and platform for universal React applications that run on all devices. It simplifies development and deployment by providing tools and services tailored for React Native.
+  - **Benefits**:
+    - Streamlined development with rapid prototyping and easy testing on different platforms.
+    - Access to native APIs (e.g., Camera, Location) through managed packages.
+
+### 2.2 **Backend**
+
+- **Firebase**
+  - **Purpose**: Serves as the backend for the application, handling data storage, and media storage.
+  - **Components**:
+    - **Firestore**: A NoSQL document database used to store event data, including metadata about events, photos, and participants.
+      - **Collections**: `events` (containing documents for each event).
+      - **Sub-collections**: `images` and `participants` under each event.
+    - **Firebase Storage**: Used for storing event-related media (e.g., photos).
+      - **File Naming**: Photos are stored with a naming convention that includes the user’s name and a sequence number.
+      - **Integration**: URLs for accessing stored images are saved in Firestore.
+
+### 2.3 **iOS-Specific Technologies**
+
+- **App Clips**
+  - **Purpose**: Provides a lightweight version of the app that allows iOS users to interact with specific event-related features without downloading the full app.
+  - **Technologies**:
+    - **Swift & SwiftUI**: Used to develop the App Clip, offering a native iOS experience.
+    - **Associated Domains & AASA File**: Required for enabling App Clips, ensuring the correct routing and access through QR codes.
+    - **Hosting**: Managed by Cloudflare, with AASA file management to define the associated domains and capabilities.
+
+- **Cloudflare**
+  - **Purpose**: Manages DNS settings, SSL certificates, and serves the AASA file required for App Clips.
+  - **Details**:
+    - Provides infrastructure for secure and scalable access to the AASA file.
+    - Supports routing and domain management for `disposableapp.xyz`.
+
+### 2.4 **Database & Storage Management**
+
+- **Firestore**
+  - **Purpose**: Serves as the primary database for the application.
+  - **Details**:
+    - Handles real-time updates, ensuring that all participants in an event see the latest photos and information.
+    - Provides scalability and security for managing multiple events and users.
+
+- **Firebase Storage**
+  - **Purpose**: Manages storage for all event-related media.
+  - **Details**:
+    - Stores images securely and provides URLs that can be embedded in the app for displaying photos.
+    - Integrates seamlessly with Firestore to link media with corresponding metadata.
+
+### 2.5 **Web and Domain Management**
+
+- **GoDaddy**
+  - **Purpose**: The domain registrar for `disposableapp.xyz`.
+  - **Details**:
+    - Manages domain settings, which are critical for ensuring that the app and its features (like App Clips) are accessible.
+
+- **Cloudflare Workers**
+  - **Purpose**: A serverless computing platform used to serve the AASA file and manage requests related to domain-specific operations.
+  - **Details**:
+    - Provides the correct content type and security headers required by iOS for App Clips.
+
+### 2.6 **Development Tools**
+
+- **GitHub**
+  - **Purpose**: Version control and source code management.
+  - **Details**:
+    - Hosts the project repository, including all code, documentation, and issue tracking.
+    - Provides CI/CD potential for automated testing and deployment in the future.
+
+- **Xcode**
+  - **Purpose**: IDE for developing and testing iOS-specific features, including the App Clip.
+  - **Details**:
+    - Used for building and deploying the App Clip, managing certificates, and configuring associated domains.
+
+- **Visual Studio Code**
+  - **Purpose**: Primary code editor for writing React Native code.
+  - **Details**:
+    - Supports a wide range of plugins for linting, debugging, and enhancing the development workflow.
+
+### 2.7 **Other Considerations**
+
+- **No Authentication**
+  - **Purpose**: Simplifies the user experience by storing data locally and in Firebase without user accounts.
+  - **Details**:
+    - Currently, the app does not use Firebase Authentication or any other authentication method. All data interactions are managed directly on the device or within Firebase.
+
+- **No Notifications**
+  - **Purpose**: Notifications are not implemented, focusing the app’s scope on core functionality.
+  - **Details**:
+    - Consider integrating Firebase Cloud Messaging (FCM) in future updates if notifications become a required feature.
+
+## 3. **Architecture Overview**
+
+### 3.1 **System Architecture**
+
+The system architecture is designed to support a scalable and reliable event-based photo-sharing platform. The architecture comprises the following components:
+
+- **Frontend**: Built with React Native using Expo, targeting iOS devices initially. The frontend interacts with Firebase to fetch and store data.
+- **Backend**: Firebase serves as the backend, handling data storage with Firestore and media storage with Firebase Storage.
+- **App Clip**: A lightweight version of the app, developed using Swift and SwiftUI, which allows users to participate in events without downloading the full app.
+- **Database**: Firestore is used for structured data storage, and Firebase Storage handles media files.
+- **Domain and Routing**: Managed by Cloudflare, with Cloudflare Workers serving the AASA file for App Clips.
+
+### 3.2 **Component Diagram**
+
+The following diagram outlines the major components of the Disposable Camera application:
+
+```
+[Frontend (React Native - Expo)]
+       |
+       |---> [Firebase (Firestore, Storage)]
+       |
+[Backend]
+       |
+       |---> [iOS App Clip (Swift, SwiftUI)]
+       |
+[Cloudflare (AASA, Routing)]
+       |
+       |---> [GoDaddy (Domain Management)]
+```
+
+## 4. **Data Flow**
+
+### 4.1 **Event Creation**
+
+1. **Admin (Organizer) Action**:
+   - The organizer creates an event in the app by providing details such as event name, duration, and maximum photo limit.
+   - A unique event ID is generated and stored in Firestore.
+   - A QR code linking to the App Clip is generated for participants.
+
+2. **Data Storage**:
+   - Event metadata (e.g., event name, duration, number of photos) is stored in Firestore under the `events` collection.
+   - Each event’s photos are stored in Firebase Storage in a folder named after the event ID.
+
+3. **User Interaction**:
+   - Participants can join the event by scanning the QR code, which opens the App Clip.
+   - Participants take photos, which are uploaded and stored under the corresponding event’s folder in Firebase Storage.
+
+### 4.2 **Image Handling**
+
+1. **Photo Capture**:
+   - Participants capture photos using the app’s built-in camera interface.
+   - The photo is stored locally on the device until it is uploaded to Firebase Storage.
+
+2. **Photo Upload**:
+   - Photos are uploaded to Firebase Storage with a naming convention that includes the participant’s name and a sequence number.
+   - The URL of the uploaded photo is saved in Firestore under the event’s `images` sub-collection.
+
+3. **Photo Access**:
+   - Photos are accessible to all participants in the event through the general gallery.
+   - Participants can download photos directly from the app.
+
+### 4.3 **App Clip Interaction**
+
+1. **Accessing the App Clip**:
+   - Participants scan a QR code associated with an event.
+   - The App Clip opens, prompting the participant to enter their name.
+
+2. **App Clip Features**:
+   - Participants can view the general gallery, upload photos, and download photos.
+   - The App Clip does not provide access to personal settings or the full app’s functionality.
+
+3. **Data Sync**:
+   - All interactions within the App Clip are synced with Firebase, ensuring that the full app and the App Clip share the same data.
+
+## 5. **Database Structure**
+
+### 5.1 **Firestore Collections and Documents**
+
+- **Collection: `events`**
+  - **Document ID**: `eventId` (e.g., `Also_1725111327712`)
+  - **Fields**:
+    - `appClipURL`: (string) URL to the App Clip for this event.
+    - `duration`: (number) Duration of the event in hours.
+    - `eventId`: (string) Unique identifier for the event.
+    - `eventName`: (string) Name of the event.
+    - `numberOfPhotos`: (number) Maximum number of photos each participant can take.
+    - `reveal`: (string) Determines when photos are revealed (e.g., `revealNow`).
+    - `revealTime`: (string) Timestamp for when photos should be revealed.
+    - `start`: (string) Determines when the event starts (e.g., `startNow`).
+    - `userName`: (string) Name of the organizer.
+
+  - **Sub-collections**:
+    -
+
+ **Collection: `images`**
+      - **Document Fields**:
+        - `owner`: (string) Name of the participant who took the photo.
+        - `timestamp`: (number) Unix timestamp of when the photo was taken.
+        - `url`: (string) URL of the photo stored in Firebase Storage.
+    - **Collection: `participants`**
+      - **Document Fields**:
+        - `name`: (string) Name of the participant.
+        - `role`: (string) Role in the event (e.g., `organizer`).
+        - `userId`: (string) Unique identifier for the participant.
+
+### 5.2 **Firebase Storage Structure**
+
+- **Folder: `eventId` (e.g., `Also_1725111327712`)**
+  - **Files**: 
+    - Photos are stored as `userNameX.jpg` where `X` is the sequence number (e.g., `Frfe1.jpg`).
+    - Each file is stored with metadata linking it to the participant who took the photo.
+
+<img src="./Images/Class Diagram.png" style="width:50%">
+
+## 6. **App Clips Setup**
+
+### 6.1 **Associated Domains**
+
+- **Purpose**: Ensure that the App Clip can be accessed via the generated QR codes and associated domains.
+- **Setup**:
+  - **Domain**: `disposableapp.xyz`
+  - **Associated Domains**: Defined in the Apple Developer account and linked to the app through the AASA file.
+
+### 6.2 **AASA File Configuration**
+
+- **Purpose**: The Apple App Site Association (AASA) file is necessary for configuring the associated domains for the App Clip.
+- **Hosted By**: Cloudflare.
+- **AASA File Example**:
+  ```javascript
+  export default {
+    async fetch(request, env, ctx) {
+      const aasaContent = {
+        "applinks": {
+          "apps": [],
+          "details": [
+            {
+              "appIDs": ["<APP_ID>.com.moonshot.disposable.Clip"],
+              "paths": ["/clip/*"]
+            }
+          ]
+        },
+        "webcredentials": {
+          "apps": ["<APP_ID>.com.moonshot.disposable.Clip"]
+        },
+        "appclips": {
+          "apps": ["<APP_ID>.com.moonshot.disposable.Clip"]
+        }
+      };
+
+      const jsonBody = JSON.stringify(aasaContent);
+
+      return new Response(jsonBody, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+    },
+  };
+  ```
+
+## 7. **Security Considerations**
+
+- **Data Encryption**:
+  - All data at rest (in Firebase Storage and Firestore) and in transit is encrypted using industry-standard protocols (e.g., TLS/SSL).
+- **Access Control**:
+  - No authentication is implemented for user access, simplifying the user experience but relying on local device security.
+- **Data Privacy**:
+  - Compliant with GDPR, ensuring that users’ data can be accessed, rectified, and deleted upon request.
+- **Domain Security**:
+  - SSL certificates are managed by Cloudflare to secure communication between the app, the backend, and associated domains.
+
+## 8. **Performance and Scalability**
+
+### 8.1 **Performance**
+- **App Performance**:
+  - The app is optimized to load quickly, with an initial launch time target of under 3 seconds.
+- **Real-Time Updates**:
+  - Firestore’s real-time capabilities are leveraged to ensure that all participants see updates (e.g., new photos) as soon as they occur.
+
+### 8.2 **Scalability**
+- **User Capacity**:
+  - The system is currently designed for limited traffic but can be scaled by leveraging Firebase’s infrastructure to handle more users.
+- **Event Data Handling**:
+  - Efficient data handling strategies, including the use of Firestore’s real-time listeners, ensure that even large volumes of photos can be managed without performance degradation.
+
+## 9. **Deployment**
+
+### 9.1 **Deployment Process**
+- **Expo CLI**:
+  - Used to build and deploy the React Native app. The command `npx expo prebuild --platform ios` prepares the app for deployment.
+- **Xcode**:
+  - Required for building and deploying the App Clip. The app and the App Clip are both submitted to the App Store via Xcode.
+- **Cloudflare Workers**:
+  - Deployed using the command `npm run deploy` to ensure the AASA file and other configurations are served correctly.
+
+### 9.2 **Continuous Integration/Continuous Deployment (CI/CD)**
+- **GitHub Actions**:
+  - Potential for future integration with GitHub Actions to automate testing, building, and deployment processes.
+
+## 10. **Testing and Quality Assurance**
+
+### 10.1 **Unit Testing**
+- **Tools**:
+  - Jest is used for unit testing of React components and other JavaScript logic.
+  - XCTest is used for testing the Swift code in the App Clip.
+
+### 10.2 **Integration Testing**
+- **Tools**:
+  - Detox or Cypress can be used for end-to-end testing of the app’s flows, ensuring that the interaction between the frontend and backend works as expected.
+
+### 10.3 **User Acceptance Testing (UAT)**
+- **Process**:
+  - Conducted by real users to ensure the app meets the business requirements and provides a seamless user experience.
+  - Feedback from UAT will be incorporated into the development cycle for further improvements.
+
+## 11. **Documentation and Maintenance**
+
+### 11.1 **Code Documentation**
+- **Location**: All code is documented inline, with further documentation stored in the GitHub repository’s Wiki.
+- **Details**: Includes explanations of key functions, architecture decisions, and deployment instructions.
+
+### 11.2 **User Documentation**
+- **Purpose**: Guides for end-users and administrators on how to use the app’s features, available on the app’s website.
+- **Feedback Mechanism**:
+  - Users can provide feedback directly through the app or via the website, enabling continuous improvement.
+
+### 11.3 **Maintenance**
+- **Process**: 
+  - Regular updates will be released to fix bugs, improve performance, and introduce new features based on user feedback.
+  - Maintenance cycles will be managed via GitHub and communicated to users through release notes.
+
+
+---
+
+---
+
+# Analysis and Specifications of the Software Project
+
+The Disposable Camera Application was conceived to blend the nostalgia of traditional disposable cameras with the convenience and connectivity of modern mobile technology. The core idea is to provide users with a simple and communal way to capture and share moments at events.
+
+#### Technology Choices
+- **Development Framework**: After evaluating React Native, React Expo, and Flutter, I chose React Native with Expo. Expo simplifies development by providing a set of tools that streamline the process of building, testing, and deploying mobile apps. I opted for Expo because of its strong community support, extensive documentation, and ease of use.
+  
+- **Platform Focus**: Although Android is often considered easier for initial development due to fewer restrictions, I prioritized iOS. This decision was influenced by my desire to gain experience with iOS development and my interest in leveraging the iOS-exclusive App Clip feature, which offers a seamless user experience for event-based interactions. My previous experience with the Google Play Store during a project at ALGOSUP made iOS a new and exciting challenge.
+
+- **Database Selection**: Firebase was chosen for its comprehensive documentation, real-time database capabilities, and free tier for initial development. However, I later encountered compatibility issues with Swift and iOS, particularly when integrating Firebase with the App Clip. These issues highlighted the potential drawbacks of using Firebase in an iOS-centric project, especially as upgrading to Firebase's Blaze plan was necessary for full functionality.
+
+#### Project Constraints
+- **Use of Xcode and Swift**: Developing the App Clip necessitated the use of Xcode and Swift, which introduced a learning curve. Additionally, the $100 annual fee for an Apple Developer account was a budgetary constraint. I initially attempted to find workarounds to avoid this cost, which ultimately delayed the project.
+
+- **Event Availability Duration**: Initially, I planned to keep events accessible for only one hour after they ended. However, after considering user convenience, I extended this period to one month, allowing users more time to access and download their event photos.
+
+- **App Clip Image Upload**: Due to the App Clip's size limitations (ranging from 10MB to 50MB), I decided against allowing users to take photos directly within the App Clip. Instead, users can upload images, a more lightweight operation that aligns with the App Clip's constraints.
+
+# Software Architecture Choices
+
+The Disposable Camera Application was designed with a client-server architecture, where the front-end interacts with the Firebase backend to manage event data and photos.
+
+- **Architecture Design**: The architecture is intentionally simple and not highly scalable because the project was not intended to compete with established solutions. Instead, it serves as a proof of concept and a learning tool. The decision to use Firebase as the backend, despite its limitations with iOS, was driven by the need for rapid development and ease of use.
+
+- **Scalability Considerations**: While scalability was not a primary focus, the application was built with the understanding that it could be scaled in the future if necessary. Existing solutions offer robust scalability options, but they come with higher costs, which was a consideration in my decision-making process.
+
+# Argumentation on the Choice of Algorithms and Their Relevance
+
+The project did not involve complex algorithms or data structures, as the focus was on creating a user-friendly interface and seamless interaction with Firebase. 
+
+- **Algorithm Choice**: The application uses standard data handling and CRUD (Create, Read, Update, Delete) operations to manage events and photos within Firebase. The simplicity of the application's functionality did not require advanced algorithms.
+
+- **Relevance**: The algorithms and data structures chosen are effective for the scope of this project, providing the necessary functionality without overcomplicating the development process. As the project evolves, more sophisticated algorithms could be introduced if needed.
+
+# Presentation of the Tests and Deployment
+
+Due to the project's current state, extensive testing has not yet been implemented. However, the plan for the future includes a comprehensive testing strategy.
+
+- **Testing**: No formal testing framework was implemented during development. Future plans include unit tests using Jest for React components and XCTest for Swift code in the App Clip. Integration testing will be conducted to ensure seamless interaction between the front-end and Firebase.
+
+- **Deployment**: The project is currently not ready for deployment to the App Store due to unresolved issues with Firebase integration in Xcode. The app will be deployed via the App Store once these issues are resolved, with the deployment process managed through Xcode for the iOS app and App Clip, and GitHub for version control.
+
+# Evolutions Made or Planned for the Software Solution
+
+Several significant changes were made during the development process:
+
+- **Organizational Changes**: Initially, project management was handled through Jira. However, as I was the sole developer, I transitioned to managing tasks through GitHub commit messages and a physical whiteboard in my workspace. This approach allowed for more flexible and immediate task management.
+
+- **Design Evolution**: The app's design underwent significant simplification. The original design was complex, but after creating a first draft, I realized that a more minimalist approach would be more effective and user-friendly.
+
+- **Library Use**: I initially planned to use the `react-native-app-clip` library but found that it did not function as expected. This discovery led to the development of the App Clip using native Swift, which better suited the project’s needs.
+
+- **Database Selection**: Although I considered using MongoDB, Firebase was chosen for its superior documentation and ease of integration with the other tools in the project. However, the challenges with Firebase and iOS compatibility may prompt a reconsideration of the database choice in future iterations.
+
+- **Future Plans**: Planned improvements include deploying the application on the App Store, conducting performance tests, and making the application scalable. Future updates and changes will be documented on the project website, and user feedback will be collected through the app and the website (disposableapp.xyz).
+
+# Analysis of Project Management and Leadership
+
+Managing this project presented several challenges, particularly in maintaining a timeline and overcoming technical obstacles.
+
+- **Timeline Management**: At the project's start, I created a detailed timeline. However, working solo allowed for flexible working hours, which led to deviations from the original schedule. While the overall project goals remained the same, the timeline shifted to accommodate varying workloads and problem-solving efforts.
+
+- **Project Management Tools**: I initially used Jira for task management, but as the project progressed, I found that using GitHub commit messages and a whiteboard for task tracking was more efficient given my working style.
+
+- **Challenges and Solutions**: Throughout development, I encountered several significant issues, many stemming from misunderstandings of documentation or the technical limitations of the chosen tools. The most critical challenge occurred three days before the deadline when the project ceased to run. This issue, primarily related to Firebase integration with Xcode, led to extensive troubleshooting, including repeatedly clearing Xcode’s derived data, resetting build caches, and restarting the project from scratch multiple times.
+
+- **Key Obstacles**: The major obstacle was a persistent error related to Firebase integration: `No such module 'FirebaseFirestore'`. Despite following standard troubleshooting steps, including resetting package caches, I encountered another error: `gRPC-Core.modulemap not found`. This issue has been reported by others but remains unresolved, preventing the main app from being built in Xcode and thus blocking the app’s submission to the App Store and TestFlight.
+
+- **Leadership and Resilience**: Despite these challenges, I remained focused on ensuring the core functionalities worked together, with the events and database interactions functioning as intended. While the app cannot currently be deployed to the App Store, the primary objectives were met, and the app is operational in a development environment.
 
