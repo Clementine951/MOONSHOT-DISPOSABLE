@@ -39,7 +39,6 @@ Follow these steps to set up the project locally:
 3. **Install Dependencies:**
    ```bash
    npm install
-   npm audit fix
    ```
 4. **Set Up iOS Dependencies:**
    ```bash
