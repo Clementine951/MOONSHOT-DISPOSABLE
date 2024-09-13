@@ -1,5 +1,5 @@
 use_modular_headers!
-
+use_frameworks! :linkage => :static
 require File.join(File.dirname(`node --print "require.resolve('expo/package.json')"`), "scripts/autolinking")
 require File.join(File.dirname(`node --print "require.resolve('react-native/package.json')"`), "scripts/react_native_pods")
 
@@ -31,8 +31,7 @@ self.define_singleton_method(use_autolinking_method_symbol) do |*args|
 end
 
 platform :ios, podfile_properties['ios.deploymentTarget'] || '13.4'
-install! 'cocoapods',
-  :deterministic_uuids => false
+install! 'cocoapods', :deterministic_uuids => false
 
 prepare_react_native_project!
 
@@ -46,18 +45,20 @@ target 'dispo' do
   use_react_native!(
     :path => config[:reactNativePath],
     :hermes_enabled => podfile_properties['expo.jsEngine'] == nil || podfile_properties['expo.jsEngine'] == 'hermes',
-    # An absolute path to your application root.
     :app_path => "#{Pod::Config.instance.installation_root}/..",
     :privacy_file_aggregation_enabled => podfile_properties['apple.privacyManifestAggregationEnabled'] != 'false',
   )
 
-  # Add Firebase and other pods here
-  pod 'Firebase/Core', :modular_headers => true
-  pod 'Firebase/Firestore', :modular_headers => true
-  pod 'Firebase/Storage', :modular_headers => true
-  pod 'SDWebImageSwiftUI', :modular_headers => true
+
 
   post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      target.build_configurations.each do |config|
+        # Set deployment target for all pods
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '13.4'
+      end
+    end
+
     react_native_post_install(
       installer,
       config[:reactNativePath],
@@ -65,8 +66,6 @@ target 'dispo' do
       :ccache_enabled => podfile_properties['apple.ccacheEnabled'] == 'true',
     )
 
-    # This is necessary for Xcode 14, because it signs resource bundles by default
-    # when building for devices.
     installer.target_installation_results.pod_target_installation_results
       .each do |pod_name, target_installation_result|
       target_installation_result.resource_bundle_targets.each do |resource_bundle_target|
