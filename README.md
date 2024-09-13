@@ -60,11 +60,19 @@ Follow these steps to set up the project locally:
 1. **Open Xcode:**
    - Open Xcode and select "Open an existing project."
    - Navigate to the `ios` directory and open the `.xcworkspace` file. (white logo)
-2. **Set the Target to Clip:**
+  
+   Or
+   - Open Xcode with the terminal.
+   
+   ```bash
+   open *.xcodeproj
+   ```
+   
+3. **Set the Target to Clip:**
    - In Xcode, set the target to `DisposableClip`.
 <img src="./Documents/Images/target.png">
 
-3. **Run the App Clip:**
+4. **Run the App Clip:**
    - Click on the `Run` button in Xcode to start the App Clip.
 
 ## Testing the App Clip
