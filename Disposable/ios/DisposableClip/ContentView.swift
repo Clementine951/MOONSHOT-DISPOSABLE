@@ -11,6 +11,7 @@ import UIKit
 import FirebaseStorage
 import SDWebImageSwiftUI
 
+
 struct ContentView: View {
     @State var eventId: String? = nil
     @State private var photos: [String] = []
@@ -20,6 +21,8 @@ struct ContentView: View {
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
     @State private var timer: Timer?
+    @State private var isFullScreenMode: Bool = false // Track fullscreen mode
+    @State private var selectedPhotoIndex: Int = 0 // Track the selected photo for fullscreen
 
     var body: some View {
         if isNameEntered {
@@ -30,12 +33,16 @@ struct ContentView: View {
 
                     ScrollView(.vertical) {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
-                            ForEach(photos, id: \.self) { photoUrl in
+                            ForEach(Array(photos.enumerated()), id: \.element) { index, photoUrl in
                                 WebImage(url: URL(string: photoUrl))
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: 100, height: 100)
                                     .cornerRadius(8)
+                                    .onTapGesture {
+                                        selectedPhotoIndex = index
+                                        isFullScreenMode.toggle()
+                                    }
                             }
                         }
                     }
@@ -68,6 +75,9 @@ struct ContentView: View {
                     stopReloadingImages()
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb, perform: handleUserActivity)
+            }
+            .fullScreenCover(isPresented: $isFullScreenMode) {
+                FullScreenPhotoView(photos: photos, selectedPhotoIndex: $selectedPhotoIndex)
             }
         } else {
             VStack {
@@ -343,6 +353,51 @@ struct ContentView: View {
         }
     }
 }
+
+// Full-Screen View for Swiping through Photos
+struct FullScreenPhotoView: View {
+    var photos: [String]
+    @Binding var selectedPhotoIndex: Int
+    @Environment(\.presentationMode) var presentationMode // To dismiss the full-screen view
+
+    var body: some View {
+        VStack {
+            HStack {
+                // Add a close (X) button in the top-left corner to dismiss the view
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss() // Exit full screen
+                }) {
+                    Image(systemName: "xmark") // SF Symbol for "X"
+                        .font(.title)
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(Color.black.opacity(0.5))
+                        .clipShape(Circle())
+                }
+                Spacer()
+            }
+            .padding(.top, 40) // Adjust the padding as needed
+
+            TabView(selection: $selectedPhotoIndex) {
+                ForEach(0..<photos.count, id: \.self) { index in
+                    WebImage(url: URL(string: photos[index]))
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .tag(index)
+                }
+            }
+            .tabViewStyle(PageTabViewStyle())
+            .edgesIgnoringSafeArea(.all) // Make sure the image covers the entire screen
+        }
+        .gesture(DragGesture().onEnded { gesture in
+            // Swipe down or up to dismiss the full-screen mode
+            if gesture.translation.height > 100 || gesture.translation.height < -100 {
+                presentationMode.wrappedValue.dismiss() // Exit full screen
+            }
+        })
+    }
+}
+
 
 // Helper extension to format Date in ISO8601 for Firestore
 extension Date {
