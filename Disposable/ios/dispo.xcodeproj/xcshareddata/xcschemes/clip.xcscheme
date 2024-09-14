@@ -63,7 +63,7 @@
          <EnvironmentVariable
             key = "_XCAppClipURL"
             value = "https://appclip.disposableapp.xyz/clip?eventId=Test_1726337389492"
-            isEnabled = "YES">
+            isEnabled = "NO">
          </EnvironmentVariable>
          <EnvironmentVariable
             key = "CG_NUMERICS_SHOW_BACKTRACE"
