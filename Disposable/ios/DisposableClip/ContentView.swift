@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 import UIKit
-import FirebaseFirestore
 import FirebaseStorage
 import SDWebImageSwiftUI
 
@@ -59,14 +58,14 @@ struct ContentView: View {
                 }
                 .navigationTitle("Gallery")
                 .onAppear {
-                    startReloadingImages() // Start automatic reloading when the view appears
+                    startReloadingImages()
                     if let eventId = self.eventId {
                         fetchImagesForEvent(eventId: eventId)
                         addUserToEvent(eventId: eventId, userName: userName)
                     }
                 }
                 .onDisappear {
-                    stopReloadingImages() // Stop the timer when the view disappears
+                    stopReloadingImages()
                 }
                 .onContinueUserActivity(NSUserActivityTypeBrowsingWeb, perform: handleUserActivity)
             }
@@ -153,59 +152,92 @@ struct ContentView: View {
         return eventId
     }
 
+    // Fetch Images for Event from Firestore REST API
     func fetchImagesForEvent(eventId: String) {
-        let db = Firestore.firestore()
+        let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposablecamera-5c3fa/databases/(default)/documents/events/\(eventId)/images"
 
-        db.collection("events").document(eventId).collection("images").getDocuments { (snapshot, error) in
+        guard let url = URL(string: firestoreURL) else { return }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error fetching images: \(error)")
                 return
             }
 
-            guard let documents = snapshot?.documents else { return }
-
-            self.photos = documents.compactMap { $0.data()["url"] as? String }
+            guard let data = data else { return }
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let documents = jsonResponse["documents"] as? [[String: Any]] {
+                    let urls = documents.compactMap { document -> String? in
+                        guard let fields = document["fields"] as? [String: Any],
+                              let urlField = fields["url"] as? [String: Any],
+                              let urlString = urlField["stringValue"] as? String else {
+                            return nil
+                        }
+                        return urlString
+                    }
+                    DispatchQueue.main.async {
+                        self.photos = urls
+                    }
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+            }
         }
+
+        task.resume()
     }
 
+    // Add User to Event using Firestore REST API
     func addUserToEvent(eventId: String, userName: String) {
-        let db = Firestore.firestore()
-
-        // Key for storing user ID in UserDefaults
-        let userDefaultsKey = "com.disposableclip.userId"
+        let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposablecamera-5c3fa/databases/(default)/documents/events/\(eventId)/participants"
 
         let deviceId: String
+        let userDefaultsKey = "com.disposableclip.userId"
         if let savedUserId = UserDefaults.standard.string(forKey: userDefaultsKey) {
-            // Use the saved user ID if it exists
             deviceId = savedUserId
-            print("Using saved user ID: \(deviceId)")
-        } else if let identifierForVendor = UIDevice.current.identifierForVendor?.uuidString, identifierForVendor != "00000000-0000-0000-0000-000000000000" {
-            // Use identifierForVendor if it's valid
+        } else if let identifierForVendor = UIDevice.current.identifierForVendor?.uuidString {
             deviceId = identifierForVendor
-            print("Using identifierForVendor: \(deviceId)")
-            UserDefaults.standard.set(deviceId, forKey: userDefaultsKey) // Save it for future use
+            UserDefaults.standard.set(deviceId, forKey: userDefaultsKey)
         } else {
-            // Generate a new UUID and save it
             deviceId = UUID().uuidString
-            print("Generated new UUID: \(deviceId)")
             UserDefaults.standard.set(deviceId, forKey: userDefaultsKey)
         }
 
-        print("Attempting to add user to event with ID: \(eventId)")
+        let participantData: [String: Any] = [
+            "fields": [
+                "userId": ["stringValue": deviceId],
+                "role": ["stringValue": "participant"],
+                "name": ["stringValue": userName]
+            ]
+        ]
 
-        db.collection("events").document(eventId).collection("participants").document(deviceId).setData([
-            "userId": deviceId,
-            "role": "participant",
-            "name": userName
-        ]) { error in
+        guard let url = URL(string: firestoreURL) else { return }
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: participantData, options: [])
+            request.httpBody = jsonData
+        } catch {
+            print("Error serializing participant data: \(error)")
+            return
+        }
+
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error adding user to event: \(error)")
-            } else {
-                print("User successfully added to event")
+                return
             }
+
+            print("User successfully added to event")
         }
+
+        task.resume()
     }
 
+    // Download All Photos
     func downloadAllPhotos() {
         for photoUrl in photos {
             guard let url = URL(string: photoUrl) else { continue }
@@ -238,6 +270,7 @@ struct ContentView: View {
         }
     }
 
+    // Upload Photo to Firebase Storage and Save Image URL to Firestore via REST API
     func uploadPhoto() {
         guard let eventId = eventId else {
             print("Event ID is not set.")
@@ -267,24 +300,55 @@ struct ContentView: View {
 
                     guard let downloadURL = url else { return }
 
-                    let db = Firestore.firestore()
-                    db.collection("events").document(eventId).collection("images").addDocument(data: [
-                        "url": downloadURL.absoluteString,
-                        "timestamp": Date().timeIntervalSince1970,
-                        "owner": userName
-                    ]) { error in
+                    let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposablecamera-5c3fa/databases/(default)/documents/events/\(eventId)/images"
+                    guard let url = URL(string: firestoreURL) else { return }
+
+                    var request = URLRequest(url: url)
+                    request.httpMethod = "POST"
+                    request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+
+                    let imageData: [String: Any] = [
+                        "fields": [
+                            "url": ["stringValue": downloadURL.absoluteString],
+                            "timestamp": ["timestampValue": Date().iso8601],
+                            "owner": ["stringValue": userName]
+                        ]
+                    ]
+
+                    do {
+                        let jsonData = try JSONSerialization.data(withJSONObject: imageData, options: [])
+                        request.httpBody = jsonData
+                    } catch {
+                        print("Error serializing image data: \(error)")
+                        return
+                    }
+
+                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
                         if let error = error {
-                            print("Error saving image URL to Firestore: \(error)")
-                        } else {
+                            print("Error sending data to Firestore: \(error)")
+                            return
+                        }
+
+                        if let responseData = data {
+                            print("Firestore response: \(String(data: responseData, encoding: .utf8) ?? "")")
                             self.photos.append(downloadURL.absoluteString)
-                            print("Image URL saved to Firestore: \(downloadURL.absoluteString)")
                         }
                     }
+
+                    task.resume()
                 }
             }
         } else {
             print("No image selected.")
         }
+    }
+}
+
+// Helper extension to format Date in ISO8601 for Firestore
+extension Date {
+    var iso8601: String {
+        let formatter = ISO8601DateFormatter()
+        return formatter.string(from: self)
     }
 }
 
