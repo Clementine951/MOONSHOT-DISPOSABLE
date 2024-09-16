@@ -9,6 +9,7 @@ The project includes a full iOS app and an App Clip for seamless event participa
 For detailed documentation on the project, including functional specifications, technical architecture, and development processes, please refer to the following links:
 
 - [Moonshot Report - Disposable Camera Application](./Documents/Report.md)
+- [Report in PDF](./Docuemnts/Report.pdf)
 - [Gantt Chart Timeline](./Documents/Images/timeline.png)
 - [Functional Specification](./Documents/FunctionalSpecification.md)
 - [Technical Specification](./Documents/TechnicalSpecification.md)
