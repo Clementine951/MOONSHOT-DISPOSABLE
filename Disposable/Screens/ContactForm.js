@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ScrollView, Alert,
 import { Checkbox } from 'react-native-paper';
 import { db } from '../firebaseConfig'; // Make sure to import your firebaseConfig file
 import { collection, addDoc } from 'firebase/firestore';
+import {addFirestoreDocument} from '../firebaseApi';
 
 // Get screen dimensions
 const { width, height } = Dimensions.get('window');
@@ -25,7 +26,7 @@ function ContactFormScreen({ navigation }) {
   const handleSubmit = async () => {
     try {
       // Add a new document with a generated id
-      await addDoc(collection(db, 'contacts'), {
+      await addFirestoreDocument(collection(db, 'contacts'), {
         name,
         email,
         message,

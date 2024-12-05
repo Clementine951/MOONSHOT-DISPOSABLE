@@ -4,7 +4,8 @@ import { Button, TextInput } from 'react-native-paper';
 import { Camera } from 'expo-camera';
 import { EventContext } from './EventContext';
 import { db } from '../firebaseConfig';
-import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
+// import { doc, getDoc, setDoc, collection } from 'firebase/firestore';
+import {fetchFirestoreData, addFirestoreDocument} from '../firebaseApi';
 
 function JoinPage({ navigation }) {
   // State variables
@@ -36,7 +37,7 @@ function JoinPage({ navigation }) {
     try {
       const trimmedId = id.trim(); // Trim whitespace from entered event ID
       const eventDocRef = doc(db, 'events', trimmedId); // Reference to event document in Firestore
-      const eventDoc = await getDoc(eventDocRef); // Fetch event document
+      const eventDoc = await fetchFirestoreData(eventDocRef); // Fetch event document
       if (eventDoc.exists()) {
         setEventDetails(eventDoc.data()); // Update event details state
       } else {
@@ -61,7 +62,7 @@ function JoinPage({ navigation }) {
 
     try {
       const participantDocRef = doc(collection(db, 'events', eventId, 'participants'), deviceId); // Reference to participant document
-      await setDoc(participantDocRef, {
+      await addFirestoreDocument(participantDocRef, {
         userId: deviceId,
         role: 'participant',
         name: userName,
