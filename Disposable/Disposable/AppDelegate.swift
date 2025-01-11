@@ -49,9 +49,41 @@ struct YourApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                ContentView()
+            TabView{
+                NavigationView {
+                    HomeView()
+                }
+                .tabItem {
+                    Image(systemName: "house")
+                    Text("Home")
+                }
+                
+                NavigationView{
+                    CameraView()
+                }
+                .tabItem {
+                    Image(systemName: "camera")
+                    Text("Camera")
+                }
+                
+                NavigationView{
+                    GalleryView()
+                }
+                .tabItem {
+                    Image(systemName: "photo.on.rectangle")
+                    Text("Gallery")
+                }
+                
+                NavigationView{
+                    SettingsView()
+                }
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("Settings")
+                }
+                
             }
+            
         }
     }
 }
