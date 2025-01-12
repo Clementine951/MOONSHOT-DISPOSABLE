@@ -14,7 +14,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil
     ) -> Bool {
-        configureFirebase() // Call the updated configureFirebase function
+        configureFirebase()
         return true
     }
 }
@@ -42,48 +42,3 @@ func configureFirebase() {
     #endif
 }
 
-@main
-struct YourApp: App {
-    // Register app delegate for Firebase setup
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-
-    var body: some Scene {
-        WindowGroup {
-            TabView{
-                NavigationView {
-                    HomeView()
-                }
-                .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
-                }
-                
-                NavigationView{
-                    CameraView()
-                }
-                .tabItem {
-                    Image(systemName: "camera")
-                    Text("Camera")
-                }
-                
-                NavigationView{
-                    GalleryView()
-                }
-                .tabItem {
-                    Image(systemName: "photo.on.rectangle")
-                    Text("Gallery")
-                }
-                
-                NavigationView{
-                    SettingsView()
-                }
-                .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
-                }
-                
-            }
-            
-        }
-    }
-}

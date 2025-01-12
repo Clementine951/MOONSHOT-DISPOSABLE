@@ -10,27 +10,29 @@ import SwiftUI
 struct CameraView: View {
     var body: some View {
         VStack{
-            Spacer()
+            CameraPreview()
+                .edgesIgnoringSafeArea(.all)
             
-            Text("Camera Screen")
-                .font(.largeTitle)
-                .foregroundColor(.gray)
-            
-            Spacer()
-            
-            Button(action: {
-                print("Capture photo tapped")
-            }) {
-                Circle()
-                    .frame(width: 70, height: 70)
-                    .foregroundColor(.blue)
-                    .overlay(
-                        Circle()
-                            .stroke(Color.white, lineWidth: 5)
-                    )
+            VStack{
+                Spacer()
+                Button(action: {
+                    print("Capture photo tapped")
+                }) {
+                    Circle()
+                        .fill(Color.blue)
+                        .frame(width:70, height:70)
+                }
+                .padding(.bottom, 20)
             }
-            .padding()
         }
-        .background(Color.black.edgesIgnoringSafeArea(.all))
+    }
+}
+
+// XCode Preview
+struct CameraView_Previews: PreviewProvider {
+    static var previews: some View {
+        NavigationView{
+            CameraView()
+        }
     }
 }
