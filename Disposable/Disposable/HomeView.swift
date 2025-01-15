@@ -32,6 +32,7 @@ struct HomeView: View {
     
     @State private var participantsCount: Int = 0
     @State private var countdownText: String = ""
+    @State private var qrCodeImage: UIImage?
 
     var body: some View {
         NavigationStack {
@@ -46,6 +47,10 @@ struct HomeView: View {
                     Text(eventData["userName"] as? String ?? "Organizer Name")
                         .font(.subheadline)
                         .foregroundColor(Color(hex: "#09745F"))
+                    
+                    Text("\(participantsCount) participants")
+                        .font(.subheadline)
+                        .foregroundStyle(Color(hex: "#09745F"))
 
                     // Countdown Timer
                     Text("End of the event in")
@@ -56,6 +61,14 @@ struct HomeView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.red)
+                    
+                    // QR Code
+                    if let qrCodeImage = qrCodeImage {
+                        Image(uiImage: qrCodeImage)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 200, height: 200)
+                    }
 
                     // Buttons
                     Button(action: {
@@ -130,6 +143,7 @@ struct HomeView: View {
             .onAppear {
                 fetchParticipantsCount()
                 startCountdown()
+                generateQRCode()
             }
         }
     }
@@ -166,10 +180,37 @@ struct HomeView: View {
             } else {
                 self.countdownText = "00:00:00"
                 timer.invalidate()
-                isInEvent = false
-                eventData = nil
+//                isInEvent = false
+//                eventData = nil
             }
         }
+    }
+    
+    private func generateQRCode(){
+        guard let eventId = eventData?["eventId"] as? String else {return}
+        
+        let url = "https://appclip.disposableapp.xyz/clip?eventId=\(eventId)"
+        let context = CIContext()
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
+            print("Failed to create QR code generator filter")
+            return
+        }
+
+        filter.setValue(Data(url.utf8), forKey: "inputMessage")
+        // Medium error correction
+        filter.setValue("M", forKey: "inputCorrectionLevel")
+        
+        if let outputImage = filter.outputImage,
+           let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
+            self.qrCodeImage = UIImage(cgImage: cgImage)
+        }
+    }
+    
+    private func shareQRCode(){
+        guard let qrCodeImage = qrCodeImage else {return}
+        
+        let activityController = UIActivityViewController(activityItems: [qrCodeImage], applicationActivities: nil)
+        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true)
     }
 
     private func shareEvent() {
@@ -178,10 +219,60 @@ struct HomeView: View {
     }
 
     private func endEvent() {
-        print("End event tapped")
-        // Remove event from Firestore or update its status as ended
-        isInEvent = false
-        eventData = nil
+        guard let eventId = eventData?["eventId"] as? String else {
+            print("No event ID found")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        
+        // ref to event document
+        let eventDocRef = db.collection("events").document(eventId)
+        
+        // start by subcollections
+        eventDocRef.collection("participants").getDocuments{ (snapshot, error) in
+            if let error = error{
+                print("Error fetching participants: \(error.localizedDescription)")
+            } else if let documents = snapshot?.documents {
+                for document in documents{
+                    document.reference.delete{
+                        error in
+                        if let error = error {
+                            print("error deleting participants: \(error.localizedDescription)")
+                        }else{
+                            print("Participants deleted: \(document.documentID)")
+                        }
+                    }
+                }
+            }
+        }
+        
+        eventDocRef.collection("images").getDocuments{(snapshot, error) in
+            if let error = error {
+                print("Error fetching images: \(error.localizedDescription)")
+            } else if let documents = snapshot?.documents {
+                for document in documents {
+                    document.reference.delete { error in
+                        if let error = error{
+                            print("error deleting image: \(error.localizedDescription)")
+                        } else {
+                            print("image document deleted: \(document.documentID)")
+                        }
+                    }
+                }
+                
+            }
+        }
+        
+        eventDocRef.delete { error in
+            if let error = error {
+                print("Error deleting event: \(error.localizedDescription)")
+            } else {
+                print("Event deleted ")
+                isInEvent = false
+                eventData =  nil
+            }
+        }
     }
 }
 
@@ -202,12 +293,12 @@ struct StatefulPreviewWrapper<Value1, Value2, Content: View>: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static var previews: some View {
-        StatefulPreviewWrapper(false, nil as [String: Any]?) { isInEvent, eventData in
-            NavigationView {
-                HomeView(isInEvent: isInEvent, eventData: eventData)
-            }
-        }
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        StatefulPreviewWrapper(false, nil as [String: Any]?) { isInEvent, eventData in
+//            NavigationView {
+//                HomeView(isInEvent: isInEvent, eventData: eventData)
+//            }
+//        }
+//    }
+//}

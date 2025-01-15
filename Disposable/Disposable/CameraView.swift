@@ -27,12 +27,12 @@ struct CameraView: View {
         }
     }
 }
-
-// XCode Preview
-struct CameraView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView{
-            CameraView()
-        }
-    }
-}
+//
+//// XCode Preview
+//struct CameraView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NavigationView{
+//            CameraView()
+//        }
+//    }
+//}
