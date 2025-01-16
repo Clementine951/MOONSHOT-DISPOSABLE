@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
-import AVFoundation
-import FirebaseStorage
+//import AVFoundation
+//import FirebaseStorage
 
 struct CameraView: View {
+    
+    var eventID: String
+    var ownerName: String
+    
     @StateObject private var camera = CameraModel()
     
     var body: some View {
@@ -59,18 +63,21 @@ struct CameraView: View {
             }
         }
         .onAppear{
+            camera.eventID = eventID
+            camera.ownerName = ownerName
+            
             camera.checkPermissions()
+        }
+        .onDisappear{
+            camera.stopSession()
         }
     }
 }
 
 
 
-//// XCode Preview
 //struct CameraView_Previews: PreviewProvider {
 //    static var previews: some View {
-//        NavigationView{
-//            CameraView()
-//        }
+//        CameraView(eventID: "demoEvent", ownerName: "DemoUser")
 //    }
 //}

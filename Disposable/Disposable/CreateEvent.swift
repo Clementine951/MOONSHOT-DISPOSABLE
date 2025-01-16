@@ -133,14 +133,14 @@ struct CreateEventView: View {
 
 }
 
-// Preview
-struct CreateEventView_Previews: PreviewProvider {
-    @State static var isInEvent = false
-    @State static var eventData: [String: Any]? = nil
-
-    static var previews: some View {
-        NavigationView {
-            CreateEventView(isInEvent: $isInEvent, eventData: $eventData)
-        }
-    }
-}
+//// Preview
+//struct CreateEventView_Previews: PreviewProvider {
+//    @State static var isInEvent = false
+//    @State static var eventData: [String: Any]? = nil
+//
+//    static var previews: some View {
+//        NavigationView {
+//            CreateEventView(isInEvent: $isInEvent, eventData: $eventData)
+//        }
+//    }
+//}

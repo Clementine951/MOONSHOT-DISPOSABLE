@@ -24,7 +24,9 @@ struct DisposableApp: App {
                             Text("Home")
                         }
                     if isInEvent {
-                        CameraView()
+                        let eventID = eventData?["eventId"] as? String ?? "noEvent"
+                        let owner = eventData?["userName"] as? String ?? "anonymous"
+                        CameraView(eventID: eventID, ownerName: owner)
                             .tabItem {
                                 Image(systemName: "camera")
                                 Text("Camera")
