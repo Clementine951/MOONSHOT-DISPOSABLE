@@ -25,13 +25,13 @@ struct DisposableApp: App {
                         }
                     if isInEvent {
                         let eventID = eventData?["eventId"] as? String ?? "noEvent"
-                        let owner = eventData?["userName"] as? String ?? "anonymous"
-                        CameraView(eventID: eventID, ownerName: owner)
+                        let user = eventData?["userName"] as? String ?? "anonymous"
+                        CameraView(eventID: eventID, userName: user)
                             .tabItem {
                                 Image(systemName: "camera")
                                 Text("Camera")
                             }
-                        GalleryView()
+                        GalleryView(eventID: eventID, userName: user)
                             .tabItem {
                                 Image(systemName: "photo.on.rectangle")
                                 Text("Gallery")

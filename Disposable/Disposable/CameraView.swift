@@ -12,7 +12,7 @@ import SwiftUI
 struct CameraView: View {
     
     var eventID: String
-    var ownerName: String
+    var userName: String
     
     @StateObject private var camera = CameraModel()
     
@@ -64,7 +64,7 @@ struct CameraView: View {
         }
         .onAppear{
             camera.eventID = eventID
-            camera.ownerName = ownerName
+            camera.userName = userName
             
             camera.checkPermissions()
         }

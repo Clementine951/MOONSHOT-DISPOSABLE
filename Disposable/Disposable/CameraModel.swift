@@ -8,42 +8,43 @@
 import AVFoundation
 import UIKit
 import FirebaseStorage
+import FirebaseFirestore
 
-class CameraModel: NSObject, ObservableObject{
+class CameraModel: NSObject, ObservableObject {
     @Published var session = AVCaptureSession()
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
     @Published var output = AVCapturePhotoOutput()
     @Published var previewImage: UIImage?
     
+    // These get set externally by your CameraView
     @Published var eventID: String = "unknownEvent"
-    @Published var ownerName: String = "unknownOwner"
+    @Published var userName: String = "unknownuser"
     
-    private var captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
-    private var storage = Storage.storage()
+    private let captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
+    private let storage = Storage.storage()
+    private let db = Firestore.firestore()  // We'll need Firestore to create a doc
     
     override init() {
         super.init()
         setupCamera()
     }
     
+    // MARK: - Camera Setup
     func setupCamera() {
         captureSessionQueue.async {
             self.session.beginConfiguration()
             
-            guard let videoDevice = AVCaptureDevice.default(
-                .builtInWideAngleCamera,
-                for: .video,
-                position: .back
-            ),
-            let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
-                print("failes to access back cam")
+            guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
+                                                           for: .video,
+                                                           position: .back),
+                  let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
+                print("Failed to access back camera.")
                 return
             }
             
-            if self.session.canAddInput(videoInput){
+            if self.session.canAddInput(videoInput) {
                 self.session.addInput(videoInput)
             }
-            
             if self.session.canAddOutput(self.output) {
                 self.session.addOutput(self.output)
             }
@@ -52,103 +53,141 @@ class CameraModel: NSObject, ObservableObject{
         }
     }
     
-    func checkPermissions(){
+    // MARK: - Permissions
+    func checkPermissions() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
             startSession()
         case .notDetermined:
-            AVCaptureDevice.requestAccess(for: .video){
-                granted in
-                if granted{
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
                     self.startSession()
-                }else{
-                    print("camera access denied by user")
+                } else {
+                    print("Camera access denied by user.")
                 }
             }
         default:
-            print("No camera permissions granted/restricted")
+            print("Camera permission denied or restricted.")
         }
     }
     
-    func startSession(){
+    // MARK: - Start/Stop Session
+    func startSession() {
         captureSessionQueue.async {
             self.session.startRunning()
-            print("camera session started")
+            print("Camera session started.")
         }
     }
     
-    func stopSession(){
-        captureSessionQueue.async{
+    func stopSession() {
+        captureSessionQueue.async {
             self.session.stopRunning()
-            print("camera session stopped")
+            print("Camera session stopped.")
         }
     }
     
-    func takePhoto(){
+    // MARK: - Capture Photo
+    func takePhoto() {
         let settings = AVCapturePhotoSettings()
         output.capturePhoto(with: settings, delegate: self)
     }
     
-    func retakePhoto(){
+    // MARK: - Retake Photo
+    func retakePhoto() {
         previewImage = nil
     }
     
-    func savePhoto(){
+    // MARK: - Save Photo (Storage + Firestore)
+    func savePhoto() {
         guard let image = previewImage else {
-            print("no preview image to save")
+            print("No preview image to save.")
             return
         }
-        
         guard let data = image.jpegData(compressionQuality: 0.8) else {
-            print("failed to convert UIImage to jpeg data")
+            print("Failed to convert UIImage to JPEG.")
             return
         }
         
-
+        // Build the filename, e.g. "random-uuid.jpg"
         let imageName = "\(UUID().uuidString).jpg"
-        let storageRef = Storage.storage()
-            .reference()
+        
+        // 1) Upload to Firebase Storage
+        let storageRef = storage.reference()
             .child("events/\(eventID)/\(imageName)")
         
-        // metadata
+        // Optional: add contentType & metadata
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         metadata.customMetadata = [
             "time": ISO8601DateFormatter().string(from: Date()),
             "eventId": eventID,
-            "owner": ownerName
+            "user": userName
         ]
         
-        // upload data specified path
-        storageRef.putData(data, metadata: metadata){ _, error in
+        storageRef.putData(data, metadata: metadata) { [weak self] _, error in
+            guard let self = self else { return }
             if let error = error {
                 print("Error uploading image: \(error.localizedDescription)")
-            }else {
-                print("Image uploaded/\(self.eventID)/\(imageName)")
+                return
+            }
+            print("Image uploaded to /events/\(self.eventID)/\(imageName)!")
+            
+            // 2) Get the download URL
+            storageRef.downloadURL { url, err in
+                if let err = err {
+                    print("Failed to get download URL: \(err.localizedDescription)")
+                    return
+                }
+                guard let downloadURL = url else { return }
+                
+                // 3) Write a doc to Firestore: events/<eventID>/images/<autoID>
+                let docRef = self.db
+                    .collection("events")
+                    .document(self.eventID)
+                    .collection("images")
+                    .document() // auto-gen an ID
+                
+                let photoDoc: [String: Any] = [
+                    "url": downloadURL.absoluteString, // for displaying in the gallery
+                    "owner": self.userName,            // so we can filter Personal vs. General
+                    "timestamp": Date().timeIntervalSince1970
+                ]
+                
+                docRef.setData(photoDoc) { docError in
+                    if let docError = docError {
+                        print("Error creating Firestore doc: \(docError.localizedDescription)")
+                    } else {
+                        print("Firestore doc created in events/\(self.eventID)/images")
+                    }
+                }
             }
         }
         
+        // Reset the preview after saving
         previewImage = nil
     }
 }
 
-extension CameraModel: AVCapturePhotoCaptureDelegate{
-    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?){
+// MARK: - AVCapturePhotoCaptureDelegate
+extension CameraModel: AVCapturePhotoCaptureDelegate {
+    func photoOutput(_ output: AVCapturePhotoOutput,
+                     didFinishProcessingPhoto photo: AVCapturePhoto,
+                     error: Error?) {
         
         if let error = error {
-            print("error capturing photo: \(error.localizedDescription)")
+            print("Error capturing photo: \(error.localizedDescription)")
             return
         }
         
         guard let data = photo.fileDataRepresentation(),
               let image = UIImage(data: data) else {
-            print("failed to convert photo to uiimage")
+            print("Failed to convert photo buffer to UIImage.")
             return
         }
         
-        DispatchQueue.main.async{
+        DispatchQueue.main.async {
             self.previewImage = image
-            print("phpoto captures and set to previewImage")
+            print("Photo captured and stored in previewImage.")
         }
     }
 }
