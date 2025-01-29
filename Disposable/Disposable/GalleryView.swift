@@ -17,7 +17,8 @@ struct GalleryView: View {
     @State private var generalImages: [GalleryImage] = []
     @State private var errorMessage = ""
     @State private var isLoading = true
-    @State private var selectedImage: GalleryImage? = nil // For modal display
+    @State private var selectedImage: GalleryImage? = nil
+    @State private var preloadedFirstImage: UIImage? = nil // Preload the first image
     @State private var isModalVisible = false
 
     var body: some View {
@@ -43,6 +44,7 @@ struct GalleryView: View {
                         images: personalImages,
                         emptyMessage: "No personal photos yet.",
                         onSelect: { image in
+                            preloadFirstImage(for: image) // Preload before opening
                             selectedImage = image
                             isModalVisible = true
                         }
@@ -52,6 +54,7 @@ struct GalleryView: View {
                         images: generalImages,
                         emptyMessage: "No photos yet.",
                         onSelect: { image in
+                            preloadFirstImage(for: image) // Preload before opening
                             selectedImage = image
                             isModalVisible = true
                         }
@@ -64,8 +67,13 @@ struct GalleryView: View {
             listenForPhotoDocs()
         }
         .sheet(isPresented: $isModalVisible) {
-            if let image = selectedImage {
-                FullScreenImageView(image: image, isPresented: $isModalVisible)
+            if let selectedImageIndex = selectedImage.flatMap({ img in generalImages.firstIndex(where: { $0.id == img.id }) }) {
+                FullScreenImageView(
+                    images: selectedTab == 0 ? personalImages : generalImages,
+                    currentIndex: .constant(selectedImageIndex),
+                    isPresented: $isModalVisible,
+                    preloadedFirstImage: $preloadedFirstImage // Pass preloaded image
+                )
             }
         }
     }
@@ -77,40 +85,94 @@ struct GalleryView: View {
             .document(eventID)
             .collection("images")
 
-        imagesRef.addSnapshotListener { snapshot, error in
-            self.isLoading = false
-            if let error = error {
-                self.errorMessage = "Error fetching images: \(error.localizedDescription)"
-                return
+        imagesRef.order(by: "timestamp", descending: false)
+            .addSnapshotListener { snapshot, error in
+                self.isLoading = false
+                if let error = error {
+                    self.errorMessage = "Error fetching images: \(error.localizedDescription)"
+                    return
+                }
+
+                guard let docs = snapshot?.documents else {
+                    self.errorMessage = "No documents found"
+                    return
+                }
+
+                var allImages: [GalleryImage] = []
+                for doc in docs {
+                    let data = doc.data()
+                    let url = data["url"] as? String ?? ""
+                    let owner = data["owner"] as? String ?? "Unknown"
+                    allImages.append(GalleryImage(
+                        id: doc.documentID,
+                        url: url,
+                        owner: owner
+                    ))
+                }
+
+                let personal = allImages.filter { $0.owner == self.userName }
+                DispatchQueue.main.async {
+                    self.personalImages = personal
+                    self.generalImages = allImages
+                }
             }
+    }
 
-            guard let docs = snapshot?.documents else {
-                self.errorMessage = "No documents found"
-                return
+    private func preloadFirstImage(for image: GalleryImage) {
+        guard let url = URL(string: image.url) else { return }
+        URLSession.shared.dataTask(with: url) { data, _, _ in
+            if let data = data, let uiImage = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.preloadedFirstImage = uiImage
+                }
             }
+        }.resume()
+    }
+}
 
-            var allImages: [GalleryImage] = []
-            for doc in docs {
-                let data = doc.data()
-                let url = data["url"] as? String ?? ""
-                let owner = data["owner"] as? String ?? "Unknown"
-                allImages.append(GalleryImage(
-                    id: doc.documentID,
-                    url: url,
-                    owner: owner
-                ))
+// MARK: - FullScreenImageView
+struct FullScreenImageView: View {
+    let images: [GalleryImage]
+    @Binding var currentIndex: Int
+    @Binding var isPresented: Bool
+    @Binding var preloadedFirstImage: UIImage? // Use preloaded image
+
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+
+            TabView(selection: $currentIndex) {
+                ForEach(images.indices, id: \.self) { index in
+                    if index == 0, let preloadedImage = preloadedFirstImage {
+                        // Use preloaded image for the first one
+                        Image(uiImage: preloadedImage)
+                            .resizable()
+                            .scaledToFit()
+                            .tag(index)
+                    } else {
+                        AsyncImageView(url: images[index].url)
+                            .tag(index)
+                    }
+                }
             }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
 
-            let personal = allImages.filter { $0.owner == self.userName }
-            let general = allImages
-
-            DispatchQueue.main.async {
-                self.personalImages = personal
-                self.generalImages = general
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: { isPresented = false }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 30))
+                    }
+                    .padding()
+                }
+                Spacer()
             }
         }
     }
 }
+
 
 // MARK: - GalleryImage
 struct GalleryImage: Identifiable {
@@ -154,7 +216,6 @@ struct PhotoGridView: View {
     }
 }
 
-
 // MARK: - PhotoCell
 struct PhotoCell: View {
     let url: String
@@ -192,51 +253,31 @@ struct PhotoCell: View {
     }
 }
 
-
-// MARK: - FullScreenImageView
-struct FullScreenImageView: View {
-    let image: GalleryImage
-    @Binding var isPresented: Bool
-
-    @State private var fetchedImage: UIImage? = nil
+// MARK: - AsyncImageView
+struct AsyncImageView: View {
+    let url: String
+    @State private var image: UIImage? = nil
 
     var body: some View {
         ZStack {
-            if let uiImage = fetchedImage {
-                Image(uiImage: uiImage)
+            if let image = image {
+                Image(uiImage: image)
                     .resizable()
-                    .scaledToFit()
-                    .background(Color.black.edgesIgnoringSafeArea(.all))
+                    .scaledToFill()
             } else {
-                Color.black.edgesIgnoringSafeArea(.all)
+                Color.gray.opacity(0.3) // Placeholder background
+                ProgressView()
+                    .onAppear(perform: loadImage)
             }
-
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        isPresented = false
-                    }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30))
-                    }
-                    .padding()
-                }
-                Spacer()
-            }
-        }
-        .onAppear {
-            loadImage()
         }
     }
 
     private func loadImage() {
-        guard let imgURL = URL(string: image.url) else { return }
-        URLSession.shared.dataTask(with: imgURL) { data, response, error in
-            if let data = data, let uiImg = UIImage(data: data) {
+        guard let imageUrl = URL(string: url) else { return }
+        URLSession.shared.dataTask(with: imageUrl) { data, _, _ in
+            if let data = data, let loadedImage = UIImage(data: data) {
                 DispatchQueue.main.async {
-                    self.fetchedImage = uiImg
+                    self.image = loadedImage
                 }
             }
         }.resume()
