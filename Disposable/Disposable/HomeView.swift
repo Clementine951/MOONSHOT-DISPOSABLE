@@ -29,7 +29,7 @@ extension Color {
 struct HomeView: View {
     @Binding var isInEvent: Bool
     @Binding var eventData: [String: Any]?
-    
+
     @State private var participantsCount: Int = 0
     @State private var countdownText: String = ""
     @State private var qrCodeImage: UIImage?
@@ -47,7 +47,7 @@ struct HomeView: View {
                     Text(eventData["userName"] as? String ?? "Organizer Name")
                         .font(.subheadline)
                         .foregroundColor(Color(hex: "#09745F"))
-                    
+
                     Text("\(participantsCount) participants")
                         .font(.subheadline)
                         .foregroundStyle(Color(hex: "#09745F"))
@@ -61,7 +61,7 @@ struct HomeView: View {
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.red)
-                    
+
                     // QR Code
                     if let qrCodeImage = qrCodeImage {
                         Image(uiImage: qrCodeImage)
@@ -122,9 +122,7 @@ struct HomeView: View {
                                 .padding(.horizontal, 40)
                         }
 
-                        Button(action: {
-                            print("Join event tapped")
-                        }) {
+                        NavigationLink(destination: JoinEventView(isInEvent: $isInEvent, eventData: $eventData)) {
                             Text("Join an event")
                                 .frame(maxWidth: .infinity)
                                 .padding()
@@ -180,35 +178,29 @@ struct HomeView: View {
             } else {
                 self.countdownText = "00:00:00"
                 timer.invalidate()
-//                isInEvent = false
-//                eventData = nil
             }
         }
     }
-    
-    private func generateQRCode(){
-        guard let eventId = eventData?["eventId"] as? String else {return}
-        
+
+    private func generateQRCode() {
+        guard let eventId = eventData?["eventId"] as? String else { return }
+
         let url = "https://appclip.disposableapp.xyz/clip?eventId=\(eventId)"
         let context = CIContext()
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else {
-            print("Failed to create QR code generator filter")
-            return
-        }
+        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return }
 
         filter.setValue(Data(url.utf8), forKey: "inputMessage")
-        // Medium error correction
         filter.setValue("M", forKey: "inputCorrectionLevel")
-        
+
         if let outputImage = filter.outputImage,
-           let cgImage = context.createCGImage(outputImage, from: outputImage.extent){
+           let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
             self.qrCodeImage = UIImage(cgImage: cgImage)
         }
     }
-    
-    private func shareQRCode(){
-        guard let qrCodeImage = qrCodeImage else {return}
-        
+
+    private func shareQRCode() {
+        guard let qrCodeImage = qrCodeImage else { return }
+
         let activityController = UIActivityViewController(activityItems: [qrCodeImage], applicationActivities: nil)
         UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true)
     }
@@ -223,82 +215,55 @@ struct HomeView: View {
             print("No event ID found")
             return
         }
-        
+
         let db = Firestore.firestore()
-        
-        // ref to event document
+
+        // Reference to event document
         let eventDocRef = db.collection("events").document(eventId)
-        
-        // start by subcollections
-        eventDocRef.collection("participants").getDocuments{ (snapshot, error) in
-            if let error = error{
+
+        // Delete participants
+        eventDocRef.collection("participants").getDocuments { (snapshot, error) in
+            if let error = error {
                 print("Error fetching participants: \(error.localizedDescription)")
             } else if let documents = snapshot?.documents {
-                for document in documents{
-                    document.reference.delete{
-                        error in
+                for document in documents {
+                    document.reference.delete { error in
                         if let error = error {
-                            print("error deleting participants: \(error.localizedDescription)")
-                        }else{
-                            print("Participants deleted: \(document.documentID)")
+                            print("Error deleting participant: \(error.localizedDescription)")
+                        } else {
+                            print("Participant deleted: \(document.documentID)")
                         }
                     }
                 }
             }
         }
-        
-        eventDocRef.collection("images").getDocuments{(snapshot, error) in
+
+        // Delete images
+        eventDocRef.collection("images").getDocuments { (snapshot, error) in
             if let error = error {
                 print("Error fetching images: \(error.localizedDescription)")
             } else if let documents = snapshot?.documents {
                 for document in documents {
                     document.reference.delete { error in
-                        if let error = error{
-                            print("error deleting image: \(error.localizedDescription)")
+                        if let error = error {
+                            print("Error deleting image: \(error.localizedDescription)")
                         } else {
-                            print("image document deleted: \(document.documentID)")
+                            print("Image document deleted: \(document.documentID)")
                         }
                     }
                 }
-                
             }
         }
-        
+
+        // Delete event
         eventDocRef.delete { error in
             if let error = error {
                 print("Error deleting event: \(error.localizedDescription)")
             } else {
-                print("Event deleted ")
+                print("Event deleted")
                 isInEvent = false
-                eventData =  nil
+                eventData = nil
             }
         }
     }
 }
-
-
-struct StatefulPreviewWrapper<Value1, Value2, Content: View>: View {
-    @State private var value1: Value1
-    @State private var value2: Value2
-    private let content: (Binding<Value1>, Binding<Value2>) -> Content
-
-    init(_ initialValue1: Value1, _ initialValue2: Value2, @ViewBuilder content: @escaping (Binding<Value1>, Binding<Value2>) -> Content) {
-        _value1 = State(initialValue: initialValue1)
-        _value2 = State(initialValue: initialValue2)
-        self.content = content
-    }
-
-    var body: some View {
-        content($value1, $value2)
-    }
-}
-
-//struct HomeView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        StatefulPreviewWrapper(false, nil as [String: Any]?) { isInEvent, eventData in
-//            NavigationView {
-//                HomeView(isInEvent: isInEvent, eventData: eventData)
-//            }
-//        }
-//    }
-//}

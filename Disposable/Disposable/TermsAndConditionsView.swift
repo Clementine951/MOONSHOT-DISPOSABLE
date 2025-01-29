@@ -110,11 +110,3 @@ struct Paragraph: View {
             .lineSpacing(5)
     }
 }
-
-struct TermsAndConditionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            TermsAndConditionsView()
-        }
-    }
-}
