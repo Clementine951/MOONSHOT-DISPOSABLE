@@ -13,6 +13,7 @@ struct JoinEventView: View {
     @Binding var eventData: [String: Any]?
 
     @State private var eventIDInput: String = ""
+    @State private var userName: String = ""
     @State private var showJoinEventAlert: Bool = false
     @State private var joinErrorMessage: String?
 
@@ -21,7 +22,11 @@ struct JoinEventView: View {
             Text("Join an Event")
                 .font(.title)
                 .fontWeight(.bold)
-            
+
+            TextField("Enter your name", text: $userName)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+
             TextField("Enter event ID", text: $eventIDInput)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
@@ -38,6 +43,7 @@ struct JoinEventView: View {
                     .cornerRadius(10)
                     .padding(.horizontal, 40)
             }
+            .disabled(userName.isEmpty || eventIDInput.isEmpty) // Disable button if inputs are empty
             .alert(isPresented: $showJoinEventAlert) {
                 Alert(
                     title: Text(joinErrorMessage == nil ? "Success" : "Error"),
@@ -50,41 +56,42 @@ struct JoinEventView: View {
     }
 
     private func joinEvent() {
-        guard !eventIDInput.isEmpty else {
-            joinErrorMessage = "Please enter an event ID."
+        guard !eventIDInput.isEmpty, !userName.isEmpty else {
+            joinErrorMessage = "Please enter both your name and an event ID."
             showJoinEventAlert = true
             return
         }
-        
+
         let db = Firestore.firestore()
         let eventRef = db.collection("events").document(eventIDInput)
-        
+
         eventRef.getDocument { (document, error) in
             if let error = error {
                 joinErrorMessage = "Error retrieving event: \(error.localizedDescription)"
                 showJoinEventAlert = true
                 return
             }
-            
+
             guard let document = document, document.exists else {
                 joinErrorMessage = "Event not found. Please check the ID."
                 showJoinEventAlert = true
                 return
             }
-            
+
             let userId = UUID().uuidString
             let participantData: [String: Any] = [
-                "name": "Guest User",
+                "name": userName,
                 "role": "participant",
                 "userId": userId
             ]
-            
+
             eventRef.collection("participants").addDocument(data: participantData) { error in
                 if let error = error {
                     joinErrorMessage = "Failed to join event: \(error.localizedDescription)"
                 } else {
                     isInEvent = true
-                    eventData = document.data()
+                    eventData = document.data() // Store event details
+                    eventData?["userName"] = userName // Store user name
                     joinErrorMessage = nil
                 }
                 showJoinEventAlert = true

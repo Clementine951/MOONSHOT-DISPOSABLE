@@ -164,8 +164,35 @@ struct HomeView: View {
     }
 
     private func startCountdown() {
+        guard let eventId = eventData?["eventId"] as? String else {
+            print("No event ID available")
+            return
+        }
+
+        if eventData?["startTime"] == nil {
+            let db = Firestore.firestore()
+            db.collection("events").document(eventId).getDocument { document, error in
+                if let document = document, document.exists {
+                    DispatchQueue.main.async {
+                        self.eventData = document.data()
+                        self.initializeCountdown()
+                    }
+                } else {
+                    print("Failed to retrieve startTime")
+                }
+            }
+        } else {
+            initializeCountdown()
+        }
+    }
+
+    // Separate function to run countdown logic
+    private func initializeCountdown() {
         guard let duration = eventData?["duration"] as? Int,
-              let startTime = eventData?["startTime"] as? Timestamp else { return }
+              let startTime = eventData?["startTime"] as? Timestamp else {
+            print("Missing startTime or duration")
+            return
+        }
 
         let endTime = startTime.dateValue().addingTimeInterval(TimeInterval(duration * 3600))
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in

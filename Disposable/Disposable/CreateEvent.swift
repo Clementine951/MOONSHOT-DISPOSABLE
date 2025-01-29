@@ -109,27 +109,34 @@ struct CreateEventView: View {
             } else {
                 print("Event created successfully!")
 
-                let participantDetails: [String: Any] = [
+                let organizerData: [String: Any] = [
                     "name": self.userName,
                     "role": "organizer",
-                    "userId": UUID().uuidString // Generate random ID
+                    "userId": UUID().uuidString // Assign a random ID
                 ]
 
-                db.collection("events").document(eventId).collection("participants").addDocument(data: participantDetails) { error in
+                db.collection("events").document(eventId).collection("participants").addDocument(data: organizerData) { error in
                     if let error = error {
                         print("Error adding organizer to participants: \(error.localizedDescription)")
                     } else {
                         print("Organizer added to participants collection")
-                        DispatchQueue.main.async {
-                            self.isInEvent = true
-                            self.eventData = eventDetails
-                            self.presentationMode.wrappedValue.dismiss() // Dismiss after updating eventData
+
+                        db.collection("events").document(eventId).getDocument { document, error in
+                            if let document = document, document.exists {
+                                DispatchQueue.main.async {
+                                    self.isInEvent = true
+                                    self.eventData = document.data()
+                                    self.presentationMode.wrappedValue.dismiss() // Dismiss after updating eventData
+                                }
+                            }
                         }
                     }
                 }
             }
         }
     }
+
+
 
 }
 
