@@ -135,7 +135,7 @@ struct FullScreenImageView: View {
     let images: [GalleryImage]
     @Binding var currentIndex: Int
     @Binding var isPresented: Bool
-    @Binding var preloadedFirstImage: UIImage? // Use preloaded image
+    @Binding var preloadedFirstImage: UIImage? // Use preloaded image for the first photo
 
     var body: some View {
         ZStack {
@@ -143,15 +143,27 @@ struct FullScreenImageView: View {
 
             TabView(selection: $currentIndex) {
                 ForEach(images.indices, id: \.self) { index in
-                    if index == 0, let preloadedImage = preloadedFirstImage {
-                        // Use preloaded image for the first one
-                        Image(uiImage: preloadedImage)
-                            .resizable()
-                            .scaledToFit()
-                            .tag(index)
-                    } else {
-                        AsyncImageView(url: images[index].url)
-                            .tag(index)
+                    VStack {
+                        Spacer()
+
+                        if index == 0, let preloadedImage = preloadedFirstImage {
+                            // Use preloaded image for the first one
+                            Image(uiImage: preloadedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .tag(index)
+                        } else {
+                            AsyncImageView(url: images[index].url)
+                                .tag(index)
+                        }
+
+                        Spacer()
+
+                        // Owner's name displayed under the image
+                        Text("Photo by: \(images[index].owner)")
+                            .font(.caption)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 20)
                     }
                 }
             }
