@@ -25,14 +25,14 @@ struct CreateEventView: View {
         VStack {
             Form {
                 Section(header: Text("EVENT DETAILS")) {
-                    TextField("Your Name", text: $userName)
+                    TextField("Your name / pseudo", text: $userName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
 
-                    TextField("Event Name", text: $eventName)
+                    TextField("Event name", text: $eventName)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                 }
 
-                Section(header: Text("Start of the Event")) {
+                Section(header: Text("Start of the event")) {
                     Picker("", selection: $startNow) {
                         Text("Now").tag(true)
                         Text("Start Later").tag(false)
@@ -40,7 +40,7 @@ struct CreateEventView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
 
-                Section(header: Text("Duration of the Event")) {
+                Section(header: Text("Duration of the event")) {
                     Picker("", selection: $duration) {
                         Text("8h").tag(8)
                         Text("12h").tag(12)
@@ -50,7 +50,7 @@ struct CreateEventView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
 
-                Section(header: Text("Photos Reveal")) {
+                Section(header: Text("Photos reveal")) {
                     Picker("", selection: $photosReveal) {
                         Text("Immediately").tag("Immediately")
                         Text("At the end").tag("At the end")
@@ -58,7 +58,7 @@ struct CreateEventView: View {
                     .pickerStyle(SegmentedPickerStyle())
                 }
 
-                Section(header: Text("Photos per Person")) {
+                Section(header: Text("Photos per person")) {
                     Picker("", selection: $photosPerPerson) {
                         Text("5").tag(5)
                         Text("10").tag(10)
