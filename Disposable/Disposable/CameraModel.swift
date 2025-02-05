@@ -15,6 +15,7 @@ class CameraModel: NSObject, ObservableObject {
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
     @Published var output = AVCapturePhotoOutput()
     @Published var previewImage: UIImage?
+    @Published var currentCameraPosition: AVCaptureDevice.Position = .back
     
     // These get set externally by your CameraView
     @Published var eventID: String = "unknownEvent"
@@ -166,7 +167,48 @@ class CameraModel: NSObject, ObservableObject {
         // Reset the preview after saving
         previewImage = nil
     }
+    
+    func switchCamera() {
+        captureSessionQueue.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.session.beginConfiguration()
+
+            // Remove all existing inputs
+            self.session.inputs.forEach { self.session.removeInput($0) }
+
+            // Determine new camera position
+            let newPosition: AVCaptureDevice.Position = (self.currentCameraPosition == .back) ? .front : .back
+
+            // Select the new camera device
+            guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: newPosition),
+                  let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
+                print("Failed to switch to \(newPosition == .back ? "back" : "front") camera.")
+                return
+            }
+
+            // Add the new input
+            if self.session.canAddInput(videoInput) {
+                self.session.addInput(videoInput)
+            }
+
+            // Ensure the output is added
+            if self.session.canAddOutput(self.output) {
+                self.session.addOutput(self.output)
+            }
+
+            // Commit the configuration
+            self.session.commitConfiguration()
+
+            // Update the current camera position
+            DispatchQueue.main.async {
+                self.currentCameraPosition = newPosition
+            }
+        }
+    }
+
 }
+
 
 // MARK: - AVCapturePhotoCaptureDelegate
 extension CameraModel: AVCapturePhotoCaptureDelegate {

@@ -59,6 +59,16 @@ struct CameraView: View {
                             .frame(width: 70, height: 70)
                             .padding(.bottom, 20)
                     }
+                    Button(action: {
+                        camera.switchCamera()
+                    }) {
+                        Image(systemName: "arrow.triangle.2.circlepath.camera")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.black.opacity(0.5))
+                            .clipShape(Circle())
+                    }
+
                 }
             }
         }
