@@ -53,10 +53,26 @@ struct CameraView: View {
                         .padding(.bottom, 20)
                     }
                 } else {
+                    
                     VStack {
                         Spacer()
 
-                        // Buttons in a row
+                        // Display remaining photos or "No more photos"
+                        if camera.remainingPhotos > 0 {
+                            Text("\(camera.remainingPhotos) remaining photos")
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(Color.black.opacity(0.5))
+                                .cornerRadius(10)
+                        } else {
+                            Text("No more photos")
+                                .foregroundColor(.red)
+                                .font(.headline)
+                                .padding()
+                                .background(Color.black.opacity(0.5))
+                                .cornerRadius(10)
+                        }
+
                         HStack(spacing: 20) {
                             // Flash toggle button
                             Button(action: { camera.toggleFlash() }) {
@@ -66,14 +82,15 @@ struct CameraView: View {
                                     .background(Color.black.opacity(0.5))
                                     .clipShape(Circle())
                             }
-
-                            // Capture button
+                            
+                            // Capture button - disabled when no more photos
                             Button(action: { camera.takePhoto() }) {
                                 Circle()
-                                    .fill(Color.blue)
+                                    .fill(camera.remainingPhotos > 0 ? Color.blue : Color.gray)
                                     .frame(width: 70, height: 70)
                             }
-
+                            .disabled(camera.remainingPhotos <= 0) // Disable button when no more photos
+                            
                             // Switch camera button
                             Button(action: { camera.switchCamera() }) {
                                 Image(systemName: "arrow.triangle.2.circlepath.camera")
@@ -93,7 +110,7 @@ struct CameraView: View {
         .onAppear{
             camera.eventID = eventID
             camera.userName = userName
-            
+            camera.fetchRemainingPhotos()
             camera.checkPermissions()
         }
         .onDisappear{

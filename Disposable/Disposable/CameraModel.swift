@@ -17,6 +17,9 @@ class CameraModel: NSObject, ObservableObject {
     @Published var previewImage: UIImage?
     @Published var currentCameraPosition: AVCaptureDevice.Position = .back
     @Published var isFlashOn: Bool = false
+    @Published var maxPhotos: Int = 0
+    @Published var remainingPhotos: Int = 0
+
     
     // These get set externally by your CameraView
     @Published var eventID: String = "unknownEvent"
@@ -89,19 +92,55 @@ class CameraModel: NSObject, ObservableObject {
     }
     
     // MARK: - Capture Photo
+
 //    func takePhoto() {
-//        let settings = AVCapturePhotoSettings()
-//        output.capturePhoto(with: settings, delegate: self)
+//        if currentCameraPosition == .front && isFlashOn {
+//            simulateFrontCameraFlash {
+//                self.capturePhoto()
+//            }
+//        } else {
+//            capturePhoto()
+//        }
 //    }
+    
     func takePhoto() {
-        if currentCameraPosition == .front && isFlashOn {
-            simulateFrontCameraFlash {
-                self.capturePhoto()
-            }
-        } else {
-            capturePhoto()
+        guard remainingPhotos > 0 else {
+            print("No remaining photos.")
+            return
+        }
+        
+        let settings = AVCapturePhotoSettings()
+        settings.flashMode = isFlashOn && currentCameraPosition == .back ? .on : .off
+        
+        output.capturePhoto(with: settings, delegate: self)
+        
+        // Decrement remaining photos and sync with Firebase
+        DispatchQueue.main.async {
+            self.remainingPhotos -= 1
+            self.updateRemainingPhotosInFirebase()
         }
     }
+
+    private func updateRemainingPhotosInFirebase() {
+        let db = Firestore.firestore()
+        let eventRef = db.collection("events").document(eventID)
+        
+        let userRef = eventRef.collection("participants").whereField("name", isEqualTo: self.userName)
+        
+        userRef.getDocuments { snapshot, error in
+            if let snapshot = snapshot, let doc = snapshot.documents.first {
+                let participantRef = doc.reference
+                participantRef.updateData(["photosTaken": self.maxPhotos - self.remainingPhotos]) { error in
+                    if let error = error {
+                        print("Failed to update remaining photos: \(error.localizedDescription)")
+                    } else {
+                        print("Updated remaining photos in Firebase.")
+                    }
+                }
+            }
+        }
+    }
+
 
     private func simulateFrontCameraFlash(completion: @escaping () -> Void) {
             guard let window = UIApplication.shared.windows.first else {
@@ -266,7 +305,31 @@ class CameraModel: NSObject, ObservableObject {
         }
     }
     
-
+    // MARK: - remaining photos
+    func fetchRemainingPhotos() {
+        let db = Firestore.firestore()
+        let eventRef = db.collection("events").document(eventID)
+        
+        eventRef.getDocument { document, error in
+            if let document = document, document.exists,
+               let eventData = document.data(),
+               let maxPhotos = eventData["numberOfPhotos"] as? Int {
+                
+                self.maxPhotos = maxPhotos
+                
+                let userRef = eventRef.collection("participants").whereField("name", isEqualTo: self.userName)
+                
+                userRef.getDocuments { snapshot, error in
+                    if let snapshot = snapshot, !snapshot.documents.isEmpty {
+                        let takenPhotos = snapshot.documents.first?.data()["photosTaken"] as? Int ?? 0
+                        DispatchQueue.main.async {
+                            self.remainingPhotos = maxPhotos - takenPhotos
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
