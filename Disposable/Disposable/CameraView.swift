@@ -53,6 +53,14 @@ struct CameraView: View {
                         .padding(.bottom, 20)
                     }
                 } else {
+                    Button(action: { camera.toggleFlash() }) {
+                        Image(systemName: camera.isFlashOn ? "bolt.fill" : "bolt.slash")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.black.opacity(0.5))
+                            .clipShape(Circle())
+                    }
+
                     Button(action:camera.takePhoto){
                         Circle()
                             .fill(Color.blue)

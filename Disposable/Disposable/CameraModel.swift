@@ -16,6 +16,7 @@ class CameraModel: NSObject, ObservableObject {
     @Published var output = AVCapturePhotoOutput()
     @Published var previewImage: UIImage?
     @Published var currentCameraPosition: AVCaptureDevice.Position = .back
+    @Published var isFlashOn: Bool = false
     
     // These get set externally by your CameraView
     @Published var eventID: String = "unknownEvent"
@@ -88,10 +89,44 @@ class CameraModel: NSObject, ObservableObject {
     }
     
     // MARK: - Capture Photo
+//    func takePhoto() {
+//        let settings = AVCapturePhotoSettings()
+//        output.capturePhoto(with: settings, delegate: self)
+//    }
     func takePhoto() {
+        if currentCameraPosition == .front && isFlashOn {
+            simulateFrontCameraFlash {
+                self.capturePhoto()
+            }
+        } else {
+            capturePhoto()
+        }
+    }
+
+    private func simulateFrontCameraFlash(completion: @escaping () -> Void) {
+            guard let window = UIApplication.shared.windows.first else {
+                completion()
+                return
+            }
+
+            let originalBrightness = UIScreen.main.brightness
+            UIScreen.main.brightness = 1.0
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                completion()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    UIScreen.main.brightness = originalBrightness
+                }
+            }
+        }
+    
+    private func capturePhoto() {
         let settings = AVCapturePhotoSettings()
+        settings.flashMode = isFlashOn && currentCameraPosition == .back ? .on : .off
         output.capturePhoto(with: settings, delegate: self)
     }
+
+
     
     // MARK: - Retake Photo
     func retakePhoto() {
@@ -167,7 +202,7 @@ class CameraModel: NSObject, ObservableObject {
         // Reset the preview after saving
         previewImage = nil
     }
-    
+    // MARK: - camera switch
     func switchCamera() {
         captureSessionQueue.async { [weak self] in
             guard let self = self else { return }
@@ -206,6 +241,31 @@ class CameraModel: NSObject, ObservableObject {
             }
         }
     }
+    
+    // MARK: - flash
+    func toggleFlash() {
+        if currentCameraPosition == .front {
+            // Enable flash simulation for front camera
+            isFlashOn.toggle()
+            print("Front camera flash simulation \(isFlashOn ? "enabled" : "disabled").")
+        } else {
+            // Enable hardware flash for back camera
+            guard let device = AVCaptureDevice.default(for: .video), device.hasTorch else {
+                print("Flash is not supported on this device.")
+                return
+            }
+
+            do {
+                try device.lockForConfiguration()
+                device.torchMode = isFlashOn ? .off : .on
+                isFlashOn.toggle()
+                device.unlockForConfiguration()
+            } catch {
+                print("Failed to toggle flash: \(error.localizedDescription)")
+            }
+        }
+    }
+    
 
 }
 
