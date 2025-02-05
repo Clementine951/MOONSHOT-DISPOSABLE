@@ -20,6 +20,7 @@ struct CreateEventView: View {
     @State private var duration: Int = 8
     @State private var photosReveal: String = "Immediately"
     @State private var photosPerPerson: Int = 5
+    @State private var hasAcceptedTerms: Bool = false
 
     var body: some View {
         VStack {
@@ -69,6 +70,32 @@ struct CreateEventView: View {
                 }
             }
 
+            // Terms and Conditions toggle
+            Toggle(isOn: $hasAcceptedTerms) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("I agree to the")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                    HStack {
+                        NavigationLink(destination: PrivacyPolicyView()) {
+                            Text("Privacy Policy")
+                                .underline()
+                                .foregroundColor(.blue)
+                        }
+                        Text("and")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                        NavigationLink(destination: TermsAndConditionsView()) {
+                            Text("Terms and Conditions")
+                                .underline()
+                                .foregroundColor(.blue)
+                        }
+                    }
+                }
+            }
+            .padding()
+            .toggleStyle(SwitchToggleStyle(tint: .purple))
+
             // Validate Button
             Button(action: {
                 createEvent()
@@ -76,13 +103,13 @@ struct CreateEventView: View {
                 Text("Validate")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(userName.isEmpty || eventName.isEmpty ? Color.gray : Color.purple)
+                    .background(userName.isEmpty || eventName.isEmpty || !hasAcceptedTerms ? Color.gray : Color.purple)
                     .foregroundColor(.white)
                     .fontWeight(.bold)
                     .cornerRadius(10)
                     .padding(.horizontal)
             }
-            .disabled(userName.isEmpty || eventName.isEmpty)
+            .disabled(userName.isEmpty || eventName.isEmpty || !hasAcceptedTerms)
         }
         .padding()
         .navigationBarTitle("Creation", displayMode: .inline)
@@ -139,15 +166,3 @@ struct CreateEventView: View {
 
 
 }
-
-//// Preview
-//struct CreateEventView_Previews: PreviewProvider {
-//    @State static var isInEvent = false
-//    @State static var eventData: [String: Any]? = nil
-//
-//    static var previews: some View {
-//        NavigationView {
-//            CreateEventView(isInEvent: $isInEvent, eventData: $eventData)
-//        }
-//    }
-//}
