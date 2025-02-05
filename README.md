@@ -108,3 +108,35 @@ When attempting to resolve this issue by resetting package caches, the following
 Despite these issues, the main app can be launched via an IDE like VSCode, but due to these unresolved issues, the application cannot be submitted to the App Store or TestFlight at this time.
 
 <img src="./Documents/Images/LogoTrans.png">
+
+
+## Action Plan
+
+### Specific short-term goal (1 week)
+- Need to have an app that has all the requirements
+	- Having the full app
+	- Having the full app clip
+	- List of App Store requirements
+- Sunday 9 February
+### Specific short-term goal (2 weeks)
+- Send the app and the app clip to the app store to get a review
+- Sunday 16 February
+### Specific short-term goal (3 weeks)
+- Resolve all errors highlighted by the app store
+- Send for another review
+### Specific short-term goal (1 month)
+- App on the App Store
+### Specific short-term goal (2 months)
+- Put the app in testing 
+### Concrete actions to take starting tomorrow
+- Make a list of all the iOS requirements needed for the app store
+- Finish the minimum of the application by the end of the week (Sunday 9 February)
+### Possible obstacles and anticipated solutions
+- Application blocked by Apple 
+	- Know in advance the requirements
+	- Integrate those requirements
+- Not finding any users
+	- Contact friends, family, teachers, jury!
+### How will I measure my progress
+- Is the task achieved by the end of the deadline?
+- The number of errors on the app store review
