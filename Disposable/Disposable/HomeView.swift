@@ -71,32 +71,33 @@ struct HomeView: View {
                     }
 
                     // Buttons
-                    Button(action: {
-                        shareEvent()
-                    }) {
-                        Text("Share event")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(hex: "#E8D7FF"))
-                            .foregroundColor(Color(hex: "#09745F"))
-                            .fontWeight(.bold)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
+                    if eventData["role"] as? String == "organizer" {
+                        Button(action: {
+                            endEvent()
+                        }) {
+                            Text("End event")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex: "#E8D7FF"))
+                                .foregroundColor(Color(hex: "#09745F"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                        }
+                    } else {
+                        Button(action: {
+                            leaveEvent()
+                        }) {
+                            Text("Leave event")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex: "#E8D7FF"))
+                                .foregroundColor(Color(hex: "#09745F"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                        }
                     }
-
-                    Button(action: {
-                        endEvent()
-                    }) {
-                        Text("End event")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color(hex: "#E8D7FF"))
-                            .foregroundColor(Color(hex: "#09745F"))
-                            .fontWeight(.bold)
-                            .cornerRadius(10)
-                            .padding(.horizontal)
-                    }
-
                 } else {
                     // Default Home View
                     Spacer()
@@ -139,9 +140,12 @@ struct HomeView: View {
             }
             .padding()
             .onAppear {
-                fetchParticipantsCount()
-                startCountdown()
-                generateQRCode()
+                restoreEventState()
+                if isInEvent {
+                    fetchParticipantsCount()
+                    startCountdown()
+                    generateQRCode()
+                }
             }
         }
     }
@@ -164,35 +168,8 @@ struct HomeView: View {
     }
 
     private func startCountdown() {
-        guard let eventId = eventData?["eventId"] as? String else {
-            print("No event ID available")
-            return
-        }
-
-        if eventData?["startTime"] == nil {
-            let db = Firestore.firestore()
-            db.collection("events").document(eventId).getDocument { document, error in
-                if let document = document, document.exists {
-                    DispatchQueue.main.async {
-                        self.eventData = document.data()
-                        self.initializeCountdown()
-                    }
-                } else {
-                    print("Failed to retrieve startTime")
-                }
-            }
-        } else {
-            initializeCountdown()
-        }
-    }
-
-    // Separate function to run countdown logic
-    private func initializeCountdown() {
         guard let duration = eventData?["duration"] as? Int,
-              let startTime = eventData?["startTime"] as? Timestamp else {
-            print("Missing startTime or duration")
-            return
-        }
+              let startTime = eventData?["startTime"] as? Timestamp else { return }
 
         let endTime = startTime.dateValue().addingTimeInterval(TimeInterval(duration * 3600))
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
@@ -225,72 +202,53 @@ struct HomeView: View {
         }
     }
 
-    private func shareQRCode() {
-        guard let qrCodeImage = qrCodeImage else { return }
-
-        let activityController = UIActivityViewController(activityItems: [qrCodeImage], applicationActivities: nil)
-        UIApplication.shared.windows.first?.rootViewController?.present(activityController, animated: true)
-    }
-
-    private func shareEvent() {
-        print("Share event tapped")
-        // Add functionality to share event (e.g., share event link via UIActivityViewController)
+    private func restoreEventState() {
+        if let savedData = UserDefaults.standard.data(forKey: "currentEventData"),
+           let decodedData = try? JSONSerialization.jsonObject(with: savedData, options: []) as? [String: Any] {
+            self.eventData = decodedData
+            self.isInEvent = UserDefaults.standard.bool(forKey: "isInEvent")
+        }
     }
 
     private func endEvent() {
-        guard let eventId = eventData?["eventId"] as? String else {
-            print("No event ID found")
-            return
-        }
+        guard let eventId = eventData?["eventId"] as? String else { return }
 
         let db = Firestore.firestore()
-
-        // Reference to event document
         let eventDocRef = db.collection("events").document(eventId)
 
         // Delete participants
-        eventDocRef.collection("participants").getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching participants: \(error.localizedDescription)")
-            } else if let documents = snapshot?.documents {
-                for document in documents {
-                    document.reference.delete { error in
-                        if let error = error {
-                            print("Error deleting participant: \(error.localizedDescription)")
-                        } else {
-                            print("Participant deleted: \(document.documentID)")
-                        }
-                    }
+        eventDocRef.collection("participants").getDocuments { snapshot, error in
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    document.reference.delete()
                 }
             }
         }
 
         // Delete images
-        eventDocRef.collection("images").getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error fetching images: \(error.localizedDescription)")
-            } else if let documents = snapshot?.documents {
-                for document in documents {
-                    document.reference.delete { error in
-                        if let error = error {
-                            print("Error deleting image: \(error.localizedDescription)")
-                        } else {
-                            print("Image document deleted: \(document.documentID)")
-                        }
-                    }
+        eventDocRef.collection("images").getDocuments { snapshot, error in
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    document.reference.delete()
                 }
             }
         }
 
         // Delete event
         eventDocRef.delete { error in
-            if let error = error {
-                print("Error deleting event: \(error.localizedDescription)")
-            } else {
-                print("Event deleted")
+            if error == nil {
+                UserDefaults.standard.removeObject(forKey: "currentEventData")
+                UserDefaults.standard.set(false, forKey: "isInEvent")
                 isInEvent = false
                 eventData = nil
             }
         }
+    }
+
+    private func leaveEvent() {
+        UserDefaults.standard.removeObject(forKey: "currentEventData")
+        UserDefaults.standard.set(false, forKey: "isInEvent")
+        isInEvent = false
+        eventData = nil
     }
 }

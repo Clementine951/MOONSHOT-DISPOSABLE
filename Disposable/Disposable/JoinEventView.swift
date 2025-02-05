@@ -75,7 +75,6 @@ struct JoinEventView: View {
         .padding()
     }
 
-    // 🔹 Step 1: Check if event exists before asking for a name
     private func checkEventExists() {
         let db = Firestore.firestore()
         let eventRef = db.collection("events").document(eventIDInput)
@@ -93,7 +92,6 @@ struct JoinEventView: View {
                 return
             }
 
-            // 🔹 If event exists, enable name input
             DispatchQueue.main.async {
                 eventExists = true
                 eventData = document.data() // Store event details
