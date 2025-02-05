@@ -53,29 +53,39 @@ struct CameraView: View {
                         .padding(.bottom, 20)
                     }
                 } else {
-                    Button(action: { camera.toggleFlash() }) {
-                        Image(systemName: camera.isFlashOn ? "bolt.fill" : "bolt.slash")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(0.5))
-                            .clipShape(Circle())
+                    VStack {
+                        Spacer()
+
+                        // Buttons in a row
+                        HStack(spacing: 20) {
+                            // Flash toggle button
+                            Button(action: { camera.toggleFlash() }) {
+                                Image(systemName: camera.isFlashOn ? "bolt.fill" : "bolt.slash")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.black.opacity(0.5))
+                                    .clipShape(Circle())
+                            }
+
+                            // Capture button
+                            Button(action: { camera.takePhoto() }) {
+                                Circle()
+                                    .fill(Color.blue)
+                                    .frame(width: 70, height: 70)
+                            }
+
+                            // Switch camera button
+                            Button(action: { camera.switchCamera() }) {
+                                Image(systemName: "arrow.triangle.2.circlepath.camera")
+                                    .foregroundColor(.white)
+                                    .padding()
+                                    .background(Color.black.opacity(0.5))
+                                    .clipShape(Circle())
+                            }
+                        }
+                        .padding(.bottom, 20)
                     }
 
-                    Button(action:camera.takePhoto){
-                        Circle()
-                            .fill(Color.blue)
-                            .frame(width: 70, height: 70)
-                            .padding(.bottom, 20)
-                    }
-                    Button(action: {
-                        camera.switchCamera()
-                    }) {
-                        Image(systemName: "arrow.triangle.2.circlepath.camera")
-                            .foregroundColor(.white)
-                            .padding()
-                            .background(Color.black.opacity(0.5))
-                            .clipShape(Circle())
-                    }
 
                 }
             }
