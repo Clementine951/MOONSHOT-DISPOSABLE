@@ -17,6 +17,7 @@ struct JoinEventView: View {
     @State private var eventExists: Bool = false
     @State private var showJoinEventAlert: Bool = false
     @State private var joinErrorMessage: String?
+    @State private var hasAcceptedTerms: Bool = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -50,19 +51,46 @@ struct JoinEventView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
+                // Terms and Conditions toggle
+                Toggle(isOn: $hasAcceptedTerms) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("I agree to the")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                        HStack {
+                            NavigationLink(destination: PrivacyPolicyView()) {
+                                Text("Privacy Policy")
+                                    .underline()
+                                    .foregroundColor(.blue)
+                            }
+                            Text("and")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            NavigationLink(destination: TermsAndConditionsView()) {
+                                Text("Terms and Conditions")
+                                    .underline()
+                                    .foregroundColor(.blue)
+                            }
+                        }
+                    }
+                }
+                .padding()
+                .toggleStyle(SwitchToggleStyle(tint: .green))
+
+                // Join Button
                 Button(action: {
                     joinEvent()
                 }) {
                     Text("Join")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color(hex: "#E8D7FF"))
-                        .foregroundColor(Color(hex: "#09745F"))
+                        .background(userName.isEmpty || !hasAcceptedTerms ? Color.gray : Color(hex: "#E8D7FF"))
+                        .foregroundColor(userName.isEmpty || !hasAcceptedTerms ? .white : Color(hex: "#09745F"))
                         .fontWeight(.bold)
                         .cornerRadius(10)
                         .padding(.horizontal, 40)
                 }
-                .disabled(userName.isEmpty)
+                .disabled(userName.isEmpty || !hasAcceptedTerms)
                 .alert(isPresented: $showJoinEventAlert) {
                     Alert(
                         title: Text(joinErrorMessage == nil ? "Success" : "Error"),
@@ -99,7 +127,6 @@ struct JoinEventView: View {
         }
     }
 
-    // 🔹 Step 2: Add user as participant after entering name
     private func joinEvent() {
         guard eventExists, !userName.isEmpty else {
             joinErrorMessage = "Please enter your name to join."
@@ -129,4 +156,3 @@ struct JoinEventView: View {
         }
     }
 }
-
