@@ -18,6 +18,8 @@ struct JoinEventView: View {
     @State private var showJoinEventAlert: Bool = false
     @State private var joinErrorMessage: String?
     @State private var hasAcceptedTerms: Bool = false
+    
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack(spacing: 20) {
@@ -95,7 +97,11 @@ struct JoinEventView: View {
                     Alert(
                         title: Text(joinErrorMessage == nil ? "Success" : "Error"),
                         message: Text(joinErrorMessage ?? "You have successfully joined the event."),
-                        dismissButton: .default(Text("OK"))
+                        dismissButton: .default(Text("OK")){
+                            if (joinErrorMessage == nil) {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                        }
                     )
                 }
             }
