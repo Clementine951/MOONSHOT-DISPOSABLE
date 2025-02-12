@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseFirestore
+import Photos
 
 struct GalleryView: View {
     let eventID: String
@@ -44,7 +45,8 @@ struct GalleryView: View {
                         images: personalImages,
                         emptyMessage: "No personal photos yet.",
                         onSelect: { image in
-                            preloadFirstImage(for: image) // Preload before opening
+                            preloadedFirstImage = nil // Reset the preloaded image
+                            preloadFirstImage(for: image) // Preload the new image
                             selectedImage = image
                             isModalVisible = true
                         }
@@ -54,12 +56,24 @@ struct GalleryView: View {
                         images: generalImages,
                         emptyMessage: "No photos yet.",
                         onSelect: { image in
-                            preloadFirstImage(for: image) // Preload before opening
+                            preloadedFirstImage = nil // Reset the preloaded image
+                            preloadFirstImage(for: image) // Preload the new image
                             selectedImage = image
                             isModalVisible = true
                         }
                     )
                 }
+                Button(action: {
+                    downloadAllImages()
+                }) {
+                    Text("Download All Images")
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+            
             }
         }
         .navigationTitle("Gallery")
@@ -128,6 +142,32 @@ struct GalleryView: View {
             }
         }.resume()
     }
+    
+    private func downloadAllImages() {
+        let imagesToDownload = selectedTab == 0 ? personalImages : generalImages
+
+        for image in imagesToDownload {
+            if let url = URL(string: image.url) {
+                URLSession.shared.dataTask(with: url) { data, response, error in
+                    if let data = data, let uiImage = UIImage(data: data) {
+                        saveImageToPhotoLibrary(uiImage)
+                    }
+                }.resume()
+            }
+        }
+    }
+
+    private func saveImageToPhotoLibrary(_ image: UIImage) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { success, error in
+            if success {
+                print("Image saved to photo library")
+            } else if let error = error {
+                print("Error saving image: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 
 // MARK: - FullScreenImageView
@@ -135,7 +175,7 @@ struct FullScreenImageView: View {
     let images: [GalleryImage]
     @Binding var currentIndex: Int
     @Binding var isPresented: Bool
-    @Binding var preloadedFirstImage: UIImage? // Use preloaded image for the first photo
+    @Binding var preloadedFirstImage: UIImage?
 
     var body: some View {
         ZStack {
@@ -146,8 +186,8 @@ struct FullScreenImageView: View {
                     VStack {
                         Spacer()
 
-                        if index == 0, let preloadedImage = preloadedFirstImage {
-                            // Use preloaded image for the first one
+                        if index == currentIndex, let preloadedImage = preloadedFirstImage {
+                            // Use preloaded image for the selected image
                             Image(uiImage: preloadedImage)
                                 .resizable()
                                 .scaledToFit()
