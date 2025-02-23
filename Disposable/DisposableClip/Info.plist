@@ -8,6 +8,8 @@
 		<false/>
 		<key>NSAppClipRequestLocationConfirmation</key>
 		<false/>
+		<key>NSPhotoLibraryAddUsageDescription</key>
+		<string>We need access your photos to save those memories</string>
 	</dict>
 </dict>
 </plist>
