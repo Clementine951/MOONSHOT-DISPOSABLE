@@ -10,6 +10,7 @@ import SwiftUI
 import UIKit
 import FirebaseStorage
 import SDWebImageSwiftUI
+import Photos
 
 
 struct ContentView: View {
@@ -365,33 +366,37 @@ struct ContentView: View {
         for photoUrl in photos {
             guard let url = URL(string: photoUrl) else { continue }
 
-            let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
+            URLSession.shared.dataTask(with: url) { data, response, error in
                 if let error = error {
-                    print("Download error: \(error)")
+                    print("❌ Download error: \(error)")
                     return
                 }
 
-                guard let tempFileUrl = tempFileUrl else { return }
-
-                do {
-                    let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                    let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-
-                    if FileManager.default.fileExists(atPath: destinationURL.path) {
-                        try FileManager.default.removeItem(at: destinationURL)
-                    }
-
-                    try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
-
-                    print("Downloaded to: \(destinationURL.path)")
-                } catch {
-                    print("Error moving file: \(error)")
+                guard let data = data, let image = UIImage(data: data) else {
+                    print("❌ Failed to convert data to UIImage.")
+                    return
                 }
-            }
 
-            task.resume()
+                // ✅ Use completion handler to check if the image was saved
+                DispatchQueue.main.async {
+                    UIImageWriteToSavedPhotosAlbum(image, nil, #selector(self.imageSaveCompleted(_:didFinishSavingWithError:contextInfo:)), nil)
+                }
+            }.resume()
         }
     }
+
+    // ✅ Completion handler to check if saving was successful
+    @objc func imageSaveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            print("❌ Error saving to Photos Library: \(error.localizedDescription)")
+        } else {
+            print("✅ Image successfully saved to Photos Library!")
+        }
+    }
+
+
+
+
 
     // Upload Photo to Firebase Storage and Save Image URL to Firestore via REST API
     func uploadPhoto() {

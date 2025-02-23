@@ -8,8 +8,25 @@
 		<false/>
 		<key>NSAppClipRequestLocationConfirmation</key>
 		<false/>
-		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>We need access your photos to save those memories</string>
 	</dict>
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneConfigurationName</key>
+					<string>Default Configuration</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>We need access to save event photos to your library.</string>
 </dict>
 </plist>
