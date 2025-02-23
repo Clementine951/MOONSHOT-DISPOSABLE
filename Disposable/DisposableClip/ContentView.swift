@@ -16,6 +16,7 @@ struct ContentView: View {
     @State var eventId: String? = nil
     @State private var photos: [String] = []
     @State private var userName: String = ""
+    @State private var eventName: String = ""
     @State private var isNameEntered: Bool = false
     @State private var hasAcceptedTerms: Bool = false
     @State private var showingImagePicker = false
@@ -23,6 +24,8 @@ struct ContentView: View {
     @State private var timer: Timer?
     @State private var isFullScreenMode: Bool = false // Track fullscreen mode
     @State private var selectedPhotoIndex: Int = 0 // Track the selected photo for fullscreen
+    @State private var isEventNameLoaded: Bool = false
+
 
     var body: some View {
         if isNameEntered {
@@ -63,7 +66,7 @@ struct ContentView: View {
                         }
                     }
                 }
-                .navigationTitle("Gallery")
+                .navigationTitle(eventName.isEmpty ? "Event" : eventName)
                 .onAppear {
                     startReloadingImages()
                     if let eventId = self.eventId {
@@ -81,7 +84,11 @@ struct ContentView: View {
             }
         } else {
             VStack {
-                Text("Enter your name to proceed:")
+                Image("Logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 150, height: 150)
+                Text("Enter your name to join the event:")
                     .font(.headline)
                     .padding()
 
@@ -164,11 +171,46 @@ struct ContentView: View {
 
     // Fetch Images for Event from Firestore REST API
     func fetchImagesForEvent(eventId: String) {
-        let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)/images"
+        let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)"
 
         guard let url = URL(string: firestoreURL) else { return }
 
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error fetching event data: \(error)")
+                return
+            }
+
+            guard let data = data else { return }
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let fields = jsonResponse["fields"] as? [String: Any] {
+
+                    // ✅ Fetch event name from the same request
+                    if let nameField = fields["eventName"] as? [String: Any],
+                       let fetchedEventName = nameField["stringValue"] as? String {
+                        DispatchQueue.main.async {
+                            print("Fetched Event Name: \(fetchedEventName)")
+                            self.eventName = fetchedEventName
+                        }
+                    }
+
+                    // ✅ Fetch images from the same request
+                    let imagesCollectionURL = "\(firestoreURL)/images"
+                    fetchEventImages(from: imagesCollectionURL)
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+            }
+        }
+
+        task.resume()
+    }
+    
+    func fetchEventImages(from url: String) {
+        guard let imagesURL = URL(string: url) else { return }
+
+        let task = URLSession.shared.dataTask(with: imagesURL) { data, response, error in
             if let error = error {
                 print("Error fetching images: \(error)")
                 return
@@ -178,6 +220,7 @@ struct ContentView: View {
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let documents = jsonResponse["documents"] as? [[String: Any]] {
+                    
                     let urls = documents.compactMap { document -> String? in
                         guard let fields = document["fields"] as? [String: Any],
                               let urlField = fields["url"] as? [String: Any],
@@ -186,17 +229,71 @@ struct ContentView: View {
                         }
                         return urlString
                     }
+
                     DispatchQueue.main.async {
                         self.photos = urls
                     }
                 }
             } catch {
-                print("Error parsing JSON: \(error)")
+                print("Error parsing images JSON: \(error)")
             }
         }
 
         task.resume()
     }
+
+    
+    func fetchEventName(eventId: String) {
+        let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)"
+
+        guard let url = URL(string: firestoreURL) else { return }
+
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            if let error = error {
+                print("Error fetching event name: \(error)")
+                DispatchQueue.main.async {
+                    self.isEventNameLoaded = true
+                }
+                return
+            }
+
+            guard let data = data else {
+                DispatchQueue.main.async {
+                    self.isEventNameLoaded = true
+                }
+                return
+            }
+
+            do {
+                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                   let fields = jsonResponse["fields"] as? [String: Any],
+                   let nameField = fields["eventName"] as? [String: Any],
+                   let fetchedEventName = nameField["stringValue"] as? String {
+
+                    DispatchQueue.main.async {
+                        print("Fetched Event Name: \(fetchedEventName)") // Debugging log
+                        self.eventName = fetchedEventName
+                        self.isEventNameLoaded = true
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        print("Invalid Firestore response format")
+                        self.isEventNameLoaded = true
+                    }
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+                DispatchQueue.main.async {
+                    self.isEventNameLoaded = true
+                }
+            }
+        }
+
+        task.resume()
+    }
+
+
+
 
     // Add User to Event using Firestore REST API
     func addUserToEvent(eventId: String, userName: String) {
