@@ -93,16 +93,6 @@ class CameraModel: NSObject, ObservableObject {
     
     // MARK: - Capture Photo
 
-//    func takePhoto() {
-//        if currentCameraPosition == .front && isFlashOn {
-//            simulateFrontCameraFlash {
-//                self.capturePhoto()
-//            }
-//        } else {
-//            capturePhoto()
-//        }
-//    }
-    
     func takePhoto() {
         guard remainingPhotos > 0 else {
             print("No remaining photos.")
@@ -183,14 +173,11 @@ class CameraModel: NSObject, ObservableObject {
             return
         }
         
-        // Build the filename, e.g. "random-uuid.jpg"
         let imageName = "\(UUID().uuidString).jpg"
         
-        // 1) Upload to Firebase Storage
         let storageRef = storage.reference()
             .child("events/\(eventID)/\(imageName)")
         
-        // Optional: add contentType & metadata
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         metadata.customMetadata = [
@@ -207,7 +194,6 @@ class CameraModel: NSObject, ObservableObject {
             }
             print("Image uploaded to /events/\(self.eventID)/\(imageName)!")
             
-            // 2) Get the download URL
             storageRef.downloadURL { url, err in
                 if let err = err {
                     print("Failed to get download URL: \(err.localizedDescription)")
@@ -215,7 +201,6 @@ class CameraModel: NSObject, ObservableObject {
                 }
                 guard let downloadURL = url else { return }
                 
-                // 3) Write a doc to Firestore: events/<eventID>/images/<autoID>
                 let docRef = self.db
                     .collection("events")
                     .document(self.eventID)
@@ -223,8 +208,8 @@ class CameraModel: NSObject, ObservableObject {
                     .document() // auto-gen an ID
                 
                 let photoDoc: [String: Any] = [
-                    "url": downloadURL.absoluteString, // for displaying in the gallery
-                    "owner": self.userName,            // so we can filter Personal vs. General
+                    "url": downloadURL.absoluteString,
+                    "owner": self.userName,
                     "timestamp": Date().timeIntervalSince1970
                 ]
                 
@@ -238,7 +223,6 @@ class CameraModel: NSObject, ObservableObject {
             }
         }
         
-        // Reset the preview after saving
         previewImage = nil
     }
     // MARK: - camera switch

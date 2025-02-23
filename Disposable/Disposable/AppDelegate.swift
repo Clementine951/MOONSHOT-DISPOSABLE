@@ -22,7 +22,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 // Function to dynamically configure Firebase
 func configureFirebase() {
     #if APPCLIP
-    // For App Clip
+    // App Clip Configuration
     if let filePath = Bundle.main.path(forResource: "GoogleService-Info-AppClip", ofType: "plist"),
        let options = FirebaseOptions(contentsOfFile: filePath) {
         FirebaseApp.configure(options: options)
@@ -31,7 +31,7 @@ func configureFirebase() {
         print("Failed to load App Clip Firebase configuration")
     }
     #else
-    // For Main App
+    // Main App Configuration
     if let filePath = Bundle.main.path(forResource: "GoogleService-Info-Main", ofType: "plist"),
        let options = FirebaseOptions(contentsOfFile: filePath) {
         FirebaseApp.configure(options: options)

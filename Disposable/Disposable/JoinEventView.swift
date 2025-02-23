@@ -128,7 +128,7 @@ struct JoinEventView: View {
 
             DispatchQueue.main.async {
                 eventExists = true
-                eventData = document.data() // Store event details
+                eventData = document.data()
             }
         }
     }
@@ -155,7 +155,7 @@ struct JoinEventView: View {
                 joinErrorMessage = "Failed to join event: \(error.localizedDescription)"
             } else {
                 isInEvent = true
-                eventData?["userName"] = userName // Store user name
+                eventData?["userName"] = userName
                 joinErrorMessage = nil
             }
             showJoinEventAlert = true

@@ -139,7 +139,7 @@ struct CreateEventView: View {
                 let organizerData: [String: Any] = [
                     "name": self.userName,
                     "role": "organizer",
-                    "userId": UUID().uuidString // Assign a random ID
+                    "userId": UUID().uuidString
                 ]
 
                 db.collection("events").document(eventId).collection("participants").addDocument(data: organizerData) { error in
@@ -153,7 +153,7 @@ struct CreateEventView: View {
                                 DispatchQueue.main.async {
                                     self.isInEvent = true
                                     self.eventData = document.data()
-                                    self.presentationMode.wrappedValue.dismiss() // Dismiss after updating eventData
+                                    self.presentationMode.wrappedValue.dismiss()
                                 }
                             }
                         }

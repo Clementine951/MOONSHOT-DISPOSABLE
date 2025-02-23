@@ -262,7 +262,7 @@ struct PhotoGridView: View {
                             }
                     }
                 }
-                .padding(.horizontal, 8) // Add padding around the grid
+                .padding(.horizontal, 8)
             }
         }
     }
@@ -278,16 +278,15 @@ struct PhotoCell: View {
             if let uiImage = fetchedImage {
                 Image(uiImage: uiImage)
                     .resizable()
-                    .scaledToFill() // Ensures the image fills the square
-                    .frame(width: 100, height: 100) // Explicit square size
-                    .clipped() // Ensures the image doesn’t overflow the bounds
+                    .scaledToFill()
+                    .frame(width: 100, height: 100)
+                    .clipped()
             } else {
-                // Placeholder for loading state
                 Color.gray.opacity(0.3)
                     .frame(width: 100, height: 100)
             }
         }
-        .cornerRadius(8) // Optional: Rounded corners
+        .cornerRadius(8)
         .onAppear {
             loadImage()
         }
@@ -317,7 +316,7 @@ struct AsyncImageView: View {
                     .resizable()
                     .scaledToFill()
             } else {
-                Color.gray.opacity(0.3) // Placeholder background
+                Color.gray.opacity(0.3) 
                 ProgressView()
                     .onAppear(perform: loadImage)
             }
