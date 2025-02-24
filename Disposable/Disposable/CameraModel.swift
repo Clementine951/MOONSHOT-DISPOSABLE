@@ -106,7 +106,7 @@ class CameraModel: NSObject, ObservableObject {
         
         // Decrement remaining photos and sync with Firebase
         DispatchQueue.main.async {
-            self.remainingPhotos -= 1
+//            self.remainingPhotos -= 1
             self.updateRemainingPhotosInFirebase()
         }
     }
@@ -164,6 +164,7 @@ class CameraModel: NSObject, ObservableObject {
     
     // MARK: - Save Photo (Storage + Firestore)
     func savePhoto() {
+        self.remainingPhotos -= 1
         guard let image = previewImage else {
             print("No preview image to save.")
             return

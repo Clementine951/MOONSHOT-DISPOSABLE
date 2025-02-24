@@ -26,15 +26,15 @@ struct ContentView: View {
     @State private var isFullScreenMode: Bool = false // Track fullscreen mode
     @State private var selectedPhotoIndex: Int = 0 // Track the selected photo for fullscreen
     @State private var isEventNameLoaded: Bool = false
-
-
+    
+    
     var body: some View {
         if isNameEntered {
             NavigationView {
                 VStack {
                     Text("\(photos.count) Photos")
                         .font(.headline)
-
+                    
                     ScrollView(.vertical) {
                         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 16) {
                             ForEach(Array(photos.enumerated()), id: \.element) { index, photoUrl in
@@ -50,13 +50,13 @@ struct ContentView: View {
                             }
                         }
                     }
-
+                    
                     HStack {
                         Button(action: downloadAllPhotos) {
                             Label("Download", systemImage: "arrow.down.circle")
                         }
                         .padding()
-
+                        
                         Button(action: { showingImagePicker = true }) {
                             Label("Upload", systemImage: "arrow.up.circle")
                         }
@@ -92,11 +92,11 @@ struct ContentView: View {
                 Text("Enter your name to join the event:")
                     .font(.headline)
                     .padding()
-
+                
                 TextField("Your Name", text: $userName)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-
+                
                 Toggle(isOn: $hasAcceptedTerms) {
                     VStack(alignment: .leading) {
                         HStack {
@@ -122,7 +122,7 @@ struct ContentView: View {
                     }
                 }
                 .padding()
-
+                
                 Button("Continue") {
                     if !userName.isEmpty && hasAcceptedTerms {
                         isNameEntered = true
@@ -138,7 +138,7 @@ struct ContentView: View {
             .padding()
         }
     }
-
+    
     func startReloadingImages() {
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { _ in
             if let eventId = self.eventId {
@@ -146,12 +146,12 @@ struct ContentView: View {
             }
         }
     }
-
+    
     func stopReloadingImages() {
         timer?.invalidate()
         timer = nil
     }
-
+    
     func handleUserActivity(_ userActivity: NSUserActivity) {
         if let incomingURL = userActivity.webpageURL {
             let eventId = extractEventId(from: incomingURL)
@@ -163,30 +163,30 @@ struct ContentView: View {
             }
         }
     }
-
+    
     func extractEventId(from url: URL) -> String? {
         let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
         let eventId = components?.queryItems?.first(where: { $0.name == "eventId" })?.value
         return eventId
     }
-
+    
     // Fetch Images for Event from Firestore REST API
     func fetchImagesForEvent(eventId: String) {
         let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)"
-
+        
         guard let url = URL(string: firestoreURL) else { return }
-
+        
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error fetching event data: \(error)")
                 return
             }
-
+            
             guard let data = data else { return }
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let fields = jsonResponse["fields"] as? [String: Any] {
-
+                    
                     // ✅ Fetch event name from the same request
                     if let nameField = fields["eventName"] as? [String: Any],
                        let fetchedEventName = nameField["stringValue"] as? String {
@@ -195,7 +195,7 @@ struct ContentView: View {
                             self.eventName = fetchedEventName
                         }
                     }
-
+                    
                     // ✅ Fetch images from the same request
                     let imagesCollectionURL = "\(firestoreURL)/images"
                     fetchEventImages(from: imagesCollectionURL)
@@ -204,19 +204,19 @@ struct ContentView: View {
                 print("Error parsing JSON: \(error)")
             }
         }
-
+        
         task.resume()
     }
     
     func fetchEventImages(from url: String) {
         guard let imagesURL = URL(string: url) else { return }
-
+        
         let task = URLSession.shared.dataTask(with: imagesURL) { data, response, error in
             if let error = error {
                 print("Error fetching images: \(error)")
                 return
             }
-
+            
             guard let data = data else { return }
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
@@ -230,7 +230,7 @@ struct ContentView: View {
                         }
                         return urlString
                     }
-
+                    
                     DispatchQueue.main.async {
                         self.photos = urls
                     }
@@ -239,16 +239,16 @@ struct ContentView: View {
                 print("Error parsing images JSON: \(error)")
             }
         }
-
+        
         task.resume()
     }
-
+    
     
     func fetchEventName(eventId: String) {
         let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)"
-
+        
         guard let url = URL(string: firestoreURL) else { return }
-
+        
         let task = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 print("Error fetching event name: \(error)")
@@ -257,20 +257,20 @@ struct ContentView: View {
                 }
                 return
             }
-
+            
             guard let data = data else {
                 DispatchQueue.main.async {
                     self.isEventNameLoaded = true
                 }
                 return
             }
-
+            
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let fields = jsonResponse["fields"] as? [String: Any],
                    let nameField = fields["eventName"] as? [String: Any],
                    let fetchedEventName = nameField["stringValue"] as? String {
-
+                    
                     DispatchQueue.main.async {
                         print("Fetched Event Name: \(fetchedEventName)") // Debugging log
                         self.eventName = fetchedEventName
@@ -289,18 +289,18 @@ struct ContentView: View {
                 }
             }
         }
-
+        
         task.resume()
     }
-
-
-
-
+    
+    
+    
+    
     // Add User to Event using Firestore REST API
     func addUserToEvent(eventId: String, userName: String) {
         let userDefaultsKey = "com.disposableclip.userId"
         let deviceId: String
-
+        
         // Check if a unique user ID exists in UserDefaults
         if let savedUserId = UserDefaults.standard.string(forKey: userDefaultsKey), savedUserId != "00000000-0000-0000-0000-000000000000" {
             deviceId = savedUserId
@@ -310,9 +310,9 @@ struct ContentView: View {
             UserDefaults.standard.set(deviceId, forKey: userDefaultsKey)
             print("Generated new userId: \(deviceId)")
         }
-
+        
         let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)/participants"
-
+        
         let participantData: [String: Any] = [
             "fields": [
                 "userId": ["stringValue": deviceId],
@@ -320,16 +320,16 @@ struct ContentView: View {
                 "name": ["stringValue": userName]
             ]
         ]
-
+        
         guard let url = URL(string: firestoreURL) else {
             print("Invalid Firestore URL")
             return
         }
-
+        
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
+        
         do {
             let jsonData = try JSONSerialization.data(withJSONObject: participantData, options: [])
             request.httpBody = jsonData
@@ -337,13 +337,13 @@ struct ContentView: View {
             print("Error serializing participant data: \(error)")
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             if let error = error {
                 print("Error adding user to event: \(error)")
                 return
             }
-
+            
             if let httpResponse = response as? HTTPURLResponse {
                 if httpResponse.statusCode == 200 {
                     print("User successfully added to event!")
@@ -355,45 +355,42 @@ struct ContentView: View {
                 }
             }
         }
-
+        
         task.resume()
     }
-
-
-
-    // Download All Photos
+    
+    
     func downloadAllPhotos() {
-        for photoUrl in photos {
-            guard let url = URL(string: photoUrl) else { continue }
+            for photoUrl in photos {
+                guard let url = URL(string: photoUrl) else { continue }
 
-            URLSession.shared.dataTask(with: url) { data, response, error in
-                if let error = error {
-                    print("❌ Download error: \(error)")
-                    return
+                let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
+                    if let error = error {
+                        print("Download error: \(error)")
+                        return
+                    }
+
+                    guard let tempFileUrl = tempFileUrl else { return }
+
+                    do {
+                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+                        let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+
+                        if FileManager.default.fileExists(atPath: destinationURL.path) {
+                            try FileManager.default.removeItem(at: destinationURL)
+                        }
+
+                        try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
+
+                        print("Downloaded to: \(destinationURL.path)")
+                    } catch {
+                        print("Error moving file: \(error)")
+                    }
                 }
 
-                guard let data = data, let image = UIImage(data: data) else {
-                    print("❌ Failed to convert data to UIImage.")
-                    return
-                }
-
-                // ✅ Use completion handler to check if the image was saved
-                DispatchQueue.main.async {
-                    UIImageWriteToSavedPhotosAlbum(image, nil, #selector(self.imageSaveCompleted(_:didFinishSavingWithError:contextInfo:)), nil)
-                }
-            }.resume()
+                task.resume()
+            }
         }
-    }
-
-    // ✅ Completion handler to check if saving was successful
-    @objc func imageSaveCompleted(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            print("❌ Error saving to Photos Library: \(error.localizedDescription)")
-        } else {
-            print("✅ Image successfully saved to Photos Library!")
-        }
-    }
-
 
 
 
