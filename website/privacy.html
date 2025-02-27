@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disposable App</title>
+    <link rel="icon" type="image/x-icon" href="/images/SubMark.png">
+
+    <link rel="stylesheet" href="CSS/index.css">
+
+    <!-- Font titles-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Sigmar&display=swap" rel="stylesheet">
+
+    
+</head>
+
+<body>
+    <header id="first">
+        <h1 class="londrina-solid-black">Form</h1>
+        <h3 class="montserrat-uniquifier">Disposable is an intuitive app for capturing and sharing moments effortlessly. 
+        </h3>
+    </header>
+
+    <!-- <nav>
+        <div class="nav">Blog</div>
+        <div class="nav">About Me</div>
+        <div class="nav">Contact</div>
+    </nav> -->
+
+    <nav class="londrina-solid-regular">
+        <a href="./index.html" class="nav">Home</a>
+        <a href="./update.html" class="nav">About</a>
+        <a href="./privacy.html" class="nav">Form</a>
+        <a href="./contact.html" class="nav">Contact</a>
+        <a href="./site.html" class="nav">Site</a>
+    </nav>
+
+    <form action="" method="get">
+        <div>
+            <label for="eventName">Event Name
+                <input type="text" name="eventName" id="eventName" >
+            </label>
+        </div>
+        <div>
+            <label for="create">Password
+                <input type="password" name="create" id="create">
+            </label>
+        </div>
+        <div>
+            <label for="email">Email
+                <input type="email" name="email" id="email">
+            </label>
+        </div>
+        <div>
+            <input type="checkbox" name="data" id="data">
+            <label for="data">Data</label>
+        </div>
+        <div>
+            <input type="checkbox" name="create" id="create">
+            <label for="create">Password</label>
+        </div>
+        <div>
+            <input type="checkbox" name="create" id="create">
+            <label for="create">Password</label>
+        </div>
+        <div>
+            <input type="color" name="color" id="color">
+            <label for="color">Color</label>
+        </div>
+        <div>
+            <label for="date">Creation date</label>
+            <input type="date" name="date" id="date">
+        </div>
+        <div>
+            <label for="current">Currently running</label><br>
+            Yes
+            <input type="radio" name="current" id="current" value="yes"> 
+            <input type="radio" name="current" id="current" value="no"> 
+            No
+
+        </div>
+        <div>
+            <input type="range">
+            <input type="datetime-local">
+            <input type="file">
+            <input type="month">
+            <input type="reset">
+            <input type="week">
+            <input type="datetime">
+            <input type="number" name="" id="">
+            <br>
+            <textarea rows="3" cols="50" id="">able to press enter inside without submitting</textarea>
+        </div>
+        <div>
+            <select name="" id="">
+                <option value="">a</option>
+                <option value="">b</option>
+                <option value="">c</option>
+                <option value="">d</option>
+            </select>
+        </div>
+        <div>
+            <input type="hidden">
+            hidden control
+            to know where the form is coming from
+        </div>
+        novalidate -> just send everything
+        <br>
+        
+        <input type="submit">
+    </form>
+
+
+</body>
+</html>

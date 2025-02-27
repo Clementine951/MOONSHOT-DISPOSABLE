@@ -1,0 +1,21 @@
+main{
+    display: flex;
+    border: 1px solid red;
+}
+
+.details{
+    border: 1px solid blue;
+    display: flex;
+    flex-direction: column;
+}
+
+.foot{
+    border: 1px solid green;
+}
+
+
+img{
+    display: flex;
+    height: 200px;
+
+}
