@@ -1,0 +1,1083 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2645AB602D303A30008B79D8 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2645AB5F2D303A30008B79D8 /* FirebaseCore */; };
+		2645AB622D303A30008B79D8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2645AB612D303A30008B79D8 /* FirebaseFirestore */; };
+		2645AB642D303A30008B79D8 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2645AB632D303A30008B79D8 /* FirebaseStorage */; };
+		2645ABA52D303E78008B79D8 /* DisposableClip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 2645AB802D303E77008B79D8 /* DisposableClip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2648D5242D32E21B003F5088 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2648D5232D32E21B003F5088 /* FirebaseCore */; };
+		2648D5262D32E21F003F5088 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 2648D5252D32E21F003F5088 /* FirebaseFirestore */; };
+		2648D5282D32E224003F5088 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 2648D5272D32E224003F5088 /* FirebaseStorage */; };
+		2658DFC22D6B366700B20968 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 2658DFC12D6B366700B20968 /* SDWebImageSwiftUI */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2645AB422D303312008B79D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2645AB292D303311008B79D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2645AB302D303311008B79D8;
+			remoteInfo = Disposable;
+		};
+		2645AB4C2D303312008B79D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2645AB292D303311008B79D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2645AB302D303311008B79D8;
+			remoteInfo = Disposable;
+		};
+		2645AB922D303E78008B79D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2645AB292D303311008B79D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2645AB7F2D303E77008B79D8;
+			remoteInfo = DisposableClip;
+		};
+		2645AB9C2D303E78008B79D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2645AB292D303311008B79D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2645AB7F2D303E77008B79D8;
+			remoteInfo = DisposableClip;
+		};
+		2645ABA32D303E78008B79D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2645AB292D303311008B79D8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2645AB7F2D303E77008B79D8;
+			remoteInfo = DisposableClip;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2645ABAA2D303E78008B79D8 /* Embed App Clips */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/AppClips";
+			dstSubfolderSpec = 16;
+			files = (
+				2645ABA52D303E78008B79D8 /* DisposableClip.app in Embed App Clips */,
+			);
+			name = "Embed App Clips";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		2645AB312D303311008B79D8 /* Disposable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Disposable.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2645AB412D303312008B79D8 /* DisposableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2645AB4B2D303312008B79D8 /* DisposableUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2645AB802D303E77008B79D8 /* DisposableClip.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisposableClip.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2645AB912D303E78008B79D8 /* DisposableClipTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableClipTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2645AB9B2D303E78008B79D8 /* DisposableClipUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DisposableClipUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2645ABA62D303E78008B79D8 /* Exceptions for "DisposableClip" folder in "DisposableClip" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2645AB7F2D303E77008B79D8 /* DisposableClip */;
+		};
+		26BF29352D39702D00D6990E /* Exceptions for "Disposable" folder in "Disposable" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2645AB302D303311008B79D8 /* Disposable */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		2645AB332D303311008B79D8 /* Disposable */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				26BF29352D39702D00D6990E /* Exceptions for "Disposable" folder in "Disposable" target */,
+			);
+			path = Disposable;
+			sourceTree = "<group>";
+		};
+		2645AB442D303312008B79D8 /* DisposableTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DisposableTests;
+			sourceTree = "<group>";
+		};
+		2645AB4E2D303312008B79D8 /* DisposableUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DisposableUITests;
+			sourceTree = "<group>";
+		};
+		2645AB812D303E77008B79D8 /* DisposableClip */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2645ABA62D303E78008B79D8 /* Exceptions for "DisposableClip" folder in "DisposableClip" target */,
+			);
+			path = DisposableClip;
+			sourceTree = "<group>";
+		};
+		2645AB942D303E78008B79D8 /* DisposableClipTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DisposableClipTests;
+			sourceTree = "<group>";
+		};
+		2645AB9E2D303E78008B79D8 /* DisposableClipUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = DisposableClipUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2645AB2E2D303311008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2645AB602D303A30008B79D8 /* FirebaseCore in Frameworks */,
+				2645AB622D303A30008B79D8 /* FirebaseFirestore in Frameworks */,
+				2645AB642D303A30008B79D8 /* FirebaseStorage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB3E2D303312008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB482D303312008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB7D2D303E77008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2658DFC22D6B366700B20968 /* SDWebImageSwiftUI in Frameworks */,
+				2648D5242D32E21B003F5088 /* FirebaseCore in Frameworks */,
+				2648D5262D32E21F003F5088 /* FirebaseFirestore in Frameworks */,
+				2648D5282D32E224003F5088 /* FirebaseStorage in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB8E2D303E78008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB982D303E78008B79D8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2645AB282D303311008B79D8 = {
+			isa = PBXGroup;
+			children = (
+				2645AB332D303311008B79D8 /* Disposable */,
+				2645AB442D303312008B79D8 /* DisposableTests */,
+				2645AB4E2D303312008B79D8 /* DisposableUITests */,
+				2645AB812D303E77008B79D8 /* DisposableClip */,
+				2645AB942D303E78008B79D8 /* DisposableClipTests */,
+				2645AB9E2D303E78008B79D8 /* DisposableClipUITests */,
+				2648D5222D32E21B003F5088 /* Frameworks */,
+				2645AB322D303311008B79D8 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		2645AB322D303311008B79D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2645AB312D303311008B79D8 /* Disposable.app */,
+				2645AB412D303312008B79D8 /* DisposableTests.xctest */,
+				2645AB4B2D303312008B79D8 /* DisposableUITests.xctest */,
+				2645AB802D303E77008B79D8 /* DisposableClip.app */,
+				2645AB912D303E78008B79D8 /* DisposableClipTests.xctest */,
+				2645AB9B2D303E78008B79D8 /* DisposableClipUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2648D5222D32E21B003F5088 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2645AB302D303311008B79D8 /* Disposable */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645AB552D303312008B79D8 /* Build configuration list for PBXNativeTarget "Disposable" */;
+			buildPhases = (
+				2645AB2D2D303311008B79D8 /* Sources */,
+				2645AB2E2D303311008B79D8 /* Frameworks */,
+				2645AB2F2D303311008B79D8 /* Resources */,
+				2645ABAA2D303E78008B79D8 /* Embed App Clips */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2645ABA42D303E78008B79D8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB332D303311008B79D8 /* Disposable */,
+			);
+			name = Disposable;
+			packageProductDependencies = (
+				2645AB5F2D303A30008B79D8 /* FirebaseCore */,
+				2645AB612D303A30008B79D8 /* FirebaseFirestore */,
+				2645AB632D303A30008B79D8 /* FirebaseStorage */,
+			);
+			productName = Disposable;
+			productReference = 2645AB312D303311008B79D8 /* Disposable.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2645AB402D303312008B79D8 /* DisposableTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645AB582D303312008B79D8 /* Build configuration list for PBXNativeTarget "DisposableTests" */;
+			buildPhases = (
+				2645AB3D2D303312008B79D8 /* Sources */,
+				2645AB3E2D303312008B79D8 /* Frameworks */,
+				2645AB3F2D303312008B79D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2645AB432D303312008B79D8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB442D303312008B79D8 /* DisposableTests */,
+			);
+			name = DisposableTests;
+			packageProductDependencies = (
+			);
+			productName = DisposableTests;
+			productReference = 2645AB412D303312008B79D8 /* DisposableTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2645AB4A2D303312008B79D8 /* DisposableUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645AB5B2D303312008B79D8 /* Build configuration list for PBXNativeTarget "DisposableUITests" */;
+			buildPhases = (
+				2645AB472D303312008B79D8 /* Sources */,
+				2645AB482D303312008B79D8 /* Frameworks */,
+				2645AB492D303312008B79D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2645AB4D2D303312008B79D8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB4E2D303312008B79D8 /* DisposableUITests */,
+			);
+			name = DisposableUITests;
+			packageProductDependencies = (
+			);
+			productName = DisposableUITests;
+			productReference = 2645AB4B2D303312008B79D8 /* DisposableUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		2645AB7F2D303E77008B79D8 /* DisposableClip */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645ABA72D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClip" */;
+			buildPhases = (
+				2645AB7C2D303E77008B79D8 /* Sources */,
+				2645AB7D2D303E77008B79D8 /* Frameworks */,
+				2645AB7E2D303E77008B79D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB812D303E77008B79D8 /* DisposableClip */,
+			);
+			name = DisposableClip;
+			packageProductDependencies = (
+				2648D5232D32E21B003F5088 /* FirebaseCore */,
+				2648D5252D32E21F003F5088 /* FirebaseFirestore */,
+				2648D5272D32E224003F5088 /* FirebaseStorage */,
+				2658DFC12D6B366700B20968 /* SDWebImageSwiftUI */,
+			);
+			productName = DisposableClip;
+			productReference = 2645AB802D303E77008B79D8 /* DisposableClip.app */;
+			productType = "com.apple.product-type.application.on-demand-install-capable";
+		};
+		2645AB902D303E78008B79D8 /* DisposableClipTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645ABAB2D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClipTests" */;
+			buildPhases = (
+				2645AB8D2D303E78008B79D8 /* Sources */,
+				2645AB8E2D303E78008B79D8 /* Frameworks */,
+				2645AB8F2D303E78008B79D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2645AB932D303E78008B79D8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB942D303E78008B79D8 /* DisposableClipTests */,
+			);
+			name = DisposableClipTests;
+			packageProductDependencies = (
+			);
+			productName = DisposableClipTests;
+			productReference = 2645AB912D303E78008B79D8 /* DisposableClipTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2645AB9A2D303E78008B79D8 /* DisposableClipUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2645ABAE2D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClipUITests" */;
+			buildPhases = (
+				2645AB972D303E78008B79D8 /* Sources */,
+				2645AB982D303E78008B79D8 /* Frameworks */,
+				2645AB992D303E78008B79D8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2645AB9D2D303E78008B79D8 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2645AB9E2D303E78008B79D8 /* DisposableClipUITests */,
+			);
+			name = DisposableClipUITests;
+			packageProductDependencies = (
+			);
+			productName = DisposableClipUITests;
+			productReference = 2645AB9B2D303E78008B79D8 /* DisposableClipUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2645AB292D303311008B79D8 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					2645AB302D303311008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					2645AB402D303312008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 2645AB302D303311008B79D8;
+					};
+					2645AB4A2D303312008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 2645AB302D303311008B79D8;
+					};
+					2645AB7F2D303E77008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					2645AB902D303E78008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 2645AB7F2D303E77008B79D8;
+					};
+					2645AB9A2D303E78008B79D8 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = 2645AB7F2D303E77008B79D8;
+					};
+				};
+			};
+			buildConfigurationList = 2645AB2C2D303311008B79D8 /* Build configuration list for PBXProject "Disposable" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2645AB282D303311008B79D8;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				2658DFC02D6B366700B20968 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2645AB322D303311008B79D8 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2645AB302D303311008B79D8 /* Disposable */,
+				2645AB402D303312008B79D8 /* DisposableTests */,
+				2645AB4A2D303312008B79D8 /* DisposableUITests */,
+				2645AB7F2D303E77008B79D8 /* DisposableClip */,
+				2645AB902D303E78008B79D8 /* DisposableClipTests */,
+				2645AB9A2D303E78008B79D8 /* DisposableClipUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2645AB2F2D303311008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB3F2D303312008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB492D303312008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB7E2D303E77008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB8F2D303E78008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB992D303E78008B79D8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2645AB2D2D303311008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB3D2D303312008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB472D303312008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB7C2D303E77008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB8D2D303E78008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2645AB972D303E78008B79D8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2645AB432D303312008B79D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2645AB302D303311008B79D8 /* Disposable */;
+			targetProxy = 2645AB422D303312008B79D8 /* PBXContainerItemProxy */;
+		};
+		2645AB4D2D303312008B79D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2645AB302D303311008B79D8 /* Disposable */;
+			targetProxy = 2645AB4C2D303312008B79D8 /* PBXContainerItemProxy */;
+		};
+		2645AB932D303E78008B79D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2645AB7F2D303E77008B79D8 /* DisposableClip */;
+			targetProxy = 2645AB922D303E78008B79D8 /* PBXContainerItemProxy */;
+		};
+		2645AB9D2D303E78008B79D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2645AB7F2D303E77008B79D8 /* DisposableClip */;
+			targetProxy = 2645AB9C2D303E78008B79D8 /* PBXContainerItemProxy */;
+		};
+		2645ABA42D303E78008B79D8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2645AB7F2D303E77008B79D8 /* DisposableClip */;
+			targetProxy = 2645ABA32D303E78008B79D8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2645AB532D303312008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		2645AB542D303312008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2645AB562D303312008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Disposable/Disposable.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Disposable/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Disposable/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Disposablel App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to access your gallery to save your memories.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2645AB572D303312008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Disposable/Disposable.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Disposable/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Disposable/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Disposablel App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSCameraUsageDescription = "This app needs camera access to take photos.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "This app needs to access your gallery to save your memories.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2645AB592D303312008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.DisposableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Disposable.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Disposable";
+			};
+			name = Debug;
+		};
+		2645AB5A2D303312008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.DisposableTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Disposable.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Disposable";
+			};
+			name = Release;
+		};
+		2645AB5C2D303312008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.DisposableUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Disposable;
+			};
+			name = Debug;
+		};
+		2645AB5D2D303312008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.DisposableUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Disposable;
+			};
+			name = Release;
+		};
+		2645ABA82D303E78008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DisposableClip/DisposableClip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DisposableClip/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DisposableClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Disposable App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2645ABA92D303E78008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = DisposableClip/DisposableClip.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"DisposableClip/Preview Content\"";
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = DisposableClip/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Disposable App";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DAPPCLIP";
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.Clip;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		2645ABAC2D303E78008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.DisposableClipTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DisposableClip.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DisposableClip";
+			};
+			name = Debug;
+		};
+		2645ABAD2D303E78008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.DisposableClipTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DisposableClip.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DisposableClip";
+			};
+			name = Release;
+		};
+		2645ABAF2D303E78008B79D8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.DisposableClipUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DisposableClip;
+			};
+			name = Debug;
+		};
+		2645ABB02D303E78008B79D8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9WW9N57U4X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.curel.Disposable.DisposableClipUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = DisposableClip;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2645AB2C2D303311008B79D8 /* Build configuration list for PBXProject "Disposable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645AB532D303312008B79D8 /* Debug */,
+				2645AB542D303312008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645AB552D303312008B79D8 /* Build configuration list for PBXNativeTarget "Disposable" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645AB562D303312008B79D8 /* Debug */,
+				2645AB572D303312008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645AB582D303312008B79D8 /* Build configuration list for PBXNativeTarget "DisposableTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645AB592D303312008B79D8 /* Debug */,
+				2645AB5A2D303312008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645AB5B2D303312008B79D8 /* Build configuration list for PBXNativeTarget "DisposableUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645AB5C2D303312008B79D8 /* Debug */,
+				2645AB5D2D303312008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645ABA72D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClip" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645ABA82D303E78008B79D8 /* Debug */,
+				2645ABA92D303E78008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645ABAB2D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClipTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645ABAC2D303E78008B79D8 /* Debug */,
+				2645ABAD2D303E78008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2645ABAE2D303E78008B79D8 /* Build configuration list for PBXNativeTarget "DisposableClipUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2645ABAF2D303E78008B79D8 /* Debug */,
+				2645ABB02D303E78008B79D8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
+		2658DFC02D6B366700B20968 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2645AB5F2D303A30008B79D8 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		2645AB612D303A30008B79D8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		2645AB632D303A30008B79D8 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		2648D5232D32E21B003F5088 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		2648D5252D32E21F003F5088 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		2648D5272D32E224003F5088 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2645AB5E2D303A30008B79D8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		2658DFC12D6B366700B20968 /* SDWebImageSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2658DFC02D6B366700B20968 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
+			productName = SDWebImageSwiftUI;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 2645AB292D303311008B79D8 /* Project object */;
+}
