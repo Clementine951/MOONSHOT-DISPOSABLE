@@ -102,111 +102,43 @@ header {
 }
 
 
-/* --- Carousel Container --- */
-
-
-.carouselSection {
-    position: relative;
-    width: 90%;
-    /* Adjust as desired */
-    /* max-width: 1200px; */
-    margin: 50px auto;
-    /* Center horizontally, add vertical spacing */
-    overflow: hidden;
-    /* Hide parts of slides that go beyond container edges */
-}
-
-/* The track that holds all carousel items */
-.carouselContent {
-    display: flex;
-    gap: 1rem;
-    /* Space between slides */
-    transition: transform 0.5s ease;
-}
-
-/* Each carousel item: set to one-third of the container width */
-.carouselItem {
-    flex: 0 0 calc((100%) / 3);
-    /* 100% minus 2 gaps (1rem each) divided by 3 */
-    background-color: #fff;
-    border: 1px solid #ccc;
+/* Main content styling */
+main {
+    max-width: 80%;
+    margin: 120px auto 40px;
+    /* extra top margin so content isn't hidden by header */
+    padding: 20px;
+    background: #fff;
     border-radius: 8px;
-    /* min-height: 300px; */
-    /* Adjust height as needed */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: left;
-    /* For text next to image */
-    padding: 1rem;
-
-    img {
-        width: 40%;
-        /* Image takes 40% of item width */
-        height: auto;
-        margin-right: 20px;
-        /* Space between image and text */
-        object-fit: cover;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
-
-    p {
-        flex: 1;
-        margin: 0;
-    }
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.carouselBtn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    width: 40px;
-    height: 40px;
-    border: none;
-    border-radius: 50%;
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
-    font-size: 1.5rem;
-    cursor: pointer;
-    outline: none;
+h1 {
+    font-family: "Londrina Solid", cursive;
+    color: var(--green);
+    margin-bottom: 20px;
+    font-size: 2.5rem;
 }
 
-.nextBtn {
-    right: 10px;
+h2 {
+    color: var(--green);
+    margin-bottom: 20px;
+    font-size: 1.75rem;
 }
 
-.carouselBtn:hover {
-    background: rgba(0, 0, 0, 0.7);
+h3 {
+    color: var(--green);
+    margin-bottom: 20px;
+    font-size: 1.25rem;
 }
 
-/* Optional fade overlays */
-.fadeLeft,
-.fadeRight {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    pointer-events: none;
-    z-index: 9;
-}
-
-.fadeLeft {
-    left: 0;
-    background: linear-gradient(to left, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
-}
-
-.fadeRight {
-    right: 0;
-    background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
+p {
+    margin-bottom: 16px;
+    color: #333;
 }
 
 /* Footer styling */
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
     text-align: center;
     padding: 20px;
     background-color: var(--purple);
