@@ -51,21 +51,6 @@ struct ContentView: View {
                         }
                     }
                     
-                    HStack {
-                        Button(action: downloadAllPhotos) {
-                            Label("Download", systemImage: "arrow.down.circle")
-                        }
-                        .padding()
-                        
-                        Button(action: { showingImagePicker = true }) {
-                            Label("Upload", systemImage: "arrow.up.circle")
-                        }
-                        .padding()
-                        .sheet(isPresented: $showingImagePicker) {
-                            ImagePicker(image: $inputImage)
-                                .onDisappear(perform: uploadPhoto)
-                        }
-                    }
                 }
                 .navigationTitle(eventName.isEmpty ? "Event" : eventName)
                 .onAppear {
@@ -359,40 +344,6 @@ struct ContentView: View {
         task.resume()
     }
     
-    
-    func downloadAllPhotos() {
-            for photoUrl in photos {
-                guard let url = URL(string: photoUrl) else { continue }
-
-                let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
-                    if let error = error {
-                        print("Download error: \(error)")
-                        return
-                    }
-
-                    guard let tempFileUrl = tempFileUrl else { return }
-
-                    do {
-                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-                        let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-
-                        if FileManager.default.fileExists(atPath: destinationURL.path) {
-                            try FileManager.default.removeItem(at: destinationURL)
-                        }
-
-                        try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
-
-                        print("Downloaded to: \(destinationURL.path)")
-                    } catch {
-                        print("Error moving file: \(error)")
-                    }
-                }
-
-                task.resume()
-            }
-        }
-
-
 
 
     // Upload Photo to Firebase Storage and Save Image URL to Firestore via REST API
