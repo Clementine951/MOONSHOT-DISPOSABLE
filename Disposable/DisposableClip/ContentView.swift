@@ -51,6 +51,21 @@ struct ContentView: View {
                         }
                     }
                     
+                    HStack {
+//                        Button(action: downloadAllPhotos) {
+//                            Label("Download", systemImage: "arrow.down.circle")
+//                        }
+//                        .padding()
+                        
+                        Button(action: { showingImagePicker = true }) {
+                            Label("Upload", systemImage: "arrow.up.circle")
+                        }
+                        .padding()
+                        .sheet(isPresented: $showingImagePicker) {
+                            ImagePicker(image: $inputImage)
+                                .onDisappear(perform: uploadPhoto)
+                        }
+                    }
                 }
                 .navigationTitle(eventName.isEmpty ? "Event" : eventName)
                 .onAppear {
@@ -172,7 +187,7 @@ struct ContentView: View {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let fields = jsonResponse["fields"] as? [String: Any] {
                     
-                    // ✅ Fetch event name from the same request
+                    // Fetch event name from the same request
                     if let nameField = fields["eventName"] as? [String: Any],
                        let fetchedEventName = nameField["stringValue"] as? String {
                         DispatchQueue.main.async {
@@ -181,7 +196,7 @@ struct ContentView: View {
                         }
                     }
                     
-                    // ✅ Fetch images from the same request
+                    // Fetch images from the same request
                     let imagesCollectionURL = "\(firestoreURL)/images"
                     fetchEventImages(from: imagesCollectionURL)
                 }
@@ -344,6 +359,40 @@ struct ContentView: View {
         task.resume()
     }
     
+    
+//    func downloadAllPhotos() {
+//            for photoUrl in photos {
+//                guard let url = URL(string: photoUrl) else { continue }
+//
+//                let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
+//                    if let error = error {
+//                        print("Download error: \(error)")
+//                        return
+//                    }
+//
+//                    guard let tempFileUrl = tempFileUrl else { return }
+//
+//                    do {
+//                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+//                        let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+//
+//                        if FileManager.default.fileExists(atPath: destinationURL.path) {
+//                            try FileManager.default.removeItem(at: destinationURL)
+//                        }
+//
+//                        try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
+//
+//                        print("Downloaded to: \(destinationURL.path)")
+//                    } catch {
+//                        print("Error moving file: \(error)")
+//                    }
+//                }
+//
+//                task.resume()
+//            }
+//        }
+
+
 
 
     // Upload Photo to Firebase Storage and Save Image URL to Firestore via REST API
