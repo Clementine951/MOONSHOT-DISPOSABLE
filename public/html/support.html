@@ -20,6 +20,9 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/2a2e66f462.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -47,35 +50,48 @@
         </nav>
     </header>
 
-    <div class="form-container">
-        <h2>Contact Support</h2>
-        <form id="supportForm">
-            <label for="name">Name</label>
-            <input type="text" id="name" required>
+    <div class="container">
+        <div class="text">
+            <h2>Contact Me</h2>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" required>
-
-            <label>Subject</label>
-            <div class="checkbox-group">
-                <label><input type="checkbox" name="subject" value="General inquiry"> General inquiry</label>
-                <label><input type="checkbox" name="subject" value="Technical support"> Technical support</label>
-                <label><input type="checkbox" name="subject" value="Feedback"> Feedback</label>
-                <label><input type="checkbox" name="subject" value="Data access"> Data access</label>
-                <label><input type="checkbox" name="subject" value="Data deletion"> Data deletion</label>
-                <label><input type="checkbox" name="subject" value="Other"> Other</label>
+            <div class="logo">
+                <a href="https://github.com/Clementine951"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/clementinecurel/"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="mailto:clem951@hotmail.fr"><i class="fa-solid fa-envelope"></i></a>
             </div>
+            <div class="description">Hi! <br><br> My name is Clémentine, the founder and lead and unique developer of this project.  <br>If you have any questions or you just want to talk with me, please contact me via GitHub, LinkedIn or even by mail. <br> <br> If you are a user of Disposable, I invite you to fill this next form. <br> <br> Have a beautiful day! </div>
+        </div>
 
-            <label for="subjectTitle">Subject Title</label>
-            <input type="text" id="subjectTitle" required>
-
-            <label for="message">Message</label>
-            <textarea id="message" rows="4" placeholder="If related to an event, please put the name + date of creation"
-                required></textarea>
-
-            <button type="submit">Submit</button>
-        </form>
-        <p id="successMessage">Your request has been submitted successfully!</p>
+        <div class="form-container">
+            <h2>Contact Support</h2>
+            <form id="supportForm">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+    
+                <label for="email">Email</label>
+                <input type="email" id="email" required>
+    
+                <!-- <label>Subject</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="subject" value="General inquiry"> General inquiry</label>
+                    <label><input type="checkbox" name="subject" value="Technical support"> Technical support</label>
+                    <label><input type="checkbox" name="subject" value="Feedback"> Feedback</label>
+                    <label><input type="checkbox" name="subject" value="Data access"> Data access</label>
+                    <label><input type="checkbox" name="subject" value="Data deletion"> Data deletion</label>
+                    <label><input type="checkbox" name="subject" value="Other"> Other</label>
+                </div> -->
+    
+                <label for="subjectTitle">Title</label>
+                <input type="text" id="subjectTitle" required>
+    
+                <label for="message">Message</label>
+                <textarea id="message" rows="4" placeholder="If related to an existing event, please put the name and date of creation"
+                    required></textarea>
+    
+                <button type="submit">Submit</button>
+            </form>
+            <p id="successMessage">Your request has been submitted successfully!</p>
+        </div>
     </div>
 
 
@@ -108,15 +124,15 @@
             const subjectTitle = document.getElementById("subjectTitle").value;
             const message = document.getElementById("message").value;
 
-            const selectedSubjects = Array.from(document.querySelectorAll("input[name='subject']:checked"))
-                .map(checkbox => checkbox.value);
+            // const selectedSubjects = Array.from(document.querySelectorAll("input[name='subject']:checked"))
+            //     .map(checkbox => checkbox.value);
 
             const newRequestRef = push(ref(db, "support_requests"));
 
             set(newRequestRef, {
                 name: name,
                 email: email,
-                subjects: selectedSubjects,
+                // subjects: selectedSubjects,
                 subjectTitle: subjectTitle,
                 message: message
             }).then(() => {

@@ -101,26 +101,63 @@ header {
     display: block;
 }
 
-/* General Page Styling */
-body {
-    font-family: 'Montserrat', sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
+.container{
+    width: 90%;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-/* Form Container */
-.form-container {
     background: #fff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 50%;
     margin: 30px auto;
+
+    .text{
+        width: 50%;
+        /* background-color: aqua; */
+        padding: 20px;
+        border-right: 2px solid #eaeaea;
+
+        .logo{
+            display: flex;
+            justify-content: space-around;
+            
+            
+            a{
+                width: 50px;
+                height: 50px;
+                border-radius: 50px;
+                background-color: var(--green);
+                text-decoration: none;
+                margin-top: 10px;
+
+                i{
+                    display: block;
+                    color: #fff;
+                    font-size: 30px;
+                    text-align: center;
+                    line-height: 50px;
+                }
+            }
+
+        }
+
+        .description{
+            margin-top: 30px;
+        }
+
+    }
+
+    .form-container{
+        width: 50%;
+        padding: 20px;
+    }
+
+    button{
+        border-radius: 5px;
+    }
 }
+
+
+
 
 /* Form Labels */
 label {
@@ -139,33 +176,12 @@ input, textarea {
     font-size: 16px;
 }
 
-/* Checkbox Group */
-.checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 5px;
-}
-.checkbox-group label {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-weight: normal;
-}
-
-/* Checkbox Styling */
-.checkbox-group input[type="checkbox"] {
-    transform: scale(1.2);
-    margin-right: 5px;
-}
-
-/* Submit Button */
 button {
     background-color: var(--green);
     color: white;
     border: none;
     padding: 12px 20px;
-    border-radius: 5px;
+    border-radius: 15px;
     font-size: 16px;
     margin-top: 20px;
     cursor: pointer;
@@ -198,6 +214,9 @@ button:hover {
 
 /* Footer */
 footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     text-align: center;
     padding: 20px;
     background-color: var(--purple);
