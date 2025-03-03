@@ -110,6 +110,11 @@ header {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     margin: 30px auto;
 
+    h2{
+        font-family: "Londrina Solid", cursive;
+        font-size: 2.5rem;
+    }
+
     .text{
         width: 50%;
         /* background-color: aqua; */

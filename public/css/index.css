@@ -101,6 +101,13 @@ header {
     display: block;
 }
 
+div > h1{
+    color: #09745F;
+    font-family: "Londrina Solid", cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: 30px;
+}
 
 /* --- Carousel Container --- */
 
@@ -110,7 +117,7 @@ header {
     width: 90%;
     /* Adjust as desired */
     /* max-width: 1200px; */
-    margin: 50px auto;
+    margin: 30px auto;
     /* Center horizontally, add vertical spacing */
     overflow: hidden;
     /* Hide parts of slides that go beyond container edges */
@@ -154,6 +161,12 @@ header {
     p {
         flex: 1;
         margin: 0;
+
+        strong{
+            font-family: "Londrina Solid", cursive;
+            font-size: 1.1rem;
+            color: var(--green);
+        }
     }
 }
 
