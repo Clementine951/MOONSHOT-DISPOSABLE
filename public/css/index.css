@@ -217,8 +217,8 @@ div > h1{
 
 /* Footer styling */
 footer {
-    position: absolute;
-    bottom: 0;
+    /* position: relative;
+    bottom: 0; */
     width: 100%;
     text-align: center;
     padding: 20px;
