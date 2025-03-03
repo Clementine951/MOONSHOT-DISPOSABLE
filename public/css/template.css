@@ -114,13 +114,26 @@ header {
     }
 }
 
+.buttons{
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+    
+
+    .button:hover{
+        color: #09745F;
+    }
+
+}
+
 .photoGrid{
     div{
         display: inline;
-        margin-bottom: ;
+        margin-bottom: 1rem;
     }
     img{
-        height: 10rem;
+        height: 20rem;
+        margin-bottom: .3rem;
     }
 }
 
