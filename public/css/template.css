@@ -101,39 +101,42 @@ header {
     display: block;
 }
 
-.information{
-    h1{
+.information {
+    h1 {
         color: #09745F;
         font-family: "Londrina Solid", cursive;
         font-size: 2.5rem;
         text-align: center;
         margin-top: 30px;
     }
-    p{
+
+    p {
         text-align: center;
     }
 }
 
-.buttons{
+.buttons {
     display: flex;
     justify-content: space-around;
     margin: 30px 0;
-    
 
-    .button:hover{
+
+    .button:hover {
         color: #09745F;
     }
 
 }
 
-.photoGrid{
-    div{
-        display: inline;
-        margin-bottom: 1rem;
-    }
-    img{
+.photoGrid {
+
+    display: flex;
+    margin-bottom: 1rem;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    img {
         height: 20rem;
-        margin-bottom: .3rem;
+        margin-bottom: 1rem;
     }
 }
 
