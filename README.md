@@ -15,6 +15,10 @@ For detailed documentation on the project, including functional specifications, 
 - [Technical Specification](./Documents/TechnicalSpecification.md)
 - [Presentation PDF](./Documents/Presentation.pdf)
 
+
+# The rest of this document is not maintained anymore. 
+Please contact me directly if you have any questions. 
+
 ## Prerequisites
 
 Before launching the project, ensure you have the following tools and dependencies installed:
