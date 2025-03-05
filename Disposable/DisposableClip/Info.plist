@@ -28,5 +28,13 @@
 	</dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>We need access to save event photos to your library.</string>
+
+	<key>UIRequiresFullScreen</key>
+	<true/>
+
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+	</array>
 </dict>
 </plist>

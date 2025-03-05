@@ -133,10 +133,12 @@ class CameraModel: NSObject, ObservableObject {
 
 
     private func simulateFrontCameraFlash(completion: @escaping () -> Void) {
-            guard let window = UIApplication.shared.windows.first else {
-                completion()
-                return
-            }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let _ = windowScene.windows.first else {
+            completion()
+            return
+        }
+
 
             let originalBrightness = UIScreen.main.brightness
             UIScreen.main.brightness = 1.0
