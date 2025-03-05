@@ -22,6 +22,15 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-storage.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+
+    <!-- Custom Script -->
+    <script src="../js/template.js" defer></script>
 </head>
 
 <body>
@@ -42,40 +51,15 @@
     </header>
 
     <div class="information">
-        <h1>Event Name</h1>
-        <p>Username(Organizer) created this event.</p>
+        <h1>Loading...</h1>
+        <p>Loading event details...</p>
     </div>
 
     <div class="buttons">
         <div class="button first">Download all images</div>
-
-        <div class="button second">Select images</div>
     </div>
 
-    <div class="photoGrid">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-        <img src="../images/create.png" alt="">
-
-    </div>
-
-
-
+    <div class="photoGrid"></div>
 
     <footer>
         <p>&copy; 2025 Disposable. All rights reserved.</p>
@@ -85,7 +69,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-
 </body>
 
 </html>
