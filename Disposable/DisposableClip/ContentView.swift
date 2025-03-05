@@ -27,6 +27,7 @@ struct ContentView: View {
     @State private var selectedPhotoIndex: Int = 0 // Track the selected photo for fullscreen
     @State private var isEventNameLoaded: Bool = false
     
+    @State private var showDownloadAlert = false
     
     var body: some View {
         if isNameEntered {
@@ -52,10 +53,22 @@ struct ContentView: View {
                     }
                     
                     HStack {
-//                        Button(action: downloadAllPhotos) {
-//                            Label("Download", systemImage: "arrow.down.circle")
-//                        }
-//                        .padding()
+                        Button(action: { showDownloadAlert = true }) {
+                            Label("Download", systemImage: "arrow.down.circle")
+                        }
+                        .padding()
+                        .alert(isPresented: $showDownloadAlert) {
+                            Alert(
+                                title: Text("Download Photos"),
+                                message: Text("Due to App Clip limitations, photos cannot be downloaded directly. Would you like to open the download page in your browser?"),
+                                primaryButton: .default(Text("Open Browser")) {
+                                    if let eventId = self.eventId, let url = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventId)") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
                         
                         Button(action: { showingImagePicker = true }) {
                             Label("Upload", systemImage: "arrow.up.circle")
