@@ -27,7 +27,7 @@ class CameraModel: NSObject, ObservableObject {
     
     private let captureSessionQueue = DispatchQueue(label: "CaptureSessionQueue")
     private let storage = Storage.storage()
-    private let db = Firestore.firestore()  // We'll need Firestore to create a doc
+    private let db = Firestore.firestore()
     
     override init() {
         super.init()
