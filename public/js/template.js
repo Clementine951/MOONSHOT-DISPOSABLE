@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const eventId = urlParams.get("eventId");
 
+
   if (!eventId) {
       document.body.innerHTML = "<h1>Event not found</h1>";
       return;
@@ -66,7 +67,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           zip.generateAsync({ type: "blob" }).then(content => {
               const link = document.createElement("a");
               link.href = URL.createObjectURL(content);
-              link.download = "event_photos.zip";
+              link.download = `${eventData.eventName}.zip`;
               link.click();
           });
       });
