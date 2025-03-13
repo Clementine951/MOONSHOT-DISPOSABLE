@@ -156,9 +156,27 @@ struct JoinEventView: View {
             } else {
                 isInEvent = true
                 eventData?["userName"] = userName
+                saveEventState()
                 joinErrorMessage = nil
             }
             showJoinEventAlert = true
         }
     }
+    private func saveEventState() {
+        if var eventData = eventData {
+            var sanitizedEventData = eventData
+            
+            // Convert FIRTimestamp to a UNIX timestamp (Double)
+            if let startTime = eventData["startTime"] as? Timestamp {
+                sanitizedEventData["startTime"] = startTime.dateValue().timeIntervalSince1970
+            }
+
+            // Save to UserDefaults
+            if let savedData = try? JSONSerialization.data(withJSONObject: sanitizedEventData, options: []) {
+                UserDefaults.standard.set(savedData, forKey: "currentEventData")
+                UserDefaults.standard.set(true, forKey: "isInEvent")
+            }
+        }
+    }
+
 }

@@ -258,11 +258,21 @@ struct HomeView: View {
 
     private func restoreEventState() {
         if let savedData = UserDefaults.standard.data(forKey: "currentEventData"),
-           let decodedData = try? JSONSerialization.jsonObject(with: savedData, options: []) as? [String: Any] {
+           var decodedData = try? JSONSerialization.jsonObject(with: savedData, options: []) as? [String: Any] {
+            
+            // Convert stored UNIX timestamp back to Firestore Timestamp
+            if let startTime = decodedData["startTime"] as? Double {
+                decodedData["startTime"] = Timestamp(date: Date(timeIntervalSince1970: startTime))
+            }
+
             self.eventData = decodedData
             self.isInEvent = UserDefaults.standard.bool(forKey: "isInEvent")
+            
+            print("Restored event: \(eventData ?? [:])")
         }
     }
+
+
 
     private func endEvent() {
         guard let eventId = eventData?["eventId"] as? String else { return }
@@ -324,6 +334,22 @@ struct HomeView: View {
             } else if document?.exists == false {
                 print("Event no longer exists. Leaving event...")
                 showEventDeletedAlert = true // Show alert before leaving
+            }
+        }
+    }
+    private func saveEventState() {
+        if var eventData = eventData {
+            var sanitizedEventData = eventData
+            
+            // Convert FIRTimestamp to a UNIX timestamp (Double)
+            if let startTime = eventData["startTime"] as? Timestamp {
+                sanitizedEventData["startTime"] = startTime.dateValue().timeIntervalSince1970
+            }
+
+            // Save to UserDefaults
+            if let savedData = try? JSONSerialization.data(withJSONObject: sanitizedEventData, options: []) {
+                UserDefaults.standard.set(savedData, forKey: "currentEventData")
+                UserDefaults.standard.set(true, forKey: "isInEvent")
             }
         }
     }

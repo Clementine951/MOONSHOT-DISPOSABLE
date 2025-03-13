@@ -127,6 +127,7 @@ struct CreateEventView: View {
             "duration": duration,
             "reveal": photosReveal,
             "numberOfPhotos": photosPerPerson,
+            
             "startTime": FieldValue.serverTimestamp()
         ]
 
@@ -153,12 +154,29 @@ struct CreateEventView: View {
                                 DispatchQueue.main.async {
                                     self.isInEvent = true
                                     self.eventData = document.data()
+                                    self.saveEventState()
                                     self.presentationMode.wrappedValue.dismiss()
                                 }
                             }
                         }
                     }
                 }
+            }
+        }
+    }
+    private func saveEventState() {
+        if var eventData = eventData {
+            var sanitizedEventData = eventData
+            
+            // Convert FIRTimestamp to a UNIX timestamp (Double)
+            if let startTime = eventData["startTime"] as? Timestamp {
+                sanitizedEventData["startTime"] = startTime.dateValue().timeIntervalSince1970
+            }
+
+            // Save to UserDefaults
+            if let savedData = try? JSONSerialization.data(withJSONObject: sanitizedEventData, options: []) {
+                UserDefaults.standard.set(savedData, forKey: "currentEventData")
+                UserDefaults.standard.set(true, forKey: "isInEvent")
             }
         }
     }

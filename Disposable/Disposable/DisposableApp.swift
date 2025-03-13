@@ -11,8 +11,14 @@ import SwiftUI
 struct DisposableApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-    @State private var isInEvent = false
-    @State private var eventData: [String: Any]? = nil
+    @State private var isInEvent = UserDefaults.standard.bool(forKey: "isInEvent")
+    @State private var eventData: [String: Any]? = {
+        if let savedData = UserDefaults.standard.data(forKey: "currentEventData"),
+            let decodedData = try? JSONSerialization.jsonObject(with: savedData, options: []) as? [String: Any] {
+            return decodedData
+        }
+        return nil
+    }()
 
     var body: some Scene {
         WindowGroup {
