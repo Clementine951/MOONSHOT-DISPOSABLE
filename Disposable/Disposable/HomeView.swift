@@ -33,7 +33,10 @@ struct HomeView: View {
     @State private var participantsCount: Int = 0
     @State private var countdownText: String = ""
     @State private var qrCodeImage: UIImage?
+    
     @State private var showEndEventAlert = false
+    @State private var showEventDeletedAlert = false
+
 
 
     var body: some View {
@@ -161,9 +164,21 @@ struct HomeView: View {
                     startCountdown()
                     generateQRCode()
                     fetchUserRole() // Fetch the role separately
+                    checkIfEventStillExists()
+                    
+                    // Periodically check if the event still exists
+                    Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
+                        checkIfEventStillExists()
+                    }
                 }
             }
-
+            .alert("Event Deleted", isPresented: $showEventDeletedAlert) {
+                        Button("OK") {
+                            leaveEvent()
+                        }
+                    } message: {
+                        Text("The event has been deleted by the organizer. Returning to the homepage.")
+                    }
         }
     }
     
@@ -285,9 +300,33 @@ struct HomeView: View {
     }
 
     private func leaveEvent() {
+        print("Leaving event...")
         UserDefaults.standard.removeObject(forKey: "currentEventData")
         UserDefaults.standard.set(false, forKey: "isInEvent")
-        isInEvent = false
-        eventData = nil
+        
+        DispatchQueue.main.async {
+            isInEvent = false
+            eventData = nil
+        }
     }
+
+    
+    private func checkIfEventStillExists() {
+        guard let eventId = eventData?["eventId"] as? String else { return }
+
+        let db = Firestore.firestore()
+        let eventRef = db.collection("events").document(eventId)
+
+        eventRef.getDocument { document, error in
+            if let error = error {
+                print("Error checking event: \(error.localizedDescription)")
+                showEventDeletedAlert = true // Show alert before leaving
+            } else if document?.exists == false {
+                print("Event no longer exists. Leaving event...")
+                showEventDeletedAlert = true // Show alert before leaving
+            }
+        }
+    }
+
+
 }
