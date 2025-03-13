@@ -33,6 +33,8 @@ struct HomeView: View {
     @State private var participantsCount: Int = 0
     @State private var countdownText: String = ""
     @State private var qrCodeImage: UIImage?
+    @State private var showEndEventAlert = false
+
 
     var body: some View {
         NavigationStack {
@@ -70,34 +72,45 @@ struct HomeView: View {
                             .frame(width: 200, height: 200)
                     }
 
-                    // Buttons
-                    if eventData["role"] as? String == "organizer" {
-                        Button(action: {
-                            endEvent()
-                        }) {
-                            Text("End event")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex: "#E8D7FF"))
-                                .foregroundColor(Color(hex: "#09745F"))
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                                .padding(.horizontal)
-                        }
-                    } else {
-                        Button(action: {
-                            leaveEvent()
-                        }) {
-                            Text("Leave event")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex: "#E8D7FF"))
-                                .foregroundColor(Color(hex: "#09745F"))
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                                .padding(.horizontal)
+                    // Buttons for event actions
+                    VStack(spacing: 10) {
+                        if let role = eventData["role"] as? String, role == "organizer" {
+                            Button(action: {
+                                showEndEventAlert = true // Show confirmation popup
+                            }) {
+                                Text("End Event")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.red.opacity(0.8)) // Red for emphasis
+                                    .foregroundColor(.white)
+                                    .fontWeight(.bold)
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                            }
+                            .alert("Are you sure?", isPresented: $showEndEventAlert) {
+                                Button("Cancel", role: .cancel) {}
+                                Button("End Event", role: .destructive) {
+                                    endEvent() // Call endEvent() only if confirmed
+                                }
+                            } message: {
+                                Text("This event and all its photos will be permanently deleted.")
+                            }
+                        } else {
+                            Button(action: {
+                                leaveEvent()
+                            }) {
+                                Text("Leave Event")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color.gray.opacity(0.8)) // Gray color for subtle action
+                                    .foregroundColor(.white)
+                                    .fontWeight(.bold)
+                                    .cornerRadius(10)
+                                    .padding(.horizontal)
+                            }
                         }
                     }
+
                 } else {
                     // Default Home View
                     Spacer()
@@ -141,14 +154,40 @@ struct HomeView: View {
             .padding()
             .onAppear {
                 restoreEventState()
+                print("Current eventData: \(eventData ?? [:])") // Debugging
+
                 if isInEvent {
                     fetchParticipantsCount()
                     startCountdown()
                     generateQRCode()
+                    fetchUserRole() // Fetch the role separately
+                }
+            }
+
+        }
+    }
+    
+    private func fetchUserRole() {
+        guard let eventId = eventData?["eventId"] as? String,
+              let userName = eventData?["userName"] as? String else { return }
+
+        let db = Firestore.firestore()
+        let participantsRef = db.collection("events").document(eventId).collection("participants")
+
+        participantsRef.whereField("name", isEqualTo: userName).getDocuments { snapshot, error in
+            if let error = error {
+                print("Error fetching role: \(error.localizedDescription)")
+            } else if let document = snapshot?.documents.first {
+                let role = document.data()["role"] as? String ?? "participant"
+                print("Fetched role: \(role)")
+                
+                DispatchQueue.main.async {
+                    eventData?["role"] = role
                 }
             }
         }
     }
+
 
     private func fetchParticipantsCount() {
         guard let eventId = eventData?["eventId"] as? String else { return }
