@@ -338,7 +338,7 @@ struct HomeView: View {
         }
     }
     private func saveEventState() {
-        if var eventData = eventData {
+        if let eventData = eventData {
             var sanitizedEventData = eventData
             
             // Convert FIRTimestamp to a UNIX timestamp (Double)
