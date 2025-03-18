@@ -1,4 +1,11 @@
-# Disposable Camera Application
+<p align="center"><em>What if you could have the nostalgia of...</em></p>
+<p align="center">
+  <img style="height:200px" src="./Documents/Images/SmallLogo.png" />
+</p>
+<p align="center"><a href="#project-documentation">Install</a> • <a href="#prerequisites">Prerequisities</a> • <a href="#setup-instructions">SetUp</a> • <a href="#known-issues">Known Issues</a> • <a href="#action-plan">Action Plan</a></p>
+
+
+
 
 Welcome to the Disposable Camera Application project! This project is inspired by the nostalgia of traditional disposable cameras and aims to recreate that experience in a modern, digital format. The app allows users to capture and share moments at events in a communal way, making memories more interactive and accessible.
 
