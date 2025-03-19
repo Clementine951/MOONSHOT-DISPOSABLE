@@ -19,12 +19,19 @@ struct GalleryView: View {
     @State private var errorMessage = ""
     @State private var isLoading = true
     @State private var selectedImage: GalleryImage? = nil
-    @State private var preloadedFirstImage: UIImage? = nil // Preload the first image
+    @State private var preloadedFirstImage: UIImage? = nil
     @State private var isModalVisible = false
-    
     @State private var isSelecting = false
     @State private var selectedImages: Set<String> = []
     
+    @State private var revealSetting: String = "Immediately"
+    @State private var eventEndTime: Date = Date()
+    @State private var countdownText: String = ""
+
+    var hasEventEnded: Bool {
+        return Date() >= eventEndTime
+    }
+
     var body: some View {
         VStack {
             // Picker for personal/general
@@ -34,6 +41,21 @@ struct GalleryView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
+//            .disabled(revealSetting == "At the end" && !hasEventEnded)
+
+            if revealSetting == "At the end" && !hasEventEnded {
+                VStack {
+                    Text("Photos will be revealed after the countdown ends")
+                        .font(.headline)
+                        .foregroundColor(Color(hex: "#FFC3DC"))
+                        .padding(.bottom, 10)
+
+                    Text(countdownText)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(hex: "#FFC3DC"))
+                }
+            }
 
             if isLoading {
                 ProgressView("Loading photos...")
@@ -52,32 +74,7 @@ struct GalleryView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
-                        ScrollView {
-                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-                                ForEach(personalImages) { img in
-                                    ZStack(alignment: .topTrailing) {
-                                        PhotoCell(url: img.url)
-                                            .onTapGesture {
-                                                if isSelecting {
-                                                    toggleSelection(imageID: img.id)
-                                                } else if !personalImages.isEmpty || !generalImages.isEmpty {
-                                                    preloadedFirstImage = nil
-                                                    preloadFirstImage(for: img)
-                                                    selectedImage = img
-                                                    isModalVisible = true
-                                                }
-                                            }
-
-                                        if isSelecting {
-                                            Image(systemName: selectedImages.contains(img.id) ? "checkmark.circle.fill" : "circle")
-                                                .foregroundColor(selectedImages.contains(img.id) ? Color(hex: "#FFC3DC") : Color(hex: "#09745F"))
-                                                .padding(5)
-                                        }
-                                    }
-                                }
-                            }
-                            .padding(.horizontal, 8)
-                        }
+                        PhotoGridView(images: personalImages, emptyMessage: "", onSelect: openImage)
                     }
                 } else {
                     if generalImages.isEmpty {
@@ -92,51 +89,15 @@ struct GalleryView: View {
                             images: generalImages,
                             emptyMessage: "",
                             onSelect: { image in
-                                preloadedFirstImage = nil // Reset the preloaded image
-                                preloadFirstImage(for: image) // Preload the new image
-                                selectedImage = image
-                                isModalVisible = true
-                            }
+                                if revealSetting == "At the end" && !hasEventEnded { return }
+                                openImage(image)
+                            },
+                            blurImages: revealSetting == "At the end" && !hasEventEnded
                         )
                     }
                 }
-                if isSelecting {
-                    HStack(spacing: 10) {
-                        Button(action: { selectAllImages() }) {
-                            Text("Select All")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex:"#E8D7FF"))
-                                .foregroundColor(Color(hex:"#09745F"))
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                        }
-
-                        Button(action: { isSelecting.toggle(); selectedImages.removeAll() }) {
-                            Text("Cancel")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex:"#E8D7FF"))
-                                .foregroundColor(Color(hex:"#09745F"))
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                        }
-                    }
-                    .padding(.horizontal)
-                    HStack(spacing: 10){
-                        Button(action: { downloadSelectedImages() }) {
-                            Text("Download Selected (\(selectedImages.count))")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex:"#09745F"))
-                                .foregroundColor(Color(hex:"#E8D7FF"))
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                        }
-                    }
-                    
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
+                if revealSetting == "At the end" && !hasEventEnded {
+                    // Hide buttons until countdown ends
                 } else {
                     HStack(spacing: 10) {
                         Button(action: { isSelecting.toggle() }) {
@@ -168,6 +129,7 @@ struct GalleryView: View {
         }
         .navigationTitle("Gallery")
         .onAppear {
+            fetchEventDetails()
             listenForPhotoDocs()
         }
         .sheet(isPresented: $isModalVisible) {
@@ -176,8 +138,21 @@ struct GalleryView: View {
                     images: selectedTab == 0 ? personalImages : generalImages,
                     currentIndex: .constant(selectedImageIndex),
                     isPresented: $isModalVisible,
-                    preloadedFirstImage: $preloadedFirstImage // Pass preloaded image
+                    preloadedFirstImage: $preloadedFirstImage
                 )
+            }
+        }
+    }
+
+    private func fetchEventDetails() {
+        let db = Firestore.firestore()
+        db.collection("events").document(eventID).getDocument { document, error in
+            if let document = document, document.exists {
+                let data = document.data()
+                self.revealSetting = data?["reveal"] as? String ?? "Immediately"
+                if let duration = data?["duration"] as? Int, let startTime = data?["startTime"] as? Timestamp {
+                    self.eventEndTime = startTime.dateValue().addingTimeInterval(TimeInterval(duration * 3600))
+                }
             }
         }
     }
@@ -185,9 +160,7 @@ struct GalleryView: View {
     private func listenForPhotoDocs() {
         isLoading = true
         let db = Firestore.firestore()
-        let imagesRef = db.collection("events")
-            .document(eventID)
-            .collection("images")
+        let imagesRef = db.collection("events").document(eventID).collection("images")
 
         imagesRef.order(by: "timestamp", descending: false)
             .addSnapshotListener { snapshot, error in
@@ -202,72 +175,24 @@ struct GalleryView: View {
                     return
                 }
 
-                var allImages: [GalleryImage] = []
-                for doc in docs {
+                let allImages = docs.map { doc -> GalleryImage in
                     let data = doc.data()
-                    let url = data["url"] as? String ?? ""
-                    let owner = data["owner"] as? String ?? "Unknown"
-                    allImages.append(GalleryImage(
-                        id: doc.documentID,
-                        url: url,
-                        owner: owner
-                    ))
+                    return GalleryImage(id: doc.documentID, url: data["url"] as? String ?? "", owner: data["owner"] as? String ?? "Unknown")
                 }
 
-                let personal = allImages.filter { $0.owner == self.userName }
                 DispatchQueue.main.async {
-                    self.personalImages = personal
+                    self.personalImages = allImages.filter { $0.owner == self.userName }
                     self.generalImages = allImages
                 }
             }
     }
-    
-    private func toggleSelection(imageID: String) {
-        DispatchQueue.main.async {
-            if selectedImages.contains(imageID) {
-                selectedImages.remove(imageID)
-            } else {
-                selectedImages.insert(imageID)
-            }
-        }
+
+    private func openImage(_ image: GalleryImage) {
+        preloadedFirstImage = nil
+        preloadFirstImage(for: image)
+        selectedImage = image
+        isModalVisible = true
     }
-
-    private func selectAllImages() {
-        let images = selectedTab == 0 ? personalImages : generalImages
-        selectedImages = Set(images.map { $0.id }) // Select all images
-    }
-
-    private func downloadSelectedImages() {
-        let imagesToDownload = (selectedTab == 0 ? personalImages : generalImages).filter {
-            selectedImages.contains($0.id)
-        }
-
-        for image in imagesToDownload {
-            if let url = URL(string: image.url) {
-                URLSession.shared.dataTask(with: url) { data, _, _ in
-                    if let data = data, let uiImage = UIImage(data: data) {
-                        saveImageToPhotoLibrary(uiImage)
-                    }
-                }.resume()
-            }
-        }
-
-        isSelecting = false
-        selectedImages.removeAll()
-    }
-
-    private func saveImageToPhotoLibrary(_ image: UIImage) {
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        }) { success, error in
-            if success {
-                print("Image saved to photo library")
-            } else if let error = error {
-                print("Error saving image: \(error.localizedDescription)")
-            }
-        }
-    }
-
 
     private func preloadFirstImage(for image: GalleryImage) {
         guard let url = URL(string: image.url) else { return }
@@ -279,22 +204,8 @@ struct GalleryView: View {
             }
         }.resume()
     }
-    
-    private func downloadAllImages() {
-        let imagesToDownload = selectedTab == 0 ? personalImages : generalImages
-
-        for image in imagesToDownload {
-            if let url = URL(string: image.url) {
-                URLSession.shared.dataTask(with: url) { data, response, error in
-                    if let data = data, let uiImage = UIImage(data: data) {
-                        saveImageToPhotoLibrary(uiImage)
-                    }
-                }.resume()
-            }
-        }
-    }
-
 }
+
 
 // MARK: - FullScreenImageView
 struct FullScreenImageView: View {
@@ -364,6 +275,7 @@ struct PhotoGridView: View {
     let images: [GalleryImage]
     let emptyMessage: String
     let onSelect: (GalleryImage) -> Void
+    var blurImages: Bool = false
 
     let columns = [
         GridItem(.flexible(), spacing: 8),
@@ -382,10 +294,15 @@ struct PhotoGridView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 8) {
                     ForEach(images) { img in
-                        PhotoCell(url: img.url)
-                            .onTapGesture {
-                                onSelect(img) // Trigger modal display
-                            }
+                        ZStack{
+                            PhotoCell(url: img.url)
+                                .blur(radius: blurImages ? 10 : 0)
+                                .onTapGesture {
+                                    if !blurImages {
+                                        onSelect(img)
+                                    }
+                                }
+                        }
                     }
                 }
                 .padding(.horizontal, 8)

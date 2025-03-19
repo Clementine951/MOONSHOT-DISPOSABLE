@@ -43,7 +43,7 @@ struct CreateEventView: View {
 
                 Section(header: Text("Duration of the event")) {
                     Picker("", selection: $duration) {
-                        Text("8h").tag(8)
+                        Text("1h").tag(1)
                         Text("12h").tag(12)
                         Text("24h").tag(24)
                         Text("48h").tag(48)
@@ -180,7 +180,4 @@ struct CreateEventView: View {
             }
         }
     }
-
-
-
 }

@@ -38,8 +38,9 @@ struct HomeView: View {
     @State private var showEventDeletedAlert = false
     
     @State private var showShareSheet = false
-
-
+    
+    @State private var eventEndTime: Date = Date()
+    @State private var revealSetting: String = "Immediately"
 
     var body: some View {
         NavigationStack {
@@ -268,9 +269,11 @@ struct HomeView: View {
         guard let duration = eventData?["duration"] as? Int,
               let startTime = eventData?["startTime"] as? Timestamp else { return }
 
-        let endTime = startTime.dateValue().addingTimeInterval(TimeInterval(duration * 3600))
+        self.eventEndTime = startTime.dateValue().addingTimeInterval(TimeInterval(duration * 3600))
+        self.revealSetting = eventData?["reveal"] as? String ?? "Immediately"
+
         Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
-            let remainingTime = endTime.timeIntervalSince(Date())
+            let remainingTime = eventEndTime.timeIntervalSince(Date())
             if remainingTime > 0 {
                 let hours = Int(remainingTime) / 3600
                 let minutes = (Int(remainingTime) % 3600) / 60
@@ -279,10 +282,11 @@ struct HomeView: View {
             } else {
                 self.countdownText = "00:00:00"
                 timer.invalidate()
+                NotificationCenter.default.post(name: NSNotification.Name("EventEnded"), object: nil)
             }
         }
     }
-    
+
     private func shareQRCode() {
             guard let qrCodeImage = qrCodeImage, let eventName = eventData?["eventName"] as? String else { return }
 
