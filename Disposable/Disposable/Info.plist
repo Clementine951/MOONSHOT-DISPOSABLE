@@ -2,6 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.curel.Disposable</string>
+
+	<key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera to take photos during events and store them in the shared event gallery.</string>
+
+	<key>NSPhotoLibraryUsageDescription</key>
+    <string>This app needs access to your photo library to allow you to view and save event photos.</string>
+
+	<key>NSMicrophoneUsageDescription</key>
+    <string>This app requires microphone access to record audio while capturing videos.</string>
+
 	<key>UILaunchScreen</key>
 	<dict>
 		<key>UILaunchScreen</key>
