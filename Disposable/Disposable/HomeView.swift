@@ -61,14 +61,24 @@ struct HomeView: View {
                         .foregroundStyle(Color(hex: "#09745F"))
 
                     // Countdown Timer
-                    Text("End of the event in")
-                        .font(.subheadline)
-                        .foregroundColor(Color(hex: "#FFC3DC"))
+                    // Display countdown or "Photos are revealed"
+                    if revealSetting == "At the end" && countdownText == "00:00:00" {
+                        Text("Photos are revealed")
+                            .font(.largeTitle)
+                            .fontWeight(.bold)
+                            .foregroundColor(Color(hex: "#FFC3DC"))
+                    } else {
+                        VStack {
+                            Text("End of the event in")
+                                .font(.subheadline)
+                                .foregroundColor(Color(hex: "#FFC3DC"))
 
-                    Text(countdownText)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "#FFC3DC"))
+                            Text(countdownText)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+                                .foregroundColor(Color(hex: "#FFC3DC"))
+                        }
+                    }
 
                     // QR Code
                     if let qrCodeImage = qrCodeImage {
