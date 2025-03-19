@@ -80,7 +80,7 @@ struct CreateEventView: View {
                         NavigationLink(destination: PrivacyPolicyView()) {
                             Text("Privacy Policy")
                                 .underline()
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color(hex: "#FFC3DC"))
                         }
                         Text("and")
                             .font(.subheadline)
@@ -88,13 +88,13 @@ struct CreateEventView: View {
                         NavigationLink(destination: TermsAndConditionsView()) {
                             Text("Terms and Conditions")
                                 .underline()
-                                .foregroundColor(.blue)
+                                .foregroundColor(Color(hex: "#FFC3DC"))
                         }
                     }
                 }
             }
             .padding()
-            .toggleStyle(SwitchToggleStyle(tint: .purple))
+            .toggleStyle(SwitchToggleStyle(tint: Color(hex: "#09745F")))
 
             // Validate Button
             Button(action: {
@@ -103,7 +103,7 @@ struct CreateEventView: View {
                 Text("Validate")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(userName.isEmpty || eventName.isEmpty || !hasAcceptedTerms ? Color.gray : Color.purple)
+                    .background(userName.isEmpty || eventName.isEmpty || !hasAcceptedTerms ? Color.gray : Color(hex: "#09745F"))
                     .foregroundColor(.white)
                     .fontWeight(.bold)
                     .cornerRadius(10)

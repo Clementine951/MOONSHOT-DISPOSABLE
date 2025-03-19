@@ -70,7 +70,7 @@ struct GalleryView: View {
 
                                         if isSelecting {
                                             Image(systemName: selectedImages.contains(img.id) ? "checkmark.circle.fill" : "circle")
-                                                .foregroundColor(selectedImages.contains(img.id) ? .green : .white)
+                                                .foregroundColor(selectedImages.contains(img.id) ? Color(hex: "#FFC3DC") : Color(hex: "#09745F"))
                                                 .padding(5)
                                         }
                                     }
