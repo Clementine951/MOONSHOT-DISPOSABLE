@@ -298,16 +298,22 @@ struct HomeView: View {
     }
 
     private func shareQRCode() {
-            guard let qrCodeImage = qrCodeImage, let eventName = eventData?["eventName"] as? String else { return }
+        guard let qrCodeImage = qrCodeImage,
+              let eventName = eventData?["eventName"] as? String,
+              let eventId = eventData?["eventId"] as? String else { return }
 
-            let message = "Scan this QR code to join \(eventName)!"
-            let activityVC = UIActivityViewController(activityItems: [message, qrCodeImage], applicationActivities: nil)
+        let message = """
+        Scan this QR code to join "\(eventName)"! Or, enter the event code "\(eventId)" in the Join section of the full app.
+        """
 
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let rootViewController = windowScene.windows.first?.rootViewController {
-                rootViewController.present(activityVC, animated: true)
-            }
+        let activityVC = UIActivityViewController(activityItems: [message, qrCodeImage], applicationActivities: nil)
+
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityVC, animated: true)
+        }
     }
+
 
     private func generateQRCode() {
         guard let eventId = eventData?["eventId"] as? String else { return }
