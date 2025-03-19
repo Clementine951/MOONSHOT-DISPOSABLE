@@ -63,16 +63,37 @@ struct GalleryView: View {
                         }
                     )
                 }
-                Button(action: {
-                    downloadAllImages()
-                }) {
-                    Text("Download All Images")
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
+                HStack(spacing: 10) {
+                            Button(action: {
+                                downloadAllImages()
+                            }) {
+                                HStack {
+                                    Text("Download All")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex: "#09745F"))
+                                .foregroundColor(Color(hex: "#E8D7FF"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                            }
+
+                            if let eventURL = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventID)") {
+                                Link(destination: eventURL) {
+                                    HStack {
+                                        Text("Online Gallery")
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color(hex: "#09745F"))
+                                    .foregroundColor(Color(hex: "#E8D7FF"))
+                                    .fontWeight(.bold)
+                                    .cornerRadius(10)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 20)
             
             }
         }

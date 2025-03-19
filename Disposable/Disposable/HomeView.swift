@@ -36,6 +36,8 @@ struct HomeView: View {
     
     @State private var showEndEventAlert = false
     @State private var showEventDeletedAlert = false
+    
+    @State private var showShareSheet = false
 
 
 
@@ -60,12 +62,12 @@ struct HomeView: View {
                     // Countdown Timer
                     Text("End of the event in")
                         .font(.subheadline)
-                        .foregroundColor(Color(hex: "#09745F"))
+                        .foregroundColor(Color(hex: "#FFC3DC"))
 
                     Text(countdownText)
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.red)
+                        .foregroundColor(Color(hex: "#FFC3DC"))
 
                     // QR Code
                     if let qrCodeImage = qrCodeImage {
@@ -73,19 +75,45 @@ struct HomeView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 200, height: 200)
+                        
+                        Button(action: shareQRCode) {
+                                                    HStack {
+                                                        Text("Share QR Code")
+                                                    }
+                                                    .frame(maxWidth: .infinity)
+                                                    .padding()
+                                                    .background(Color(hex: "#E8D7FF"))
+                                                    .foregroundColor(Color(hex: "#09745F"))
+                                                    .fontWeight(.bold)
+                                                    .cornerRadius(10)
+                                                    .padding(.horizontal)
+                                                }
                     }
 
                     // Buttons for event actions
-                    VStack(spacing: 10) {
+                    VStack() {
                         if let role = eventData["role"] as? String, role == "organizer" {
+                            Button(action: shareEventWebsite) {
+                                HStack {
+                                    Text("Share Website")
+                                }
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex: "#E8D7FF"))
+                                .foregroundColor(Color(hex: "#09745F"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                                .padding(.horizontal)
+                                
+                            }
                             Button(action: {
                                 showEndEventAlert = true // Show confirmation popup
                             }) {
-                                Text("End Event")
+                                Text("End The Event")
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(Color.red.opacity(0.8)) // Red for emphasis
-                                    .foregroundColor(.white)
+                                    .background(Color(hex: "#09745F"))
+                                    .foregroundColor(Color(hex: "#E8D7FF"))
                                     .fontWeight(.bold)
                                     .cornerRadius(10)
                                     .padding(.horizontal)
@@ -105,8 +133,8 @@ struct HomeView: View {
                                 Text("Leave Event")
                                     .frame(maxWidth: .infinity)
                                     .padding()
-                                    .background(Color.gray.opacity(0.8)) // Gray color for subtle action
-                                    .foregroundColor(.white)
+                                    .background(Color(hex: "#09745F"))
+                                    .foregroundColor(Color(hex: "#E8D7FF"))
                                     .fontWeight(.bold)
                                     .cornerRadius(10)
                                     .padding(.horizontal)
@@ -182,6 +210,21 @@ struct HomeView: View {
         }
     }
     
+    private func shareEventWebsite() {
+        guard let eventId = eventData?["eventId"] as? String else { return }
+        
+        let eventURL = "https://disposableapp.xyz/html/template.html?eventId=\(eventId)s"
+        let message = "Check out the full gallery for the event! \(eventURL)"
+
+        let activityVC = UIActivityViewController(activityItems: [message], applicationActivities: nil)
+        
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let rootViewController = windowScene.windows.first?.rootViewController {
+            rootViewController.present(activityVC, animated: true)
+        }
+    }
+
+    
     private func fetchUserRole() {
         guard let eventId = eventData?["eventId"] as? String,
               let userName = eventData?["userName"] as? String else { return }
@@ -238,6 +281,18 @@ struct HomeView: View {
                 timer.invalidate()
             }
         }
+    }
+    
+    private func shareQRCode() {
+            guard let qrCodeImage = qrCodeImage, let eventName = eventData?["eventName"] as? String else { return }
+
+            let message = "Scan this QR code to join \(eventName)!"
+            let activityVC = UIActivityViewController(activityItems: [message, qrCodeImage], applicationActivities: nil)
+
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let rootViewController = windowScene.windows.first?.rootViewController {
+                rootViewController.present(activityVC, animated: true)
+            }
     }
 
     private func generateQRCode() {
