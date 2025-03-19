@@ -21,6 +21,10 @@ struct GalleryView: View {
     @State private var selectedImage: GalleryImage? = nil
     @State private var preloadedFirstImage: UIImage? = nil // Preload the first image
     @State private var isModalVisible = false
+    
+    @State private var isSelecting = false
+    @State private var selectedImages: Set<String> = []
+    
 
     var body: some View {
         VStack {
@@ -41,16 +45,33 @@ struct GalleryView: View {
                     .padding()
             } else {
                 if selectedTab == 0 {
-                    PhotoGridView(
-                        images: personalImages,
-                        emptyMessage: "No personal photos yet.",
-                        onSelect: { image in
-                            preloadedFirstImage = nil // Reset the preloaded image
-                            preloadFirstImage(for: image) // Preload the new image
-                            selectedImage = image
-                            isModalVisible = true
+                    ScrollView {
+                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                            ForEach(selectedTab == 0 ? personalImages : generalImages) { img in
+                                ZStack(alignment: .topTrailing) {
+                                    PhotoCell(url: img.url)
+                                        .onTapGesture {
+                                            if isSelecting {
+                                                toggleSelection(imageID: img.id)
+                                            } else {
+                                                preloadedFirstImage = nil
+                                                preloadFirstImage(for: img)
+                                                selectedImage = img
+                                                isModalVisible = true
+                                            }
+                                        }
+
+                                    if isSelecting {
+                                        Image(systemName: selectedImages.contains(img.id) ? "checkmark.circle.fill" : "circle")
+                                            .foregroundColor(selectedImages.contains(img.id) ? .green : .white)
+                                            .padding(5)
+                                    }
+                                }
+                            }
                         }
-                    )
+                        .padding(.horizontal, 8)
+                    }
+
                 } else {
                     PhotoGridView(
                         images: generalImages,
@@ -63,37 +84,70 @@ struct GalleryView: View {
                         }
                     )
                 }
-                HStack(spacing: 10) {
-                            Button(action: {
-                                downloadAllImages()
-                            }) {
-                                HStack {
-                                    Text("Download All")
-                                }
+                if isSelecting {
+                    HStack(spacing: 10) {
+                        Button(action: { selectAllImages() }) {
+                            Text("Select All")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex:"#E8D7FF"))
+                                .foregroundColor(Color(hex:"#09745F"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                        }
+
+                        Button(action: { isSelecting.toggle(); selectedImages.removeAll() }) {
+                            Text("Cancel")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex:"#E8D7FF"))
+                                .foregroundColor(Color(hex:"#09745F"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                        }
+                    }
+                    .padding(.horizontal)
+                    HStack(spacing: 10){
+                        Button(action: { downloadSelectedImages() }) {
+                            Text("Download Selected (\(selectedImages.count))")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex:"#09745F"))
+                                .foregroundColor(Color(hex:"#E8D7FF"))
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                        }
+                    }
+                    
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+                } else {
+                    HStack(spacing: 10) {
+                        Button(action: { isSelecting.toggle() }) {
+                            Text("Select Photos")
                                 .frame(maxWidth: .infinity)
                                 .padding()
                                 .background(Color(hex: "#09745F"))
-                                .foregroundColor(Color(hex: "#E8D7FF"))
+                                .foregroundColor(.white)
                                 .fontWeight(.bold)
                                 .cornerRadius(10)
-                            }
+                        }
 
-                            if let eventURL = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventID)") {
-                                Link(destination: eventURL) {
-                                    HStack {
-                                        Text("Online Gallery")
-                                    }
+                        if let eventURL = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventID)") {
+                            Link(destination: eventURL) {
+                                Text("Online Gallery")
                                     .frame(maxWidth: .infinity)
                                     .padding()
                                     .background(Color(hex: "#09745F"))
-                                    .foregroundColor(Color(hex: "#E8D7FF"))
+                                    .foregroundColor(.white)
                                     .fontWeight(.bold)
                                     .cornerRadius(10)
-                                }
                             }
                         }
-                        .padding(.horizontal)
-                        .padding(.bottom, 20)
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+                }
             
             }
         }
@@ -152,6 +206,50 @@ struct GalleryView: View {
                 }
             }
     }
+    private func toggleSelection(imageID: String) {
+        if selectedImages.contains(imageID) {
+            selectedImages.remove(imageID)
+        } else {
+            selectedImages.insert(imageID)
+        }
+    }
+
+    private func selectAllImages() {
+        let images = selectedTab == 0 ? personalImages : generalImages
+        selectedImages = Set(images.map { $0.id }) // Select all images
+    }
+
+    private func downloadSelectedImages() {
+        let imagesToDownload = (selectedTab == 0 ? personalImages : generalImages).filter {
+            selectedImages.contains($0.id)
+        }
+
+        for image in imagesToDownload {
+            if let url = URL(string: image.url) {
+                URLSession.shared.dataTask(with: url) { data, _, _ in
+                    if let data = data, let uiImage = UIImage(data: data) {
+                        saveImageToPhotoLibrary(uiImage)
+                    }
+                }.resume()
+            }
+        }
+
+        isSelecting = false
+        selectedImages.removeAll()
+    }
+
+    private func saveImageToPhotoLibrary(_ image: UIImage) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { success, error in
+            if success {
+                print("Image saved to photo library")
+            } else if let error = error {
+                print("Error saving image: \(error.localizedDescription)")
+            }
+        }
+    }
+
 
     private func preloadFirstImage(for image: GalleryImage) {
         guard let url = URL(string: image.url) else { return }
@@ -178,17 +276,6 @@ struct GalleryView: View {
         }
     }
 
-    private func saveImageToPhotoLibrary(_ image: UIImage) {
-        PHPhotoLibrary.shared().performChanges({
-            PHAssetChangeRequest.creationRequestForAsset(from: image)
-        }) { success, error in
-            if success {
-                print("Image saved to photo library")
-            } else if let error = error {
-                print("Error saving image: \(error.localizedDescription)")
-            }
-        }
-    }
 }
 
 // MARK: - FullScreenImageView
@@ -337,7 +424,7 @@ struct AsyncImageView: View {
                     .resizable()
                     .scaledToFill()
             } else {
-                Color.gray.opacity(0.3) 
+                Color.gray.opacity(0.3)
                 ProgressView()
                     .onAppear(perform: loadImage)
             }

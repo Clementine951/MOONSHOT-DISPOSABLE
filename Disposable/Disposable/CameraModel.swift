@@ -31,42 +31,47 @@ class CameraModel: NSObject, ObservableObject {
     
     override init() {
         super.init()
-        setupCamera()
+//        setupCamera()
+        checkPermissions()
     }
     
     // MARK: - Camera Setup
     func setupCamera() {
-        captureSessionQueue.async {
-            self.session.beginConfiguration()
-            
-            guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera,
-                                                           for: .video,
-                                                           position: .back),
-                  let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
-                print("Failed to access back camera.")
-                return
+            captureSessionQueue.async { [weak self] in
+                guard let self = self else { return }
+                self.session.beginConfiguration()
+
+                // Ensure the back camera is available
+                guard let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
+                      let videoInput = try? AVCaptureDeviceInput(device: videoDevice) else {
+                    print("Failed to access back camera.")
+                    return
+                }
+
+                // Add camera input
+                if self.session.canAddInput(videoInput) {
+                    self.session.addInput(videoInput)
+                }
+
+                // Add output for capturing photos
+                if self.session.canAddOutput(self.output) {
+                    self.session.addOutput(self.output)
+                }
+
+                self.session.commitConfiguration()
+                self.startSession()
             }
-            
-            if self.session.canAddInput(videoInput) {
-                self.session.addInput(videoInput)
-            }
-            if self.session.canAddOutput(self.output) {
-                self.session.addOutput(self.output)
-            }
-            
-            self.session.commitConfiguration()
         }
-    }
     
     // MARK: - Permissions
     func checkPermissions() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
         case .authorized:
-            startSession()
+            setupCamera()
         case .notDetermined:
             AVCaptureDevice.requestAccess(for: .video) { granted in
                 if granted {
-                    self.startSession()
+                    self.setupCamera()
                 } else {
                     print("Camera access denied by user.")
                 }
@@ -79,37 +84,35 @@ class CameraModel: NSObject, ObservableObject {
     // MARK: - Start/Stop Session
     func startSession() {
         captureSessionQueue.async {
-            self.session.startRunning()
-            print("Camera session started.")
+            if !self.session.isRunning {
+                self.session.startRunning()
+                print("Camera session started.")
+            }
         }
     }
     
     func stopSession() {
         captureSessionQueue.async {
-            self.session.stopRunning()
-            print("Camera session stopped.")
+            if self.session.isRunning {
+                self.session.stopRunning()
+                print("Camera session stopped.")
+            }
         }
     }
     
     // MARK: - Capture Photo
 
     func takePhoto() {
-        guard remainingPhotos > 0 else {
-            print("No remaining photos.")
-            return
+            guard remainingPhotos > 0 else {
+                print("No remaining photos.")
+                return
+            }
+
+            let settings = AVCapturePhotoSettings()
+            settings.flashMode = isFlashOn && currentCameraPosition == .back ? .on : .off
+
+            output.capturePhoto(with: settings, delegate: self)
         }
-        
-        let settings = AVCapturePhotoSettings()
-        settings.flashMode = isFlashOn && currentCameraPosition == .back ? .on : .off
-        
-        output.capturePhoto(with: settings, delegate: self)
-        
-        // Decrement remaining photos and sync with Firebase
-        DispatchQueue.main.async {
-//            self.remainingPhotos -= 1
-            self.updateRemainingPhotosInFirebase()
-        }
-    }
 
     private func updateRemainingPhotosInFirebase() {
         let db = Firestore.firestore()
