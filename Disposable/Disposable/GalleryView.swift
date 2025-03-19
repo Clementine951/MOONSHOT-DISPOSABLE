@@ -25,7 +25,6 @@ struct GalleryView: View {
     @State private var isSelecting = false
     @State private var selectedImages: Set<String> = []
     
-
     var body: some View {
         VStack {
             // Picker for personal/general
@@ -45,44 +44,61 @@ struct GalleryView: View {
                     .padding()
             } else {
                 if selectedTab == 0 {
-                    ScrollView {
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
-                            ForEach(selectedTab == 0 ? personalImages : generalImages) { img in
-                                ZStack(alignment: .topTrailing) {
-                                    PhotoCell(url: img.url)
-                                        .onTapGesture {
-                                            if isSelecting {
-                                                toggleSelection(imageID: img.id)
-                                            } else {
-                                                preloadedFirstImage = nil
-                                                preloadFirstImage(for: img)
-                                                selectedImage = img
-                                                isModalVisible = true
+                    if personalImages.isEmpty {
+                        VStack {
+                            Text("Here will be displayed your photos")
+                                .foregroundColor(.gray)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                                ForEach(personalImages) { img in
+                                    ZStack(alignment: .topTrailing) {
+                                        PhotoCell(url: img.url)
+                                            .onTapGesture {
+                                                if isSelecting {
+                                                    toggleSelection(imageID: img.id)
+                                                } else if !personalImages.isEmpty || !generalImages.isEmpty {
+                                                    preloadedFirstImage = nil
+                                                    preloadFirstImage(for: img)
+                                                    selectedImage = img
+                                                    isModalVisible = true
+                                                }
                                             }
-                                        }
 
-                                    if isSelecting {
-                                        Image(systemName: selectedImages.contains(img.id) ? "checkmark.circle.fill" : "circle")
-                                            .foregroundColor(selectedImages.contains(img.id) ? .green : .white)
-                                            .padding(5)
+                                        if isSelecting {
+                                            Image(systemName: selectedImages.contains(img.id) ? "checkmark.circle.fill" : "circle")
+                                                .foregroundColor(selectedImages.contains(img.id) ? .green : .white)
+                                                .padding(5)
+                                        }
                                     }
                                 }
                             }
+                            .padding(.horizontal, 8)
                         }
-                        .padding(.horizontal, 8)
                     }
-
                 } else {
-                    PhotoGridView(
-                        images: generalImages,
-                        emptyMessage: "No photos yet.",
-                        onSelect: { image in
-                            preloadedFirstImage = nil // Reset the preloaded image
-                            preloadFirstImage(for: image) // Preload the new image
-                            selectedImage = image
-                            isModalVisible = true
+                    if generalImages.isEmpty {
+                        VStack {
+                            Text("Here will be displayed every photo")
+                                .foregroundColor(.gray)
+                                .multilineTextAlignment(.center)
                         }
-                    )
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    } else {
+                        PhotoGridView(
+                            images: generalImages,
+                            emptyMessage: "",
+                            onSelect: { image in
+                                preloadedFirstImage = nil // Reset the preloaded image
+                                preloadFirstImage(for: image) // Preload the new image
+                                selectedImage = image
+                                isModalVisible = true
+                            }
+                        )
+                    }
                 }
                 if isSelecting {
                     HStack(spacing: 10) {
@@ -148,7 +164,6 @@ struct GalleryView: View {
                     .padding(.horizontal)
                     .padding(.bottom, 20)
                 }
-            
             }
         }
         .navigationTitle("Gallery")
@@ -206,11 +221,14 @@ struct GalleryView: View {
                 }
             }
     }
+    
     private func toggleSelection(imageID: String) {
-        if selectedImages.contains(imageID) {
-            selectedImages.remove(imageID)
-        } else {
-            selectedImages.insert(imageID)
+        DispatchQueue.main.async {
+            if selectedImages.contains(imageID) {
+                selectedImages.remove(imageID)
+            } else {
+                selectedImages.insert(imageID)
+            }
         }
     }
 
