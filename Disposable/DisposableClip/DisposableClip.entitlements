@@ -5,7 +5,6 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>appclips:appclip.disposableapp.xyz</string>
-		<string>applinks:appclip.disposableapp.xyz</string>
 	</array>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>
