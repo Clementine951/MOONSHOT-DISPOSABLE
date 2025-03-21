@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "9W9NS7U4X.com.curel.Disposable.Clip",
+        "appID": "9WW9N57U4X.com.curel.Disposable.Clip",
         "paths": [
           "/clip*"
         ]
@@ -12,7 +12,7 @@
   },
   "appclips": {
     "apps": [
-      "9W9NS7U4X.com.curel.Disposable.Clip"
+      "9WW9N57U4X.com.curel.Disposable.Clip"
     ]
   }
 }

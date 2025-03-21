@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.1">
 <dict>
+	<key>com.apple.developer.parent-application-identifiers</key>
+	<array>
+		<string>9WW9N57U4X.com.curel.Disposable</string>
+	</array>
+
 	<key>NSAppClip</key>
 	<dict>
 		<key>NSAppClipRequestEphemeralUserNotification</key>
@@ -36,6 +41,7 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
+
 	<key>CFBundleShortVersionString</key>
 	<string>1.1</string>
 
