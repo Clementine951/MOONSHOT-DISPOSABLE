@@ -107,4 +107,4 @@ open Disposable.xcworkspace
 
 - 👩‍💻 Created by **Clémentine Curel**
 - 🌐 Website: [www.disposableapp.xyz](https://www.disposableapp.xyz)
-- 📧 Email: [clementine.curel@algosup.com]
+- 📧 Email: [clementine.curel@algosup.com](mailto:clementine.curel@algosup.com)
