@@ -225,3 +225,85 @@ footer {
     background-color: var(--purple);
     color: var(--green);
 }
+
+.access-section {
+	padding: 50px 20px;
+	background-color: #fff;
+	text-align: center;
+
+    h1{
+        color: #09745F;
+        font-family: "Londrina Solid", cursive;
+        font-size: 2.5rem;
+        text-align: center;
+        margin-top: 30px;
+    }
+}
+
+.access-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 30px;
+	margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+	.access-container {
+		flex-direction: row;
+	}
+}
+
+.access-card {
+	background-color: var(--purple);
+	color: var(--green);
+	border-radius: 12px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+	padding: 30px 20px;
+	max-width: 400px;
+	width: 90%;
+}
+
+.access-card h3 {
+	font-family: "Londrina Solid", cursive;
+	font-size: 1.4rem;
+	margin-bottom: 15px;
+}
+
+.access-card p {
+	font-size: 1rem;
+	line-height: 1.5;
+}
+
+.access-note {
+	margin-top: 30px;
+	font-size: 0.95rem;
+	color: #555;
+	max-width: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.access-links {
+	margin-top: 30px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+}
+
+.access-links a {
+	text-decoration: none;
+	font-weight: bold;
+	color: var(--green);
+	border: 2px solid var(--green);
+	border-radius: 8px;
+	padding: 10px 20px;
+	transition: all 0.2s ease-in-out;
+}
+
+.access-links a:hover {
+	background-color: var(--green);
+	color: white;
+}
