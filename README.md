@@ -84,11 +84,12 @@ open Disposable.xcworkspace
 
 - [📓 Functional Specification](./Documents/FunctionalSpecification.md)
 - [🧠 Technical Specification](./Documents/TechnicalSpecification.md)
-- [🎓 Thesis (Moonshot Report)](./Documents/Report.md)
-- [💼 Business Plan](./Documents/BusinessPlan.md)
-- [🗣️ User Feedback Summary](./Documents/UserFeedback.md)
+- [🎓 Moonshot Report](./Documents/Report.md)
 - [📊 Gantt Chart Timeline (deprecated)](./Documents/Images/timeline.png)
 - [📄 Presentation Slides ](./Documents/Presentation.pdf)
+- [💼 Business Plan](./Documents/BusinessPlan.md)
+- [🗣️ User Feedback Summary](./Documents/UserFeedback.md)
+- [📚 Thesis](./Documents/Thesis.md)
 
 ## Known Issues
 
