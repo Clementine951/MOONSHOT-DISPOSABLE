@@ -87,9 +87,9 @@ open Disposable.xcworkspace
 - [🎓 Moonshot Report](./Documents/Presentation%202024/Report.pdf)
 - [📊 Gantt Chart Timeline (deprecated)](./Documents/Images/timeline.png)
 - [📄 Presentation Slides ](./Documents/Presentation%202024/Presentation.pdf)
-- [💼 Business Plan](./Documents/2025/BusinessPlan.md)
-- [🗣️ User Feedback Summary](./Documents/2025/UserFeedback.md)
-- [📚 Thesis](./Documents/2025/Thesis.md)
+- [💼 Business Plan](./Documents/Version2/BusinessPlan.md)
+- [🗣️ User Feedback Summary](./Documents/Version2/UserFeedback.md)
+- [📚 Thesis](./Documents/Thesis/Thesis.md)
 
 ## Known Issues
 
