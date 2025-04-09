@@ -29,6 +29,7 @@ extension Color {
 struct HomeView: View {
     @Binding var isInEvent: Bool
     @Binding var eventData: [String: Any]?
+    @Binding var deepLinkedEventId: String?
 
     @State private var participantsCount: Int = 0
     @State private var countdownText: String = ""
@@ -41,6 +42,8 @@ struct HomeView: View {
     
     @State private var eventEndTime: Date = Date()
     @State private var revealSetting: String = "Immediately"
+    
+    @State private var navigateToJoinFromQR = false
 
     var body: some View {
         NavigationStack {
@@ -189,8 +192,19 @@ struct HomeView: View {
                                 .padding(.horizontal, 40)
                         }
                     }
-
                     Spacer()
+
+                    NavigationLink(
+                        destination: JoinEventView(
+                            isInEvent: $isInEvent,
+                            eventData: $eventData,
+                            initialEventId: deepLinkedEventId
+                        ),
+                        isActive: $navigateToJoinFromQR
+                    ) {
+                        EmptyView()
+                    }
+                    .hidden()
                 }
             }
             .padding()
@@ -209,6 +223,15 @@ struct HomeView: View {
                     Timer.scheduledTimer(withTimeInterval: 10, repeats: true) { _ in
                         checkIfEventStillExists()
                     }
+                }
+                if deepLinkedEventId != nil {
+                    navigateToJoinFromQR = true
+                }
+            }
+            .onChange(of: deepLinkedEventId){ newValue in
+                if newValue != nil && !isInEvent{
+                    print("deepLinkedEventId change to \(newValue!) -> navigating to join")
+                    navigateToJoinFromQR = true
                 }
             }
             .alert("Event Deleted", isPresented: $showEventDeletedAlert) {

@@ -19,6 +19,8 @@ struct JoinEventView: View {
     @State private var joinErrorMessage: String?
     @State private var hasAcceptedTerms: Bool = false
     
+    var initialEventId: String? = nil
+    
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -27,7 +29,7 @@ struct JoinEventView: View {
                 .font(.title)
                 .fontWeight(.bold)
 
-            if !eventExists {
+            if !eventExists && initialEventId == nil {
                 TextField("Enter event ID", text: $eventIDInput)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
@@ -45,7 +47,7 @@ struct JoinEventView: View {
                         .padding(.horizontal, 40)
                 }
                 .disabled(eventIDInput.isEmpty)
-            } else {
+            } else if eventExists {
                 Text("Event found! Enter your name to join.")
                     .foregroundColor(.green)
 
@@ -107,6 +109,14 @@ struct JoinEventView: View {
             }
         }
         .padding()
+        .onAppear{
+            if let id = initialEventId{
+                eventIDInput = id
+                if !eventExists {
+                    checkEventExists()
+                }
+            }
+        }
     }
 
     private func checkEventExists() {

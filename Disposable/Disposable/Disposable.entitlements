@@ -6,6 +6,7 @@
 	<array>
 		<string>applinks:disposableapp.xyz</string>
 		<string>appclips:appclip.disposableapp.xyz</string>
+		<string>applinks:appclip.disposableapp.xyz</string>
 	</array>
 </dict>
 </plist>

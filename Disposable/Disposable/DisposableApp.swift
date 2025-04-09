@@ -19,12 +19,14 @@ struct DisposableApp: App {
         }
         return nil
     }()
+    
+    @State private var deepLinkedEventId: String? = nil
 
     var body: some Scene {
         WindowGroup {
             NavigationView {
                 TabView {
-                    HomeView(isInEvent: $isInEvent, eventData: $eventData)
+                    HomeView(isInEvent: $isInEvent, eventData: $eventData, deepLinkedEventId: $deepLinkedEventId)
                         .tabItem {
                             Image(systemName: "house")
                             Text("Home")
@@ -50,6 +52,18 @@ struct DisposableApp: App {
                         }
                 }
             }
+            .onOpenURL { url in
+                if let eventId = extractEventId(from: url), !isInEvent {
+                    print("Extracted eventId from URL: \(eventId)")
+                    deepLinkedEventId = eventId
+                } else {
+                    print("Ignored QR because already in an event")
+                }
+            }
         }
     }
+    private func extractEventId(from url: URL) -> String? {
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            return components?.queryItems?.first(where: { $0.name == "eventId" })?.value
+        }
 }
