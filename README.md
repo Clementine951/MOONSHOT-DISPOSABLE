@@ -66,9 +66,9 @@ open Disposable.xcworkspace
 | Version | Highlights |
 |--------|------------|
 | 1.0 | Initial SwiftUI-based release – main app only |
-| 1.1 | ✅ App Clip integrated and connected via REST API |
-| ⏩ Next | Improved UI, App Clip native camera, photo uploading from main app, editable event settings |
-
+| 1.1 | App Clip integrated and connected via REST API |
+| 1.2 | Bug Fixing |
+| ⏩ Next | Open event from QR code in main app, improved UI, App Clip native camera, photo uploading from main app, editable event settings |
 
 
 ## Roadmap

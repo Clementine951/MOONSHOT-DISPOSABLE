@@ -331,8 +331,6 @@ The photo-sharing space is saturated—but Disposable stands out by targeting a 
 - ✅ **Focused on events, not social feeds**  
 - ✅ **Built with modern iOS tech stack and strong UX**
 
-Great! Here's a **User Journey** section to clearly show how someone interacts with Disposable—from discovering it to sharing memories post-event. It’s a great bridge between your product and the Financial Plan:
-
 # User Journey
 
 The Disposable experience is designed to be seamless, fun, and social—from the moment a user scans a QR code to the post-event memory sharing.
@@ -402,9 +400,6 @@ Disposable is a lean, solo-developed project built with cost efficiency and scal
 **Total Monthly Cost (current stage):** ~€10–€25  
 **Total Annual Estimate (iOS only):** ~€200–€300  
 **Android Launch Additional Cost (one-time):** ~€23
-
-Perfect! Here’s the next section with a **Funding Overview** and **Team Profile**, tailored to your solo-founder situation and early-stage status:
-
 
 # 💼 Funding
 
