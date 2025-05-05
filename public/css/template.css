@@ -9,70 +9,48 @@
 * {
     font-family: "Montserrat", serif;
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 header {
-
     display: flex;
-    /* position: fixed; */
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
     background-color: var(--purple);
-
-    nav {
-
-        display: flex;
-        flex-direction: row;
-        justify-content: end;
-        width: 100%;
-        height: 100px;
-
-        .nav {
-            width: 120px;
-            height: 100px;
-            text-decoration: none;
-            font-weight: bold;
-            color: var(--green);
-            text-align: center;
-            vertical-align: middle;
-            line-height: 100px;
-        }
-
-        .nav:hover {
-            text-shadow: 0px 0px 20px var(--green);
-        }
-    }
-
-    img {
-        height: 140px;
-        margin: -20px 0;
-        padding-left: 20px;
-    }
-
 }
 
-/* Position .dropdown in the nav alongside other links */
+header img {
+    height: 60px;
+    padding: 10px 0;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.nav, .dropbtn {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--green);
+    text-align: center;
+    padding: 10px;
+}
+
+.nav:hover, .dropbtn:hover {
+    text-shadow: 0px 0px 20px var(--green);
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* The "Policies" link that toggles the dropdown */
-.dropbtn {
-    /* Match styling of .nav anchors */
-    text-decoration: none;
-    font-weight: bold;
-    color: var(--green);
-    text-align: center;
-    line-height: 100px;
-    /* match your header's height */
-    display: inline-block;
-    width: 120px;
-}
-
-/* The hidden menu */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -82,98 +60,73 @@ header {
     z-index: 10;
 }
 
-/* Submenu links inside the dropdown */
 .dropdown-content a {
     display: block;
     padding: 10px;
     color: var(--green);
     text-decoration: none;
     text-align: left;
-    line-height: normal;
 }
 
 .dropdown-content a:hover {
     background-color: var(--purple);
 }
 
-/* Show the dropdown on hover */
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
 .information {
-    h1 {
-        color: #09745F;
-        font-family: "Londrina Solid", cursive;
-        font-size: 2.5rem;
-        text-align: center;
-        margin-top: 30px;
-    }
+    padding: 20px;
+    text-align: center;
+    max-width: 90%;
+    margin: 0 auto;
+}
 
-    p {
-        text-align: center;
-    }
+.information h1 {
+    color: var(--green);
+    font-family: "Londrina Solid", cursive;
+    font-size: 2.5rem;
+    margin-top: 30px;
+}
+
+.information p {
+    text-align: center;
 }
 
 .buttons {
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
     margin: 30px auto;
-    width: 70%;
-    
-    .button {
-        background-color: var(--purple);
-        border-radius: 7px;
-        box-shadow: rgba(174, 161, 191, .2) 0 -25px 18px -14px inset,rgba(174, 161, 191, .15) 0 1px 2px,rgba(174, 161, 191, .15) 0 2px 4px,rgba(174, 161, 191, .15) 0 4px 8px,rgba(174, 161, 191, .15) 0 8px 16px,rgba(174, 161, 191, .15) 0 16px 32px;
-        color: var(--green);
-        cursor: pointer;
-        display: inline-block;
-        font-family: "Londrina Solid", cursive,Roboto,sans-serif;
-        letter-spacing: .05rem;
-        padding: 7px 20px;
-        text-align: center;
-        text-decoration: none;
-        transition: all 250ms;
-        border: 0;
-        font-size: 16px;
-        user-select: none;
-        -webkit-user-select: none;
-        touch-action: manipulation;
-      }
-    
-
-    .button:hover {
-        box-shadow: rgba(174, 161, 191,.35) 0 -25px 18px -14px inset,rgba(174, 161, 191,.25) 0 1px 2px,rgba(174, 161, 191,.25) 0 2px 4px,rgba(174, 161, 191,.25) 0 4px 8px,rgba(174, 161, 191,.25) 0 8px 16px,rgba(174, 161, 191,.25) 0 16px 32px;
-    }
-    .first:hover{
-        transform: scale(1.05) rotate(-1deg);
-    }
-    .second:hover{
-        transform: scale(1.05) rotate(1deg);
-    }
-    
-
+    gap: 1rem;
+    width: 90%;
 }
 
+@media (min-width: 600px) {
+    .buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
 
 .photoGrid {
-
     display: flex;
-    margin-bottom: 1rem;
-    justify-content: space-around;
     flex-wrap: wrap;
-
-    img {
-        height: 20rem;
-        margin-bottom: 1rem;
-    }
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
+.photoGrid img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
 
-/* Footer styling */
 footer {
-    position: relative;
-    bottom: 0;
     width: 100%;
     text-align: center;
     padding: 20px;

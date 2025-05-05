@@ -9,70 +9,50 @@
 * {
     font-family: "Montserrat", serif;
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 header {
-
     display: flex;
-    /* position: fixed; */
-    top: 0;
-    left: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
     width: 100%;
-    height: 100px;
+    height: auto;
     background-color: var(--purple);
-
-    nav {
-
-        display: flex;
-        flex-direction: row;
-        justify-content: end;
-        width: 100%;
-        height: 100px;
-
-        .nav {
-            width: 120px;
-            height: 100px;
-            text-decoration: none;
-            font-weight: bold;
-            color: var(--green);
-            text-align: center;
-            vertical-align: middle;
-            line-height: 100px;
-        }
-
-        .nav:hover {
-            text-shadow: 0px 0px 20px var(--green);
-        }
-    }
-
-    img {
-        height: 140px;
-        margin: -20px 0;
-        padding-left: 20px;
-    }
-
 }
 
-/* Position .dropdown in the nav alongside other links */
+header img {
+    height: 80px;
+    padding: 10px 0;
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.nav, .dropbtn {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--green);
+    text-align: center;
+    padding: 10px;
+}
+
+.nav:hover, .dropbtn:hover {
+    text-shadow: 0px 0px 20px var(--green);
+}
+
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* The "Policies" link that toggles the dropdown */
-.dropbtn {
-    /* Match styling of .nav anchors */
-    text-decoration: none;
-    font-weight: bold;
-    color: var(--green);
-    text-align: center;
-    line-height: 100px;
-    /* match your header's height */
-    display: inline-block;
-    width: 120px;
-}
-
-/* The hidden menu */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -82,92 +62,66 @@ header {
     z-index: 10;
 }
 
-/* Submenu links inside the dropdown */
 .dropdown-content a {
     display: block;
     padding: 10px;
     color: var(--green);
     text-decoration: none;
     text-align: left;
-    line-height: normal;
 }
 
 .dropdown-content a:hover {
     background-color: var(--purple);
 }
 
-/* Show the dropdown on hover */
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-div > h1{
-    color: #09745F;
-    font-family: "Londrina Solid", cursive;
-    font-size: 2.5rem;
-    text-align: center;
-    margin-top: 30px;
-}
-
-/* --- Carousel Container --- */
-
-
 .carouselSection {
     position: relative;
     width: 90%;
-    /* Adjust as desired */
-    /* max-width: 1200px; */
     margin: 30px auto;
-    /* Center horizontally, add vertical spacing */
     overflow: hidden;
-    /* Hide parts of slides that go beyond container edges */
 }
 
-/* The track that holds all carousel items */
 .carouselContent {
     display: flex;
     gap: 1rem;
-    /* Space between slides */
     transition: transform 0.5s ease;
+    flex-wrap: nowrap;
 }
 
-/* Each carousel item: set to one-third of the container width */
 .carouselItem {
-    flex: 0 0 calc((100%) / 3);
-    /* 100% minus 2 gaps (1rem each) divided by 3 */
+    flex: 0 0 calc(100% / 3);
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
-    /* min-height: 300px; */
-    /* Adjust height as needed */
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: left;
-    /* For text next to image */
     padding: 1rem;
+}
 
-    img {
-        width: 40%;
-        /* Image takes 40% of item width */
-        height: auto;
-        margin-right: 20px;
-        /* Space between image and text */
-        object-fit: cover;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-    }
+.carouselItem img {
+    width: 40%;
+    height: auto;
+    margin-right: 20px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
 
-    p {
-        flex: 1;
-        margin: 0;
+.carouselItem p {
+    flex: 1;
+    margin: 0;
+}
 
-        strong{
-            font-family: "Londrina Solid", cursive;
-            font-size: 1.1rem;
-            color: var(--green);
-        }
-    }
+.carouselItem p strong {
+    font-family: "Londrina Solid", cursive;
+    font-size: 1.1rem;
+    color: var(--green);
 }
 
 .carouselBtn {
@@ -183,18 +137,20 @@ div > h1{
     color: #fff;
     font-size: 1.5rem;
     cursor: pointer;
-    outline: none;
 }
 
 .nextBtn {
     right: 10px;
 }
 
+.prevBtn {
+    left: 10px;
+}
+
 .carouselBtn:hover {
     background: rgba(0, 0, 0, 0.7);
 }
 
-/* Optional fade overlays */
 .fadeLeft,
 .fadeRight {
     position: absolute;
@@ -215,10 +171,99 @@ div > h1{
     background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.9));
 }
 
-/* Footer styling */
+.access-section {
+    padding: 50px 20px;
+    background-color: #fff;
+    text-align: center;
+}
+
+.access-section h1 {
+    color: var(--green);
+    font-family: "Londrina Solid", cursive;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.access-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (min-width: 768px) {
+    .carouselItem {
+        flex: 0 0 calc(100% / 2);
+    }
+
+    .access-container {
+        flex-direction: row;
+    }
+}
+
+@media (min-width: 1024px) {
+    .carouselItem {
+        flex: 0 0 calc(100% / 3);
+    }
+}
+
+.access-card {
+    background-color: var(--purple);
+    color: var(--green);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px 20px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.access-card h3 {
+    font-family: "Londrina Solid", cursive;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+}
+
+.access-card p {
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.access-note {
+    margin-top: 30px;
+    font-size: 0.95rem;
+    color: #555;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.access-links {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.access-links a {
+    text-decoration: none;
+    font-weight: bold;
+    color: var(--green);
+    border: 2px solid var(--green);
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: all 0.2s ease-in-out;
+}
+
+.access-links a:hover {
+    background-color: var(--green);
+    color: white;
+}
+
 footer {
-    /* position: relative;
-    bottom: 0; */
     width: 100%;
     text-align: center;
     padding: 20px;
@@ -226,84 +271,6 @@ footer {
     color: var(--green);
 }
 
-.access-section {
-	padding: 50px 20px;
-	background-color: #fff;
-	text-align: center;
-
-    h1{
-        color: #09745F;
-        font-family: "Londrina Solid", cursive;
-        font-size: 2.5rem;
-        text-align: center;
-        margin-top: 30px;
-    }
-}
-
-.access-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 30px;
-	margin-top: 30px;
-}
-
-@media (min-width: 768px) {
-	.access-container {
-		flex-direction: row;
-	}
-}
-
-.access-card {
-	background-color: var(--purple);
-	color: var(--green);
-	border-radius: 12px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-	padding: 30px 20px;
-	max-width: 400px;
-	width: 90%;
-}
-
-.access-card h3 {
-	font-family: "Londrina Solid", cursive;
-	font-size: 1.4rem;
-	margin-bottom: 15px;
-}
-
-.access-card p {
-	font-size: 1rem;
-	line-height: 1.5;
-}
-
-.access-note {
-	margin-top: 30px;
-	font-size: 0.95rem;
-	color: #555;
-	max-width: 700px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.access-links {
-	margin-top: 30px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 12px;
-}
-
-.access-links a {
-	text-decoration: none;
-	font-weight: bold;
-	color: var(--green);
-	border: 2px solid var(--green);
-	border-radius: 8px;
-	padding: 10px 20px;
-	transition: all 0.2s ease-in-out;
-}
-
-.access-links a:hover {
-	background-color: var(--green);
-	color: white;
+.bg-light {
+    background-color: #E8D7FF !important
 }

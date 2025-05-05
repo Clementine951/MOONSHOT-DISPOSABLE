@@ -7,43 +7,23 @@
 	<title>Disposable</title>
 
 	<link rel="icon" type="image/x-icon" href="images/SubMark.png">
-
 	<link rel="stylesheet" href="css/index.css">
-	<!-- <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css"> -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
-
-	<!-- Fonts -->
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link
-		href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-		rel="stylesheet">
-
-	<!-- Font Awesome -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Londrina+Solid:wght@100;300;400;900&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 	<script src="https://kit.fontawesome.com/2a2e66f462.js" crossorigin="anonymous"></script>
-
 </head>
 
 <body>
-
-	<header>
-		<a href="./index.html"><img src="./images/SmallLogo.png" alt="Disposable Logo"></a>
-
-		<nav>
+	<header class="d-flex flex-wrap justify-content-between align-items-center px-3 py-2">
+		<a href="./index.html" class="d-flex align-items-center">
+			<img src="./images/SmallLogo.png" alt="Disposable Logo" style="height: 80px;">
+		</a>
+		<nav class="d-flex flex-wrap gap-3">
 			<a href="index.html" class="nav">Home</a>
 			<a href="./html/about.html" class="nav">About</a>
 			<a href="./html/support.html" class="nav">Support</a>
-
-			<!-- Dropdown Container -->
 			<div class="dropdown">
-				<!-- "Policies" button/link -->
-				<a href="#" class="nav dropbtn">
-					Policies &#9662; <!-- The small ▼ arrow -->
-				</a>
-
-				<!-- The hidden submenu -->
+				<a href="#" class="nav dropbtn">Policies &#9662;</a>
 				<div class="dropdown-content">
 					<a href="./html/privacy.html">Privacy Policy</a>
 					<a href="./html/terms.html">Terms & Conditions</a>
@@ -52,18 +32,13 @@
 		</nav>
 	</header>
 
-	<div>
-		<h1>The Features</h1>
+	<div class="text-center mt-4">
+		<h1 class="text-success" style="font-family: 'Londrina Solid', cursive;">The Features</h1>
 	</div>
 
 	<section class="carouselSection">
-		<!-- Prev Button -->
 		<button class="carouselBtn prevBtn">&lt;</button>
-
-		<!-- Optional fade overlay -->
 		<div class="fadeLeft"></div>
-
-		<!-- Carousel track -->
 		<div class="carouselContent">
 			<!-- 9. App Clip Gallery -->
 			<div class="carouselItem">
@@ -118,10 +93,7 @@
 			</div>
 
 		</div>
-
 		<div class="fadeRight"></div>
-
-		<!-- Next Button -->
 		<button class="carouselBtn nextBtn">&gt;</button>
 	</section>
 
@@ -134,40 +106,24 @@
 			</div>
 			<div class="access-card">
 				<h3>🔗 Tap a Link</h3>
-				<p>If someone shares a link (like <code>https://appclip.disposableapp.xyz/clip?eventId=abc123</code>), tap it to open the event directly in the App Clip.</p>
+				<p>If someone shares a link (like <code>https://disposableapp.xyz/clip?eventId=abc123</code>), tap it to open the event directly in the App Clip.</p>
 			</div>
 		</div>
 		<p class="access-note">Whether you're a guest or an organizer, accessing Disposable is quick, easy, and seamless.</p>
-
 		<div class="access-links">
-			<a href="https://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GB" target="_blank" class="store-link">
-				📱 Download the app on the App Store
-			</a>
-			<a href="https://github.com/Clementine951/MOONSHOT-DISPOSABLE" target="_blank" class="github-link">
-				💻 View the code on GitHub
-			</a>
+			<a href="https://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GB" target="_blank" class="store-link">📱 Download the app on the App Store</a>
+			<a href="https://github.com/Clementine951/MOONSHOT-DISPOSABLE" target="_blank" class="github-link">💻 View the code on GitHub</a>
 		</div>
-		
-	</section>	
+	</section>
 
-	<footer>
-		<p>&copy; 2025 Disposable. All rights reserved.</p>
+	<footer class="text-center py-3 bg-light">
+		<p class="text-success">&copy; 2025 Disposable. All rights reserved.</p>
 	</footer>
 
-
-
 	<script src="./js/carousel.js"></script>
-	<!-- Firebase JS SDK -->
 	<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/9.17.2/firebase-firestore.js"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-		crossorigin="anonymous"></script>
-
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="./js/main.js"></script>
-
-
 </body>
-
 </html>
