@@ -10,139 +10,6 @@ import FirebaseFirestore
 import Photos
 
 struct GalleryView: View {
-    let eventID: String
-    let userName: String
-
-    @State private var selectedTab = 0
-    @State private var personalImages: [GalleryImage] = []
-    @State private var generalImages: [GalleryImage] = []
-    @State private var errorMessage = ""
-    @State private var isLoading = true
-    @State private var selectedImage: GalleryImage? = nil
-    @State private var preloadedFirstImage: UIImage? = nil
-    @State private var isModalVisible = false
-    @State private var isSelecting = false
-    @State private var selectedImages: Set<String> = []
-    
-    @State private var revealSetting: String = "Immediately"
-    @State private var eventEndTime: Date = Date()
-    @State private var countdownText: String = ""
-
-    var hasEventEnded: Bool {
-        return Date() >= eventEndTime
-    }
-
-    var body: some View {
-        VStack {
-            // Picker for personal/general
-            Picker("Gallery Type", selection: $selectedTab) {
-                Text("Personal").tag(0)
-                Text("General").tag(1)
-            }
-            .pickerStyle(SegmentedPickerStyle())
-            .padding()
-//            .disabled(revealSetting == "At the end" && !hasEventEnded)
-
-            if revealSetting == "At the end" && !hasEventEnded {
-                VStack {
-                    Text("Photos will be revealed after the countdown ends")
-                        .font(.headline)
-                        .foregroundColor(Color(hex: "#FFC3DC"))
-                        .padding(.bottom, 10)
-
-                    Text(countdownText)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(Color(hex: "#FFC3DC"))
-                }
-            }
-
-            if isLoading {
-                ProgressView("Loading photos...")
-                    .padding()
-            } else if !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            } else {
-                if selectedTab == 0 {
-                    if personalImages.isEmpty {
-                        VStack {
-                            Text("Here will be displayed your photos")
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        PhotoGridView(images: personalImages, emptyMessage: "", onSelect: openImage)
-                    }
-                } else {
-                    if generalImages.isEmpty {
-                        VStack {
-                            Text("Here will be displayed every photo")
-                                .foregroundColor(.gray)
-                                .multilineTextAlignment(.center)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    } else {
-                        PhotoGridView(
-                            images: generalImages,
-                            emptyMessage: "",
-                            onSelect: { image in
-                                if revealSetting == "At the end" && !hasEventEnded { return }
-                                openImage(image)
-                            },
-                            blurImages: revealSetting == "At the end" && !hasEventEnded
-                        )
-                    }
-                }
-                if revealSetting == "At the end" && !hasEventEnded {
-                    // Hide buttons until countdown ends
-                } else {
-                    HStack(spacing: 10) {
-                        Button(action: { isSelecting.toggle() }) {
-                            Text("Select Photos")
-                                .frame(maxWidth: .infinity)
-                                .padding()
-                                .background(Color(hex: "#09745F"))
-                                .foregroundColor(.white)
-                                .fontWeight(.bold)
-                                .cornerRadius(10)
-                        }
-
-                        if let eventURL = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventID)") {
-                            Link(destination: eventURL) {
-                                Text("Online Gallery")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color(hex: "#09745F"))
-                                    .foregroundColor(.white)
-                                    .fontWeight(.bold)
-                                    .cornerRadius(10)
-                            }
-                        }
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 20)
-                }
-            }
-        }
-        .navigationTitle("Gallery")
-        .onAppear {
-            fetchEventDetails()
-            listenForPhotoDocs()
-        }
-        .sheet(isPresented: $isModalVisible) {
-            if let selectedImageIndex = selectedImage.flatMap({ img in generalImages.firstIndex(where: { $0.id == img.id }) }) {
-                FullScreenImageView(
-                    images: selectedTab == 0 ? personalImages : generalImages,
-                    currentIndex: .constant(selectedImageIndex),
-                    isPresented: $isModalVisible,
-                    preloadedFirstImage: $preloadedFirstImage
-                )
-            }
-        }
-    }
 
     private func fetchEventDetails() {
         let db = Firestore.firestore()
@@ -204,114 +71,227 @@ struct GalleryView: View {
             }
         }.resume()
     }
-}
+    // MARK: - Properties
+    let eventID: String
+    let userName: String
 
+    @State private var selectedTab = 0
+    @State private var personalImages: [GalleryImage] = []
+    @State private var generalImages: [GalleryImage] = []
+    @State private var errorMessage = ""
+    @State private var isLoading = true
+    @State private var selectedImage: GalleryImage? = nil
+    @State private var preloadedFirstImage: UIImage? = nil
+    @State private var isModalVisible = false
+    @State private var isSelecting = false
+    @State private var selectedImages: Set<String> = []
 
-// MARK: - FullScreenImageView
-struct FullScreenImageView: View {
-    let images: [GalleryImage]
-    @Binding var currentIndex: Int
-    @Binding var isPresented: Bool
-    @Binding var preloadedFirstImage: UIImage?
+    @State private var revealSetting: String = "Immediately"
+    @State private var eventEndTime: Date = Date()
+    @State private var countdownText: String = ""
+
+    var hasEventEnded: Bool {
+        return Date() >= eventEndTime
+    }
 
     var body: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
+        VStack {
+            Picker("Gallery Type", selection: $selectedTab) {
+                Text("Personal").tag(0)
+                Text("General").tag(1)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
 
-            TabView(selection: $currentIndex) {
-                ForEach(images.indices, id: \.self) { index in
-                    VStack {
-                        Spacer()
+            if revealSetting == "At the end" && !hasEventEnded {
+                VStack {
+                    Text("Photos will be revealed after the countdown ends")
+                        .font(.headline)
+                        .foregroundColor(Color(hex: "#FFC3DC"))
+                        .padding(.bottom, 10)
 
-                        if index == currentIndex, let preloadedImage = preloadedFirstImage {
-                            // Use preloaded image for the selected image
-                            Image(uiImage: preloadedImage)
-                                .resizable()
-                                .scaledToFit()
-                                .tag(index)
-                        } else {
-                            AsyncImageView(url: images[index].url)
-                                .tag(index)
-                        }
-
-                        Spacer()
-
-                        // Owner's name displayed under the image
-                        Text("Photo by: \(images[index].owner)")
-                            .font(.caption)
-                            .foregroundColor(.white)
-                            .padding(.bottom, 20)
-                    }
+                    Text(countdownText)
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(hex: "#FFC3DC"))
                 }
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
 
-            VStack {
-                HStack {
-                    Spacer()
-                    Button(action: { isPresented = false }) {
-                        Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.white)
-                            .font(.system(size: 30))
-                    }
+            if isLoading {
+                ProgressView("Loading photos...")
                     .padding()
+            } else if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
+            } else {
+                let images = selectedTab == 0 ? personalImages : generalImages
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                        ForEach(images) { image in
+                            ZStack(alignment: .topTrailing) {
+                                PhotoCell(url: image.url)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(isSelecting && selectedImages.contains(image.id) ? Color.green : Color.clear, lineWidth: 4)
+                                    )
+                                    .onTapGesture {
+                                        if isSelecting {
+                                            toggleSelection(image.id)
+                                        } else if revealSetting == "At the end" && !hasEventEnded {
+                                            return
+                                        } else {
+                                            openImage(image)
+                                        }
+                                    }
+
+                                if isSelecting {
+                                    Image(systemName: selectedImages.contains(image.id) ? "checkmark.circle.fill" : "circle")
+                                        .font(.title2)
+                                        .foregroundColor(selectedImages.contains(image.id) ? .green : .white)
+                                        .padding(5)
+                                }
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 8)
                 }
-                Spacer()
+
+                if isSelecting {
+                    HStack(spacing: 10) {
+                        Button("All") {
+                            selectedImages = Set(images.map { $0.id })
+                        }
+                        .padding()
+                        .background(Color.gray.opacity(0.2))
+                        .cornerRadius(8)
+
+                        Button("Download") {
+                            requestPhotoLibraryPermission {
+                                downloadSelectedImages()
+                            }
+                        }
+                        .padding()
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+
+                        Button("Cancel") {
+                            isSelecting = false
+                            selectedImages.removeAll()
+                        }
+                        .padding()
+                        .background(Color.red)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                    }
+                    .padding(.bottom)
+                } else if revealSetting != "At the end" || hasEventEnded {
+                    HStack(spacing: 10) {
+                        Button(action: {
+                            isSelecting.toggle()
+                            selectedImages.removeAll()
+                        }) {
+                            Text("Download")
+                                .frame(maxWidth: .infinity)
+                                .padding()
+                                .background(Color(hex: "#09745F"))
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                                .cornerRadius(10)
+                        }
+
+                        if let eventURL = URL(string: "https://disposableapp.xyz/html/template.html?eventId=\(eventID)") {
+                            Link(destination: eventURL) {
+                                Text("Online Gallery")
+                                    .frame(maxWidth: .infinity)
+                                    .padding()
+                                    .background(Color(hex: "#09745F"))
+                                    .foregroundColor(.white)
+                                    .fontWeight(.bold)
+                                    .cornerRadius(10)
+                            }
+                        }
+                    }
+                    .padding(.horizontal)
+                    .padding(.bottom, 20)
+                }
+            }
+        }
+        .navigationTitle("Gallery")
+        .onAppear {
+            fetchEventDetails()
+            listenForPhotoDocs()
+        }
+        .sheet(isPresented: $isModalVisible) {
+            if let selectedImageIndex = selectedImage.flatMap({ img in (selectedTab == 0 ? personalImages : generalImages).firstIndex(where: { $0.id == img.id }) }) {
+                FullScreenImageView(
+                    images: selectedTab == 0 ? personalImages : generalImages,
+                    currentIndex: .constant(selectedImageIndex),
+                    isPresented: $isModalVisible,
+                    preloadedFirstImage: $preloadedFirstImage
+                )
+            }
+        }
+    }
+
+        private func toggleSelection(_ id: String) {
+        if selectedImages.contains(id) {
+            selectedImages.remove(id)
+        } else {
+            selectedImages.insert(id)
+        }
+    }
+
+    private func requestPhotoLibraryPermission(completion: @escaping () -> Void) {
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .authorized || status == .limited {
+                completion()
+            } else {
+                print("Photo Library permission denied.")
+            }
+        }
+    }
+
+    private func downloadSelectedImages() {
+        let images = selectedTab == 0 ? personalImages : generalImages
+        let toDownload = images.filter { selectedImages.contains($0.id) }
+
+        for image in toDownload {
+            if let url = URL(string: image.url) {
+                URLSession.shared.dataTask(with: url) { data, _, _ in
+                    if let data = data, let uiImage = UIImage(data: data) {
+                        saveImageToPhotoLibrary(uiImage)
+                    }
+                }.resume()
+            }
+        }
+
+        DispatchQueue.main.async {
+            isSelecting = false
+            selectedImages.removeAll()
+        }
+    }
+
+    private func saveImageToPhotoLibrary(_ image: UIImage) {
+        PHPhotoLibrary.shared().performChanges({
+            PHAssetChangeRequest.creationRequestForAsset(from: image)
+        }) { success, error in
+            if success {
+                print("Image saved to photo library")
+            } else if let error = error {
+                print("Error saving image: \(error.localizedDescription)")
             }
         }
     }
 }
 
-
-// MARK: - GalleryImage
 struct GalleryImage: Identifiable {
     let id: String
     let url: String
     let owner: String
 }
 
-// MARK: - PhotoGridView
-struct PhotoGridView: View {
-    let images: [GalleryImage]
-    let emptyMessage: String
-    let onSelect: (GalleryImage) -> Void
-    var blurImages: Bool = false
-
-    let columns = [
-        GridItem(.flexible(), spacing: 8),
-        GridItem(.flexible(), spacing: 8),
-        GridItem(.flexible(), spacing: 8),
-    ]
-
-    var body: some View {
-        if images.isEmpty {
-            VStack {
-                Text(emptyMessage)
-                    .foregroundColor(.gray)
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-        } else {
-            ScrollView {
-                LazyVGrid(columns: columns, spacing: 8) {
-                    ForEach(images) { img in
-                        ZStack{
-                            PhotoCell(url: img.url)
-                                .blur(radius: blurImages ? 10 : 0)
-                                .onTapGesture {
-                                    if !blurImages {
-                                        onSelect(img)
-                                    }
-                                }
-                        }
-                    }
-                }
-                .padding(.horizontal, 8)
-            }
-        }
-    }
-}
-
-// MARK: - PhotoCell
 struct PhotoCell: View {
     let url: String
     @State private var fetchedImage: UIImage? = nil
@@ -337,7 +317,7 @@ struct PhotoCell: View {
 
     private func loadImage() {
         guard let imgURL = URL(string: url) else { return }
-        URLSession.shared.dataTask(with: imgURL) { data, response, error in
+        URLSession.shared.dataTask(with: imgURL) { data, _, _ in
             if let data = data, let uiImg = UIImage(data: data) {
                 DispatchQueue.main.async {
                     self.fetchedImage = uiImg
@@ -347,7 +327,58 @@ struct PhotoCell: View {
     }
 }
 
-// MARK: - AsyncImageView
+struct FullScreenImageView: View {
+    let images: [GalleryImage]
+    @Binding var currentIndex: Int
+    @Binding var isPresented: Bool
+    @Binding var preloadedFirstImage: UIImage?
+
+    var body: some View {
+        ZStack {
+            Color.black.edgesIgnoringSafeArea(.all)
+
+            TabView(selection: $currentIndex) {
+                ForEach(images.indices, id: \.self) { index in
+                    VStack {
+                        Spacer()
+
+                        if index == currentIndex, let preloadedImage = preloadedFirstImage {
+                            Image(uiImage: preloadedImage)
+                                .resizable()
+                                .scaledToFit()
+                                .tag(index)
+                        } else {
+                            AsyncImageView(url: images[index].url)
+                                .tag(index)
+                        }
+
+                        Spacer()
+
+                        Text("Photo by: \(images[index].owner)")
+                            .font(.caption)
+                            .foregroundColor(.white)
+                            .padding(.bottom, 20)
+                    }
+                }
+            }
+            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always))
+
+            VStack {
+                HStack {
+                    Spacer()
+                    Button(action: { isPresented = false }) {
+                        Image(systemName: "xmark.circle.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 30))
+                    }
+                    .padding()
+                }
+                Spacer()
+            }
+        }
+    }
+}
+
 struct AsyncImageView: View {
     let url: String
     @State private var image: UIImage? = nil
