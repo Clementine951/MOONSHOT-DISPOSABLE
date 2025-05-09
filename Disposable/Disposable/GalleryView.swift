@@ -7,7 +7,9 @@
 
 import SwiftUI
 import FirebaseFirestore
+import FirebaseStorage
 import Photos
+import PhotosUI
 
 struct GalleryView: View {
 
@@ -85,10 +87,15 @@ struct GalleryView: View {
     @State private var isModalVisible = false
     @State private var isSelecting = false
     @State private var selectedImages: Set<String> = []
+    @State private var selectedUIImages: [UIImage] = []
+    @State private var isShowingUploadConfirmation = false
 
     @State private var revealSetting: String = "Immediately"
     @State private var eventEndTime: Date = Date()
     @State private var countdownText: String = ""
+    @State private var showingImagePicker = false
+    @State private var selectedUIImage: UIImage?
+
 
     var hasEventEnded: Bool {
         return Date() >= eventEndTime
@@ -102,6 +109,8 @@ struct GalleryView: View {
             }
             .pickerStyle(SegmentedPickerStyle())
             .padding()
+            
+            
 
             if revealSetting == "At the end" && !hasEventEnded {
                 VStack {
@@ -186,7 +195,7 @@ struct GalleryView: View {
                         .cornerRadius(8)
                     }
                     .padding(.bottom)
-                } else if revealSetting != "At the end" || hasEventEnded {
+                } else if selectedTab == 1 && (revealSetting != "At the end" || hasEventEnded) {
                     HStack(spacing: 10) {
                         Button(action: {
                             isSelecting.toggle()
@@ -217,8 +226,58 @@ struct GalleryView: View {
                     .padding(.bottom, 20)
                 }
             }
+            if selectedTab == 0 {
+                HStack(spacing: 10) {
+                    Button(action: {
+                        requestPhotoPickerPermission()
+                    }) {
+                        Text("Upload Photos")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(hex: "#09745F"))
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                    }
+
+                    Button(action: {
+                        deleteSelectedPersonalPhotos()
+                    }) {
+                        Text("Delete Photos")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.bottom)
+            }
         }
+        
         .navigationTitle("Gallery")
+        .sheet(isPresented: $showingImagePicker) {
+            ImagePicker(images: $selectedUIImages)
+                .onDisappear {
+                    if !selectedUIImages.isEmpty {
+                        isShowingUploadConfirmation = true
+                    }
+                }
+        }
+        .alert("Upload selected photos?", isPresented: $isShowingUploadConfirmation, actions: {
+            Button("Upload", role: .none) {
+                for img in selectedUIImages {
+                    uploadImageToFirestore(image: img)
+                }
+                selectedUIImages.removeAll()
+            }
+            Button("Cancel", role: .cancel) {
+                selectedUIImages.removeAll()
+            }
+        })
+
         .onAppear {
             fetchEventDetails()
             listenForPhotoDocs()
@@ -284,6 +343,58 @@ struct GalleryView: View {
             }
         }
     }
+    private func requestPhotoPickerPermission() {
+        PHPhotoLibrary.requestAuthorization { status in
+            if status == .authorized || status == .limited {
+                showingImagePicker = true
+            } else {
+                print("Photo picker access denied.")
+            }
+        }
+    }
+    private func uploadImageToFirestore(image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
+        let imageName = "\(UUID().uuidString).jpg"
+        let storageRef = Storage.storage().reference().child("events/\(eventID)/\(imageName)")
+
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        metadata.customMetadata = ["user": userName, "eventId": eventID]
+
+        storageRef.putData(data, metadata: metadata) { _, error in
+            if let error = error {
+                print("Upload error: \(error.localizedDescription)")
+                return
+            }
+
+            storageRef.downloadURL { url, error in
+                guard let downloadURL = url else { return }
+                let doc = Firestore.firestore().collection("events").document(eventID).collection("images").document()
+                doc.setData([
+                    "url": downloadURL.absoluteString,
+                    "owner": userName,
+                    "timestamp": Date().timeIntervalSince1970
+                ]) { _ in
+                    listenForPhotoDocs()
+                }
+            }
+        }
+    }
+    private func deleteSelectedPersonalPhotos() {
+        let db = Firestore.firestore()
+        let toDelete = personalImages.filter { selectedImages.contains($0.id) }
+
+        for image in toDelete {
+            db.collection("events").document(eventID).collection("images").document(image.id).delete()
+            // Also delete from Firebase Storage (optional)
+            let filename = URL(string: image.url)?.lastPathComponent ?? ""
+            let storageRef = Storage.storage().reference().child("events/\(eventID)/\(filename)")
+            storageRef.delete(completion: nil)
+        }
+
+        selectedImages.removeAll()
+    }
+
 }
 
 struct GalleryImage: Identifiable {
@@ -406,5 +517,59 @@ struct AsyncImageView: View {
                 }
             }
         }.resume()
+    }
+}
+
+struct ImagePicker: UIViewControllerRepresentable {
+    @Binding var images: [UIImage]
+
+    @Environment(\.presentationMode) var presentationMode
+
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 0
+        config.filter = .images
+
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = context.coordinator
+        return picker
+    }
+
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    class Coordinator: NSObject, PHPickerViewControllerDelegate {
+        let parent: ImagePicker
+
+        init(_ parent: ImagePicker) {
+            self.parent = parent
+        }
+
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+            parent.presentationMode.wrappedValue.dismiss()
+            let group = DispatchGroup()
+            var uiImages: [UIImage] = []
+
+            for result in results {
+                if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    group.enter()
+                    result.itemProvider.loadObject(ofClass: UIImage.self) { object, _ in
+                        if let image = object as? UIImage {
+                            DispatchQueue.main.async {
+                                uiImages.append(image)
+                            }
+                        }
+                        group.leave()
+                    }
+                }
+            }
+
+            group.notify(queue: .main) {
+                self.parent.images = uiImages
+            }
+        }
     }
 }
