@@ -95,6 +95,7 @@ struct GalleryView: View {
     @State private var countdownText: String = ""
     @State private var showingImagePicker = false
     @State private var selectedUIImage: UIImage?
+    @State private var isShowingDeleteConfirmation = false
 
 
     var hasEventEnded: Bool {
@@ -169,33 +170,48 @@ struct GalleryView: View {
                 if isSelecting {
                     HStack(spacing: 10) {
                         Button("All") {
+                            let images = selectedTab == 0 ? personalImages : generalImages
                             selectedImages = Set(images.map { $0.id })
                         }
                         .padding()
                         .background(Color.gray.opacity(0.2))
-                        .cornerRadius(8)
-
-                        Button("Download") {
-                            requestPhotoLibraryPermission {
-                                downloadSelectedImages()
-                            }
-                        }
-                        .padding()
-                        .background(Color.green)
                         .foregroundColor(.white)
                         .cornerRadius(8)
+
+                        if selectedTab == 0 {
+                            Button("Delete") {
+                                deleteSelectedPersonalPhotos()
+                                isSelecting = false
+                            }
+                            .padding()
+                            .background(Color.gray.opacity(0.2))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                        } else {
+                            Button("Download") {
+                                requestPhotoLibraryPermission {
+                                    downloadSelectedImages()
+                                    isSelecting = false
+                                }
+                            }
+                            .padding()
+                            .background(Color.gray.opacity(0.2))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                        }
 
                         Button("Cancel") {
                             isSelecting = false
                             selectedImages.removeAll()
                         }
                         .padding()
-                        .background(Color.red)
+                        .background(Color.gray.opacity(0.2))
                         .foregroundColor(.white)
                         .cornerRadius(8)
                     }
                     .padding(.bottom)
-                } else if selectedTab == 1 && (revealSetting != "At the end" || hasEventEnded) {
+                }
+                else if selectedTab == 1 && (revealSetting != "At the end" || hasEventEnded) {
                     HStack(spacing: 10) {
                         Button(action: {
                             isSelecting.toggle()
@@ -241,12 +257,13 @@ struct GalleryView: View {
                     }
 
                     Button(action: {
-                        deleteSelectedPersonalPhotos()
+                        isSelecting.toggle()
+                        selectedImages.removeAll()
                     }) {
                         Text("Delete Photos")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(Color.red)
+                            .background(Color(hex: "#09745F"))
                             .foregroundColor(.white)
                             .fontWeight(.bold)
                             .cornerRadius(10)
@@ -281,6 +298,9 @@ struct GalleryView: View {
         .onAppear {
             fetchEventDetails()
             listenForPhotoDocs()
+        }
+        .alert("Photos deleted.", isPresented: $isShowingDeleteConfirmation) {
+            Button("OK", role: .cancel) { }
         }
         .sheet(isPresented: $isModalVisible) {
             if let selectedImageIndex = selectedImage.flatMap({ img in (selectedTab == 0 ? personalImages : generalImages).firstIndex(where: { $0.id == img.id }) }) {
