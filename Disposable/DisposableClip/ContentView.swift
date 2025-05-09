@@ -468,7 +468,7 @@ struct ContentView: View {
                     let body: [String: Any] = [
                         "fields": [
                             "url": ["stringValue": downloadURL.absoluteString],
-                            "timestamp": ["timestampValue": Date().iso8601],
+                            "timestamp": ["stringValue": Date().iso8601],
                             "owner": ["stringValue": userName]
                         ]
                     ]
