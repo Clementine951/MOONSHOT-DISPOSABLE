@@ -65,21 +65,23 @@ struct HomeView: View {
 
                     // Countdown Timer
                     // Display countdown or "Photos are revealed"
-                    if revealSetting == "At the end" && countdownText == "00:00:00" {
-                        Text("Photos are revealed")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(Color(hex: "#FFC3DC"))
-                    } else {
-                        VStack {
-                            Text("End of the event in")
-                                .font(.subheadline)
-                                .foregroundColor(Color(hex: "#FFC3DC"))
-
-                            Text(countdownText)
+                    if revealSetting == "At the end" {
+                        if countdownText == "00:00:00" {
+                            Text("Photos are revealed")
                                 .font(.largeTitle)
                                 .fontWeight(.bold)
                                 .foregroundColor(Color(hex: "#FFC3DC"))
+                        } else {
+                            VStack {
+                                Text("End of the event in")
+                                    .font(.subheadline)
+                                    .foregroundColor(Color(hex: "#FFC3DC"))
+
+                                Text(countdownText)
+                                    .font(.largeTitle)
+                                    .fontWeight(.bold)
+                                    .foregroundColor(Color(hex: "#FFC3DC"))
+                            }
                         }
                     }
 
@@ -337,19 +339,23 @@ struct HomeView: View {
         }
     }
 
-
     private func generateQRCode() {
         guard let eventId = eventData?["eventId"] as? String else { return }
 
-        let url = "https://appclip.disposableapp.xyz/clip?eventId=\(eventId)"
+        let url = "https://disposableapp.xyz/clip?eventId=\(eventId)"
+        guard let data = url.data(using: .utf8),
+              let filter = CIFilter(name: "CIQRCodeGenerator") else { return }
+
+        filter.setValue(data, forKey: "inputMessage")
+        filter.setValue("Q", forKey: "inputCorrectionLevel")
+
+        guard let ciImage = filter.outputImage else { return }
+
+        let transform = CGAffineTransform(scaleX: 12, y: 12) // ⬅️ increase this scale for sharpness
+        let scaledImage = ciImage.transformed(by: transform)
+
         let context = CIContext()
-        guard let filter = CIFilter(name: "CIQRCodeGenerator") else { return }
-
-        filter.setValue(Data(url.utf8), forKey: "inputMessage")
-        filter.setValue("M", forKey: "inputCorrectionLevel")
-
-        if let outputImage = filter.outputImage,
-           let cgImage = context.createCGImage(outputImage, from: outputImage.extent) {
+        if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
             self.qrCodeImage = UIImage(cgImage: cgImage)
         }
     }

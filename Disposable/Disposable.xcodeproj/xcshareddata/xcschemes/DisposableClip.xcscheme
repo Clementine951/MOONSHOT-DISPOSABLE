@@ -77,8 +77,8 @@
       <EnvironmentVariables>
          <EnvironmentVariable
             key = "_XCAppClipURL"
-            value = "https://appclip.disposableapp.xyz/clip?eventId=Rae_E8724211-7950-4E33-86F7-5E9B166F7F86"
-            isEnabled = "NO">
+            value = "https://disposableapp.xyz/clip?eventId=r&#xe9;e_05E5A969-4D8E-46DF-BC77-9E3C315F95D9"
+            isEnabled = "YES">
          </EnvironmentVariable>
       </EnvironmentVariables>
    </LaunchAction>
