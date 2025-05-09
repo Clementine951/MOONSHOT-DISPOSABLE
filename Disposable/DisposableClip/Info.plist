@@ -42,6 +42,9 @@
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
 
+	<key>NSCameraUsageDescription</key>
+	<string>This app uses the camera to take event photos.</string>	
+
 	<key>CFBundleShortVersionString</key>
 	<string>1.1</string>
 

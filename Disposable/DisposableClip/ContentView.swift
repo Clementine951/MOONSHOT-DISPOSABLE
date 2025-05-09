@@ -11,7 +11,7 @@ import UIKit
 import FirebaseStorage
 import SDWebImageSwiftUI
 import Photos
-
+import PhotosUI
 
 struct ContentView: View {
     @State var eventId: String? = nil
@@ -21,11 +21,13 @@ struct ContentView: View {
     @State private var isNameEntered: Bool = false
     @State private var hasAcceptedTerms: Bool = false
     @State private var showingImagePicker = false
-    @State private var inputImage: UIImage?
+    @State private var selectedImages: [UIImage] = []
     @State private var timer: Timer?
     @State private var isFullScreenMode: Bool = false // Track fullscreen mode
     @State private var selectedPhotoIndex: Int = 0 // Track the selected photo for fullscreen
     @State private var isEventNameLoaded: Bool = false
+    @State private var showingCamera = false
+    @State private var capturedImage: UIImage?
     
     @State private var showDownloadAlert = false
     
@@ -75,9 +77,28 @@ struct ContentView: View {
                         }
                         .padding()
                         .sheet(isPresented: $showingImagePicker) {
-                            ImagePicker(image: $inputImage)
-                                .onDisappear(perform: uploadPhoto)
+                            ImagePicker(images: $selectedImages)
+                                .onDisappear {
+                                    for image in selectedImages {
+                                        uploadPhoto(image: image)
+                                    }
+                                    selectedImages.removeAll()
+                                }
                         }
+                        .sheet(isPresented: $showingCamera) {
+                            CameraView(image: $capturedImage)
+                                .onDisappear {
+                                    if let image = capturedImage {
+                                        uploadPhoto(image: image)
+                                        capturedImage = nil
+                                    }
+                                }
+                        }
+
+                        Button(action: { showingCamera = true }) {
+                            Label("Camera", systemImage: "camera")
+                        }
+                        .padding()
                     }
                 }
                 .navigationTitle(eventName.isEmpty ? "Event" : eventName)
@@ -223,19 +244,25 @@ struct ContentView: View {
     
     func fetchEventImages(from url: String) {
         guard let imagesURL = URL(string: url) else { return }
-        
+
         let task = URLSession.shared.dataTask(with: imagesURL) { data, response, error in
             if let error = error {
                 print("Error fetching images: \(error)")
                 return
             }
-            
+
             guard let data = data else { return }
             do {
                 if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                    let documents = jsonResponse["documents"] as? [[String: Any]] {
-                    
-                    let urls = documents.compactMap { document -> String? in
+
+                    let sorted = documents.sorted { doc1, doc2 in
+                        let ts1 = ((doc1["fields"] as? [String: Any])?["timestamp"] as? [String: Any])?["stringValue"] as? String ?? ""
+                        let ts2 = ((doc2["fields"] as? [String: Any])?["timestamp"] as? [String: Any])?["stringValue"] as? String ?? ""
+                        return ts1 < ts2 // fallback alphabetical sort
+                    }
+
+                    let urls = sorted.compactMap { document -> String? in
                         guard let fields = document["fields"] as? [String: Any],
                               let urlField = fields["url"] as? [String: Any],
                               let urlString = urlField["stringValue"] as? String else {
@@ -243,7 +270,7 @@ struct ContentView: View {
                         }
                         return urlString
                     }
-                    
+
                     DispatchQueue.main.async {
                         self.photos = urls
                     }
@@ -252,10 +279,9 @@ struct ContentView: View {
                 print("Error parsing images JSON: \(error)")
             }
         }
-        
+
         task.resume()
     }
-    
     
     func fetchEventName(eventId: String) {
         let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)"
@@ -373,114 +399,97 @@ struct ContentView: View {
     }
     
     
-//    func downloadAllPhotos() {
-//            for photoUrl in photos {
-//                guard let url = URL(string: photoUrl) else { continue }
-//
-//                let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
-//                    if let error = error {
-//                        print("Download error: \(error)")
-//                        return
-//                    }
-//
-//                    guard let tempFileUrl = tempFileUrl else { return }
-//
-//                    do {
-//                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-//                        let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
-//
-//                        if FileManager.default.fileExists(atPath: destinationURL.path) {
-//                            try FileManager.default.removeItem(at: destinationURL)
-//                        }
-//
-//                        try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
-//
-//                        print("Downloaded to: \(destinationURL.path)")
-//                    } catch {
-//                        print("Error moving file: \(error)")
-//                    }
-//                }
-//
-//                task.resume()
-//            }
-//        }
-
-
-
-
-    // Upload Photo to Firebase Storage and Save Image URL to Firestore via REST API
-    func uploadPhoto() {
+    //    func downloadAllPhotos() {
+    //            for photoUrl in photos {
+    //                guard let url = URL(string: photoUrl) else { continue }
+    //
+    //                let task = URLSession.shared.downloadTask(with: url) { (tempFileUrl, response, error) in
+    //                    if let error = error {
+    //                        print("Download error: \(error)")
+    //                        return
+    //                    }
+    //
+    //                    guard let tempFileUrl = tempFileUrl else { return }
+    //
+    //                    do {
+    //                        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    //                        let destinationURL = documentsDirectory.appendingPathComponent(url.lastPathComponent)
+    //
+    //                        if FileManager.default.fileExists(atPath: destinationURL.path) {
+    //                            try FileManager.default.removeItem(at: destinationURL)
+    //                        }
+    //
+    //                        try FileManager.default.moveItem(at: tempFileUrl, to: destinationURL)
+    //
+    //                        print("Downloaded to: \(destinationURL.path)")
+    //                    } catch {
+    //                        print("Error moving file: \(error)")
+    //                    }
+    //                }
+    //
+    //                task.resume()
+    //            }
+    //        }
+    
+    
+    func uploadPhoto(image: UIImage) {
         guard let eventId = eventId else {
             print("Event ID is not set.")
             return
         }
-
-        if let inputImage = inputImage, let imageData = inputImage.jpegData(compressionQuality: 0.8) {
+        
+        if let imageData = image.jpegData(compressionQuality: 0.8) {
             let fileName = "\(userName)\(Date().timeIntervalSince1970).jpg"
             let storagePath = "events/\(eventId)/\(fileName)"
-
             let storageRef = Storage.storage().reference().child(storagePath)
-
+            
             let metadata = StorageMetadata()
             metadata.contentType = "image/jpeg"
-
-            storageRef.putData(imageData, metadata: metadata) { (metadata, error) in
+            
+            storageRef.putData(imageData, metadata: metadata) { (_, error) in
                 if let error = error {
                     print("Upload error: \(error)")
                     return
                 }
-
+                
                 storageRef.downloadURL { (url, error) in
                     if let error = error {
-                        print("Error getting download URL: \(error)")
+                        print("Download URL error: \(error)")
                         return
                     }
-
+                    
                     guard let downloadURL = url else { return }
-
+                    
                     let firestoreURL = "https://firestore.googleapis.com/v1/projects/disposable-53b41/databases/(default)/documents/events/\(eventId)/images"
-                    guard let url = URL(string: firestoreURL) else { return }
-
-                    var request = URLRequest(url: url)
+                    var request = URLRequest(url: URL(string: firestoreURL)!)
                     request.httpMethod = "POST"
                     request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-
-                    let imageData: [String: Any] = [
+                    
+                    let body: [String: Any] = [
                         "fields": [
                             "url": ["stringValue": downloadURL.absoluteString],
                             "timestamp": ["timestampValue": Date().iso8601],
                             "owner": ["stringValue": userName]
                         ]
                     ]
-
+                    
                     do {
-                        let jsonData = try JSONSerialization.data(withJSONObject: imageData, options: [])
-                        request.httpBody = jsonData
+                        request.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
                     } catch {
-                        print("Error serializing image data: \(error)")
+                        print("JSON error: \(error)")
                         return
                     }
-
-                    let task = URLSession.shared.dataTask(with: request) { data, response, error in
-                        if let error = error {
-                            print("Error sending data to Firestore: \(error)")
-                            return
-                        }
-
-                        if let responseData = data {
-                            print("Firestore response: \(String(data: responseData, encoding: .utf8) ?? "")")
-                            self.photos.append(downloadURL.absoluteString)
+                    
+                    URLSession.shared.dataTask(with: request).resume()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        if let eventId = self.eventId {
+                            self.fetchImagesForEvent(eventId: eventId)
                         }
                     }
-
-                    task.resume()
                 }
             }
-        } else {
-            print("No image selected.")
         }
     }
-
 }
 
 // Full-Screen View for Swiping through Photos
@@ -535,40 +544,55 @@ extension Date {
         return formatter.string(from: self)
     }
 }
-
 struct ImagePicker: UIViewControllerRepresentable {
-    @Binding var image: UIImage?
+    @Binding var images: [UIImage]
     @Environment(\.presentationMode) private var presentationMode
 
-    func makeUIViewController(context: Context) -> UIImagePickerController {
-        let picker = UIImagePickerController()
+    func makeUIViewController(context: Context) -> PHPickerViewController {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 0 // 0 = unlimited
+        config.filter = .images
+
+        let picker = PHPickerViewController(configuration: config)
         picker.delegate = context.coordinator
-        picker.sourceType = .photoLibrary
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    class Coordinator: NSObject, PHPickerViewControllerDelegate {
         let parent: ImagePicker
 
         init(_ parent: ImagePicker) {
             self.parent = parent
         }
 
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-            if let image = info[.originalImage] as? UIImage {
-                parent.image = image
-            }
+        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
             parent.presentationMode.wrappedValue.dismiss()
-        }
+            var pickedImages: [UIImage] = []
+            let group = DispatchGroup()
 
-        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-            parent.presentationMode.wrappedValue.dismiss()
+            for result in results {
+                if result.itemProvider.canLoadObject(ofClass: UIImage.self) {
+                    group.enter()
+                    result.itemProvider.loadObject(ofClass: UIImage.self) { object, _ in
+                        if let image = object as? UIImage {
+                            DispatchQueue.main.async {
+                                pickedImages.append(image)
+                            }
+                        }
+                        group.leave()
+                    }
+                }
+            }
+
+            group.notify(queue: .main) {
+                self.parent.images = pickedImages
+            }
         }
     }
 }
