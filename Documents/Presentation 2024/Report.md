@@ -130,6 +130,18 @@ Looking ahead, this MVP serves as the foundation for future enhancements and ite
 - [Presentation of the Tests and Deployment](#presentation-of-the-tests-and-deployment)
 - [Evolutions Made or Planned for the Software Solution](#evolutions-made-or-planned-for-the-software-solution)
 - [Analysis of Project Management and Leadership](#analysis-of-project-management-and-leadership)
+- [Project Evolution and User Insights](#project-evolution-and-user-insights)
+  - [Functional Specification Updates](#functional-specification-updates)
+    - [Main App](#main-app)
+    - [App Clip](#app-clip)
+    - [Website](#website)
+  - [Technical Specification Updates](#technical-specification-updates)
+  - [User Testing and Feedback](#user-testing-and-feedback-1)
+    - [Pain Points and Reasons for Change](#pain-points-and-reasons-for-change)
+    - [Feature Requests](#feature-requests)
+    - [Known Bugs](#known-bugs)
+    - [Impressions \& Behavioral Insights](#impressions--behavioral-insights)
+  - [Management Tools \& Process](#management-tools--process)
 
 </details>
 
@@ -804,9 +816,6 @@ Graphic charter:
 - **Multiple Admin Roles**: Allow for multiple organizers to manage a single event.
 - **Rewards/Badge System**: Introduce a reward system for users who participate in multiple events.
 
----
-
----
 
 # Technical Specification
 
@@ -1143,9 +1152,6 @@ The following diagram outlines the major components of the Disposable Camera app
   - Maintenance cycles will be managed via GitHub and communicated to users through release notes.
 
 
----
-
----
 
 # Analysis and Specifications of the Software Project
 
@@ -1217,3 +1223,71 @@ Managing this project presented several challenges, particularly in maintaining 
 
 - **Leadership and Resilience**: Despite these challenges, I remained focused on ensuring the core functionalities worked together, with the events and database interactions functioning as intended. While the app cannot currently be deployed to the App Store, the primary objectives were met, and the app is operational in a development environment.
 
+Excellent idea. Explaining **why** changes were made gives depth to your iteration process and shows thoughtful decision-making. Here's the updated section, now with clear rationales for each major change:
+
+
+# Project Evolution and User Insights
+
+## Functional Specification Updates
+
+### Main App
+
+- **Upload photos**: Added based on repeated user requests to upload images. This improves flexibility and accommodates users who don’t take photos from the application, but use their phone camera settings instead.
+- **“Reveal later” option**: Enables surprise photo sharing at the end of the event—great for weddings and parties. This feature increase the excitement of the participants. 
+- **Countdown removed**: I found the countdown unnecessary and sometimes confusing. It is now only shown when the “reveal later” setting is active.
+- **Event deletion after 8 days**: Keeps Firebase usage lean and reflects user behavior—most people download their photos within a week. The extra day is a buffer to ensure availability.
+
+### App Clip
+
+- **Added camera functionality**: Initially excluded due to App Clip size limitations and technical constraints. But many users wanted to take photos directly from the App Clip, so I optimized the codebase in Swift to make room for this feature.
+
+### Website
+
+- **Photo gallery website**: Created to give users an easy way to browse and download event photos—especially useful for those who prefer using a browser or haven't installed the app. This feature also serves as a workaround for App Clip users, who face significant limitations in terms of security, capabilities, and size. For instance, App Clips cannot download images directly due to iOS sandboxing and permission restrictions. The website provides a more complete and flexible experience for users who want to save memories from their events.
+
+## Technical Specification Updates
+
+- **Switch from React Native Expo to Swift**: Expo proved limiting for integrating native iOS features like App Clips. Managing multiple environments (main app, App Clip, Firebase, camera, REST APIs) was complex and brittle in Expo. Migrating to Swift unified the codebase, simplified the App Clip build, and improved performance and compatibility.
+- **Still using Firebase**: Firestore and Firebase Storage continue to offer robust, scalable solutions for real-time photo sharing. The structure was solid—no need to change.
+- **App Clip backend via REST**: The App Clip couldn’t use Firestore SDK due to size and performance constraints. REST APIs were more lightweight and reliable.
+- **Firebase Hosting for AASA**: Hosting the AASA file on Firebase Hosting made setup faster, more stable, and easier to debug compared to Cloudflare Workers.
+- **Cloudflare DNS-only**: Now only used for domain pointing and SSL management—no longer needed for dynamic content or backend logic.
+
+## User Testing and Feedback
+
+### Pain Points and Reasons for Change
+
+- **Missing navigation in the camera**: When the camera is opened, the navigation icons become hidden behind and is still clickable. For the users this is confusing. Letting the navigation visible at all times was a simple fix that improved usability significantly. 
+- **QR code sharing is unintuitive**: When a qrcode is shared, the messaged send is not "pretty" enough. This pain point hasn't being addressed yet. I am still exploring solutions to generate more user-friendly messages that include the QR code and a link to the event.
+- **Blurry QR codes**: In the application, the QR codes were blurry and hard to scan. I fixed this by changing the library that generates the QR codes, ensuring they are clear and easily scannable. This change was crucial for user experience, especially at events where quick access is needed.
+
+### Feature Requests
+
+- **Upload photos from the main app**: Users wanted to use their device's native camera or editing tools before uploading. This feature improves flexibility and meets the needs of users who prefer taking photos outside the app.
+- **Camera in App Clip**: Highly requested by users who scan a QR code at an event and expect to take photos immediately. This improves spontaneous engagement and makes the App Clip more functional.
+- **QR code opens the main app**: If already have the main app installed, users expect the QR code to launch it instead of the App Clip. This is a common user expectation and improves the transition between the App Clip and the full app.
+- **French version**: Requested by non-English speakers during testing. Offering localization improves accessibility and inclusivity.
+- **Longer events**: Some events, like vacations or festivals, span multiple days. The previous 24-hour limit was too short. With the new default duration set to 8 days, the app now better suits longer experiences.
+- **Android version**: A major priority for parity, especially in mixed-device groups. Developing an Android version requires rewriting the entire app in Kotlin. Since Android doesn’t support App Clips, **Google Play Instant** would be used instead. This is a **long-term goal** due to significant development effort, platform differences, and Google Play’s new requirement of a **15-day test with at least 12 users** before public release.
+- **Time to print QR codes**: Originally, QR code generation triggered the event countdown immediately, making it difficult to prepare and distribute printed materials. Now, the event lasts 8 days by default, and the countdown appears only if the "reveal later" option is selected—giving organizers more control over timing and design prep.
+
+### Known Bugs
+
+- **Front flash not working**: Due to hardware/software limitations, this feature is still under investigation.
+- **No “reveal later” on App Clip**: App Clips are stateless and time-limited, making this technically complex. Considering alternatives.
+- **QR code behavior inconsistent**: Improvements have been made to force QR codes to launch the full app instead of the App Clip when appropriate.
+
+### Impressions & Behavioral Insights
+
+- People don’t always understand the purpose of Disposable when handed a phone—onboarding needs simplification.
+- Users take many photos quickly—they’re used to unlimited photo apps. The limit creates confusion but also fun.
+- Power users prefer keeping multiple events active—event switching or archiving is a potential enhancement.
+- In tightly knit groups, once users have the main app, they stop using the App Clip—expected behavior that supports the transition model.
+
+## Management Tools & Process
+
+My management approach remained consistent throughout the project, emphasizing flexibility and adaptability. I used GitHub for both version control and task tracking, relying heavily on commit messages to document progress and outline next steps.
+
+The App Store Connect system is now integrated with GitHub for both the main app and the App Clip. This setup enables automated tests and version control on every commit. Similarly, Firebase Hosting for the website is also connected to GitHub—every push updates the live website automatically.
+
+However, updating the app on the App Store still requires manual action in Xcode. While CI/CD helps with testing and pre-validation, App Store submissions still need to be handled manually, due to Apple’s deployment requirements.
