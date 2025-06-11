@@ -145,6 +145,7 @@ Looking ahead, this MVP serves as the foundation for future enhancements and ite
 
 </details>
 
+<br>
 
 # Glossary
 
@@ -318,7 +319,7 @@ Project management, task allocation, and progress tracking were initially coordi
 
 The project timeline is represented in the Gantt chart below:
 
-<img src="./Images/timeline.png">
+<img src="../Images/timeline.png">
 
 ### Milestones
 
@@ -545,7 +546,7 @@ To explore the mock-up of the Disposable Camera App, you can click on this [Figm
 
 Graphic charter:
 
-<img src="./Images/GraphCharter.png" style="width: 60%">
+<img src="../Images/GraphCharter.png" style="width: 60%">
 
 
 ## Target Audience
@@ -554,23 +555,23 @@ Graphic charter:
 
 1. **Margaret**: An elderly woman who wants to collect photos from her grandson’s baptism.
 
-<img src="./Images/1.png" style="width: 50%">
+<img src="../Images/1.png" style="width: 50%">
 
 2. **Sarah**: A young mother capturing candid moments during Christmas.
 
-<img src="./Images/2.png" style="width: 50%">
+<img src="../Images/2.png" style="width: 50%">
 
 3. **James**: A groom wanting to enhance guest engagement at his wedding.
 
-<img src="./Images/3.png" style="width: 50%">
+<img src="../Images/3.png" style="width: 50%">
 
 4. **Emily**: A social media-savvy individual capturing her anniversary party.
 
-<img src="./Images/4.png" style="width: 50%">
+<img src="../Images/4.png" style="width: 50%">
 
 5. **Alex**: A meticulous planner organizing a successful party.
 
-<img src="./Images/5.png" style="width: 50%">
+<img src="../Images/5.png" style="width: 50%">
 
 ### Use Cases
 
@@ -640,55 +641,55 @@ Graphic charter:
 
 **Legend:** 
 
-<img src="./Images/Legend.png" style="width: 50%">
+<img src="../Images/Legend.png" style="width: 50%">
 
 <br>
 
 **Authentication:**
 
-<img src="./Images/Authentication.png" style="width: 50%">
+<img src="../Images/Authentication.png" style="width: 50%">
 
 <br>
 
 **Home screen:**
 
-<img src="./Images/Home.png" style="width: 50%">
+<img src="../Images/Home.png" style="width: 50%">
 
 <br>
 
 **Camera:**
 
-<img src="./Images/Camera.png" style="width: 50%">
+<img src="../Images/Camera.png" style="width: 50%">
 
 <br>
 
 **Personal gallery:**
 
-<img src="./Images/Personal.png" style="width: 50%">
+<img src="../Images/Personal.png" style="width: 50%">
 
 <br>
 
 **Personal settings:**
 
-<img src="./Images/SettingsPerso.png" style="width: 50%">
+<img src="../Images/SettingsPerso.png" style="width: 50%">
 
 <br>
 
 **General gallery:**
 
-<img src="./Images/General.png" style="width: 50%">
+<img src="../Images/General.png" style="width: 50%">
 
 <br>
 
 **Create event:**
 
-<img src="./Images/Create.png" style="width: 50%">
+<img src="../Images/Create.png" style="width: 50%">
 
 <br>
 
 **Event Settings:**
 
-<img src="./Images/SettingsEvent.png" style="width: 50%">
+<img src="../Images/SettingsEvent.png" style="width: 50%">
 
 <br>
 
@@ -1030,7 +1031,7 @@ The following diagram outlines the major components of the Disposable Camera app
     - Photos are stored as `userNameX.jpg` where `X` is the sequence number (e.g., `Frfe1.jpg`).
     - Each file is stored with metadata linking it to the participant who took the photo.
 
-<img src="./Images/Class Diagram.png" style="width:50%">
+<img src="../Images/Class Diagram.png" style="width:50%">
 
 ## 6. **App Clips Setup**
 
