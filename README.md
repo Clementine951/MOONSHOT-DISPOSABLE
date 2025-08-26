@@ -17,9 +17,9 @@
 
 Welcome to the **Disposable App** – a nostalgic, minimalist photo-sharing experience built for real-world events like **weddings**, **festivals**, **parties**, and **bar nights**. One event, one shared camera, one unforgettable album.
 
-> 🎉 **Now available on the [App Store](https://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GBhttps://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GB)**  
+> 🚧 **No longer available on the [App Store](https://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GBhttps://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GB)**  
 > 🌐 Explore more: [www.disposableapp.xyz](https://www.disposableapp.xyz)  
-> 📱 *Android version coming later*
+> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/ThesisCompressed.pdf)
 
 
 ## Features
