@@ -19,7 +19,7 @@ Welcome to the **Disposable App** – a nostalgic, minimalist photo-sharing expe
 
 > 🚧 **No longer available on the [App Store](https://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GBhttps://apps.apple.com/fr/app/disposable-app/id6670355967?l=en-GB)**  
 > 🌐 Explore more: [www.disposableapp.xyz](https://www.disposableapp.xyz)  
-> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/ThesisCompressed.pdf)
+> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/Thesis.pdf)
 
 
 ## Features
