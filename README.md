@@ -89,7 +89,7 @@ open Disposable.xcworkspace
 - [📄 Presentation Slides ](./Documents/Presentation%202024/Presentation.pdf)
 - [💼 Business Plan](./Documents/Version2/BusinessPlan.md)
 - [🗣️ User Feedback Summary](./Documents/Version2/UserFeedback.md)
-- [📚 Thesis](./Documents/Thesis/Thesis.md)
+- [📚 Thesis](./Documents/Thesis/Thesis.pdf)
 
 ## Known Issues
 
