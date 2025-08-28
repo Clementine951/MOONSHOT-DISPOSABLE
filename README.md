@@ -19,7 +19,7 @@ Welcome to the **Disposable App** – a nostalgic, minimalist photo-sharing expe
 
 > 🚧 **No longer available on the App Store**  
 > 🌐 Explore more: [www.disposableapp.xyz](https://www.disposableapp.xyz)  
-> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/Thesis.pdf)
+> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/ThesisCurel.pdf)
 
 ## Features
 
@@ -88,7 +88,7 @@ open Disposable.xcworkspace
 - [📄 Presentation Slides ](./Documents/Presentation%202024/Presentation.pdf)
 - [💼 Business Plan](./Documents/Version2/BusinessPlan.md)
 - [🗣️ User Feedback Summary](./Documents/Version2/UserFeedback.md)
-- [📚 Thesis](./Documents/Thesis/Thesis.pdf)
+- [📚 Thesis](./Documents/Thesis/ThesisCurel.pdf)
 
 ## Known Issues
 
