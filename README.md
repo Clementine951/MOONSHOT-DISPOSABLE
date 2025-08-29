@@ -19,7 +19,8 @@ Welcome to the **Disposable App** – a nostalgic, minimalist photo-sharing expe
 
 > 🚧 **No longer available on the App Store**  
 > 🌐 Explore more: [www.disposableapp.xyz](https://www.disposableapp.xyz)  
-> 📔 Read my Thesis: [Thesis.pdf](./Documents/Thesis/ThesisCurel.pdf)
+> 📔 Read my Thesis: [ThesisCurel.pdf](./Documents/Thesis/ThesisCurel.pdf)  
+> 💾 Compressed version: [ThesisCurelComp.pdf](./Documents/Thesis/ThesisCurelComp.pdf)
 
 ## Features
 
